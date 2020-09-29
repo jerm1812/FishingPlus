@@ -22,7 +22,7 @@ public final class FishingPlus extends JavaPlugin {
         checkFiles();
         registerEvents();
         registerCommands();
-        config = Config.getInstance();
+        config = new Config(this);
     }
 
     @Override

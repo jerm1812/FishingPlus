@@ -4,4 +4,9 @@ main: me.baryonyx.fishingplus.FishingPlus
 api-version: 1.13
 authors: [Jerm1812]
 description: A plugin to create custome fishing rewards and fishing compeitions
-
+commands:
+  fishingplus:
+    description: command for fishing plus
+    aliases: [fp, fishplus]
+    permission: fishingplus.use
+    usage: /fishingplus {command}
