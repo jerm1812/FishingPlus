@@ -13,15 +13,12 @@ import java.io.File;
 import java.io.IOException;
 
 public class Config {
-    private static Config config = new Config();
-    public static Config getInstance() {
-        return config;
-    }
     private File datafile;
-    @Inject private FishingPlus plugin;
+    private FishingPlus plugin;
     public YamlConfiguration yaml;
 
-    private Config() {
+    public Config(FishingPlus plugin) {
+        this.plugin = plugin;
         datafile = this.plugin.getDataFolder();
     }
 
