@@ -6,8 +6,8 @@ import me.baryonyx.fishingplus.competition.fish.Type;
 import me.baryonyx.fishingplus.utils.SeedData;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,5 +52,13 @@ public class Config {
             Bukkit.getLogger().severe("Could not save fish types");
             Bukkit.getLogger().severe(e.getMessage());
         }
+    }
+
+    public ConfigurationSection getFishTypes() {
+        return yaml.getConfigurationSection("fish-Types");
+    }
+
+    public void addItemRarity() {
+
     }
 }
