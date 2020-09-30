@@ -2,7 +2,43 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a6a9731f-8ba8-4100-9b8b-9cb1b53667bc" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/fishing/RewardMap.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/rewards.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.4.1/fileContent/annotation-processors.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4.1/fileContent/annotation-processors.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.4.1/fileContent/fileContent.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4.1/fileContent/fileContent.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.4.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4.1/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.4.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.4.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.4.1/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4.1/taskHistory/taskHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.4.1/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4.1/taskHistory/taskHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/baryonyx/fishingplus/FishingPlus.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/baryonyx/fishingplus/FishingPlus.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/baryonyx/fishingplus/binding/PluginBinder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/baryonyx/fishingplus/commands/MainCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/baryonyx/fishingplus/commands/MainCommand.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/baryonyx/fishingplus/competition/Competition.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/baryonyx/fishingplus/competition/FishCodeTable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/baryonyx/fishingplus/competition/fish/Attributes.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/baryonyx/fishingplus/competition/fish/Fish.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/baryonyx/fishingplus/competition/fish/Type.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/baryonyx/fishingplus/configuration/Config.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/baryonyx/fishingplus/configuration/Config.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/baryonyx/fishingplus/events/FishListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/baryonyx/fishingplus/events/FishListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/baryonyx/fishingplus/utils/SeedData.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/libs/FishingPlus-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/build/libs/FishingPlus-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/FishingPlus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/FishingPlus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/binding/PluginBinder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/commands/MainCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/commands/MainCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/competition/Competition.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/competition/FishCodeTable.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/competition/fish/Attributes.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/competition/fish/Fish.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/competition/fish/Type.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/configuration/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/configuration/Config.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/events/FishListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/events/FishListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/fishing/Fish.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/fishing/Fish.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/fishing/Reward.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/fishing/Reward.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/utils/SeedData.java" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -94,34 +130,11 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/events/FishListener.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="119">
-                  <caret line="18" selection-start-line="18" selection-end-line="18" />
+                <state relative-caret-position="357">
+                  <caret line="23" column="9" lean-forward="true" selection-start-line="23" selection-start-column="9" selection-end-line="23" selection-end-column="9" />
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/configuration/Config.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="300">
-                  <caret line="61" selection-start-line="61" selection-end-line="61" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                    <element signature="e#1949#1950#0" expanded="true" />
-                    <element signature="e#1975#1976#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/fishing/Rarity.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="317">
-                  <caret line="20" column="5" selection-start-line="20" selection-start-column="5" selection-end-line="20" selection-end-column="5" />
                 </state>
               </provider>
             </entry>
@@ -131,20 +144,11 @@
               <provider selected="true" editor-type-id="text-editor" />
             </entry>
           </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/commands/MainCommand.java">
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/configuration/Config.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="62">
-                  <caret line="12" selection-start-line="12" selection-end-line="12" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/FishingPlus.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="156">
-                  <caret line="15" column="4" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="4" />
+                <state relative-caret-position="272">
+                  <caret line="25" column="51" lean-forward="true" selection-start-line="25" selection-start-column="51" selection-end-line="25" selection-end-column="51" />
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
@@ -153,10 +157,53 @@
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/utils/Messages.java">
+            <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/fishing/RewardMap.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="68">
-                  <caret line="5" column="1" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
+                <state relative-caret-position="445">
+                  <caret line="50" column="42" lean-forward="true" selection-start-line="50" selection-start-column="42" selection-end-line="50" selection-end-column="42" />
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/resources/rewards.yml">
+              <provider selected="true" editor-type-id="text-editor" />
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/FishingPlus.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="374">
+                  <caret line="45" column="70" selection-start-line="45" selection-start-column="70" selection-end-line="45" selection-end-column="70" />
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                    <element signature="e#1144#1145#0" expanded="true" />
+                    <element signature="e#1216#1217#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/commands/MainCommand.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="272">
+                  <caret line="58" column="9" lean-forward="true" selection-start-line="58" selection-start-column="9" selection-end-line="58" selection-end-column="9" />
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/fishing/Fish.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="221">
+                  <caret line="13" column="5" selection-start-line="13" selection-start-column="5" selection-end-line="13" selection-end-column="5" />
                 </state>
               </provider>
             </entry>
@@ -164,29 +211,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/main/resources/plugin.yml">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="119">
+                <state relative-caret-position="204">
                   <caret line="12" selection-start-line="12" selection-end-line="12" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/fishing/Reward.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="391">
-                  <caret line="23" column="27" lean-forward="true" selection-start-line="23" selection-start-column="27" selection-end-line="23" selection-end-column="27" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/competition/fish/Type.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="170">
-                  <caret line="10" column="25" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                  </folding>
                 </state>
               </provider>
             </entry>
@@ -195,29 +221,20 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/fishing/Reward.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="663">
+                  <caret line="39" column="27" lean-forward="true" selection-start-line="39" selection-start-column="27" selection-end-line="39" selection-end-column="27" />
+                </state>
+              </provider>
+            </entry>
+          </file>
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/utils/SeedData.java">
+            <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/fishing/Rarity.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="34">
-                  <caret line="2" column="53" selection-start-line="2" selection-start-column="53" selection-end-line="2" selection-end-column="53" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/fishing/Fish.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="153">
-                  <caret line="9" column="17" lean-forward="true" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/competition/fish/Fish.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="119">
-                  <caret line="7" column="24" lean-forward="true" selection-start-line="7" selection-start-column="24" selection-end-line="7" selection-end-column="24" />
+                  <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
                 </state>
               </provider>
             </entry>
@@ -247,28 +264,30 @@
         <option value="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/fish/Attributes.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/competition/fish/Fish.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/fish/Fish.java" />
-        <option value="$PROJECT_DIR$/build.gradle" />
-        <option value="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/binding/PluginBinder.java" />
-        <option value="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/events/FishListener.java" />
-        <option value="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/competition/Competition.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/competition/FishCodeTable.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/competition/fish/Type.java" />
-        <option value="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/utils/SeedData.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/utils/Messages.java" />
-        <option value="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/commands/MainCommand.java" />
         <option value="$PROJECT_DIR$/src/main/resources/plugin.yml" />
+        <option value="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/fishing/Rarity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/binding/PluginBinder.java" />
+        <option value="$PROJECT_DIR$/build.gradle" />
+        <option value="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/utils/SeedData.java" />
+        <option value="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/events/FishListener.java" />
+        <option value="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/competition/Competition.java" />
+        <option value="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/fishing/Fish.java" />
+        <option value="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/commands/MainCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/FishingPlus.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/fishing/Reward.java" />
-        <option value="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/fishing/Fish.java" />
+        <option value="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/fishing/RewardMap.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/rewards.yml" />
         <option value="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/configuration/Config.java" />
-        <option value="$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/fishing/Rarity.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1936" />
+    <option name="x" value="1549" />
+    <option name="y" value="-23" />
+    <option name="width" value="545" />
     <option name="height" value="1056" />
   </component>
   <component name="ProjectView">
@@ -327,35 +346,7 @@
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="fishingplus" type="462c0819:PsiDirectoryNode" />
-              <item name="binding" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="FishingPlus" type="b2602c69:ProjectViewProjectNode" />
-              <item name="FishingPlus" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="fishingplus" type="462c0819:PsiDirectoryNode" />
               <item name="commands" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="FishingPlus" type="b2602c69:ProjectViewProjectNode" />
-              <item name="FishingPlus" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="fishingplus" type="462c0819:PsiDirectoryNode" />
-              <item name="competition" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="FishingPlus" type="b2602c69:ProjectViewProjectNode" />
-              <item name="FishingPlus" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="fishingplus" type="462c0819:PsiDirectoryNode" />
-              <item name="competition" type="462c0819:PsiDirectoryNode" />
-              <item name="fish" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="FishingPlus" type="b2602c69:ProjectViewProjectNode" />
@@ -507,16 +498,20 @@
       <workItem from="1601354941554" duration="953000" />
       <workItem from="1601385510273" duration="1621000" />
       <workItem from="1601391780920" duration="4995000" />
+      <workItem from="1601413569625" duration="2485000" />
+      <workItem from="1601439819648" duration="3227000" />
+      <workItem from="1601476103986" duration="6592000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="39182000" />
+    <option name="totallyTimeSpent" value="51486000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-7" y="-7" width="2575" height="1415" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18976545" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.09900597" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -526,7 +521,7 @@
       <window_info id="Learn" order="7" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32936078" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3289166" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49940357" visible="true" weight="0.3289166" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -534,7 +529,7 @@
       <window_info anchor="bottom" id="Build" order="7" weight="0.156013" />
       <window_info anchor="bottom" id="Terminal" order="8" />
       <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" weight="0.32936078" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5005964" side_tool="true" weight="0.3289166" />
       <window_info anchor="bottom" id="Database Changes" order="11" />
       <window_info anchor="bottom" id="Version Control" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -543,7 +538,7 @@
       <window_info anchor="right" id="Maven" order="3" />
       <window_info anchor="right" id="Palette" order="4" />
       <window_info anchor="right" id="Capture Analysis" order="5" />
-      <window_info anchor="right" id="Gradle" order="6" visible="true" weight="0.14285715" />
+      <window_info anchor="right" id="Gradle" order="6" weight="0.28667954" />
       <window_info anchor="right" id="Database" order="7" />
       <window_info anchor="right" id="Palette&#9;" order="8" />
       <window_info anchor="right" id="Theme Preview" order="9" />
@@ -555,69 +550,101 @@
   <component name="editorHistoryManager">
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.spigotmc/spigot-api/1.16.3-R0.1-SNAPSHOT/8d2d74b8dd55055587f34d9bb869e53aacb581bf/spigot-api-1.16.3-R0.1-SNAPSHOT-sources.jar!/org/bukkit/Material.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/configuration/Fish.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/competition/fish/Attributes.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/competition/fish/Attributes.java" />
     <entry file="file://$PROJECT_DIR$/gradle.properties">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_131/src.zip!/java/lang/Math.java" />
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="27" column="1" selection-start-line="27" selection-start-column="1" selection-end-line="27" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/gradlew">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/gradlew.bat">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/binding/PluginBinder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="17" column="5" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/competition/Competition.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="13" column="5" selection-start-line="13" selection-start-column="5" selection-end-line="13" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../xStance/src/main/java/me/jerm1812/essentials/UserData.java" />
     <entry file="file://$PROJECT_DIR$/../xStance/src/main/java/me/jerm1812/essentials/xStance.java" />
     <entry file="file://$PROJECT_DIR$/../xStance/src/main/java/me/jerm1812/essentials/commands/HomeCommand.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/competition/FishCodeTable.java">
+    <entry file="file://$PROJECT_DIR$/../more-fish/src/main/kotlin/me/elsiff/morefish/fishing/FishType.kt" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/competition/fish/Fish.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/binding/PluginBinder.java" />
+    <entry file="file://$PROJECT_DIR$/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="20" selection-start-line="20" selection-end-line="20" />
+        <state relative-caret-position="289">
+          <caret line="17" column="5" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/utils/Messages.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="1" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/competition/fish/Type.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/competition/FishCodeTable.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/competition/Competition.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/utils/SeedData.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/fishing/Fish.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="5" selection-start-line="13" selection-start-column="5" selection-end-line="13" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/plugin.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/fishing/Rarity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/commands/MainCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="58" column="9" lean-forward="true" selection-start-line="58" selection-start-column="9" selection-end-line="58" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/FishingPlus.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="45" column="70" selection-start-line="45" selection-start-column="70" selection-end-line="45" selection-end-column="70" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1144#1145#0" expanded="true" />
+            <element signature="e#1216#1217#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/events/FishListener.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="18" selection-start-line="18" selection-end-line="18" />
+        <state relative-caret-position="357">
+          <caret line="23" column="9" lean-forward="true" selection-start-line="23" selection-start-column="9" selection-end-line="23" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_171/src.zip!/java/util/TreeMap.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="459" column="21" selection-start-line="459" selection-start-column="21" selection-end-line="459" selection-end-column="21" />
+          <folding>
+            <element signature="e#26754#26755#0" expanded="true" />
+            <element signature="e#26809#26810#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -625,98 +652,33 @@
     <entry file="file://$PROJECT_DIR$/src/main/resources/config.yml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/utils/Messages.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="5" column="1" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/plugin.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/FishingPlus.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="15" column="4" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="4" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/commands/MainCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="62">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../more-fish/src/main/kotlin/me/elsiff/morefish/fishing/FishType.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="113">
-          <caret line="28" column="3" lean-forward="true" selection-start-line="28" selection-start-column="3" selection-end-line="28" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/fishing/Reward.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" column="27" lean-forward="true" selection-start-line="23" selection-start-column="27" selection-end-line="23" selection-end-column="27" />
+        <state relative-caret-position="663">
+          <caret line="39" column="27" lean-forward="true" selection-start-line="39" selection-start-column="27" selection-end-line="39" selection-end-column="27" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/utils/SeedData.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="53" selection-start-line="2" selection-start-column="53" selection-end-line="2" selection-end-column="53" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/rewards.yml">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/competition/fish/Type.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/fishing/RewardMap.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="25" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
+        <state relative-caret-position="445">
+          <caret line="50" column="42" lean-forward="true" selection-start-line="50" selection-start-column="42" selection-end-line="50" selection-end-column="42" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/competition/fish/Fish.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="24" lean-forward="true" selection-start-line="7" selection-start-column="24" selection-end-line="7" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/fishing/Fish.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="17" lean-forward="true" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/configuration/Config.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="61" selection-start-line="61" selection-end-line="61" />
+        <state relative-caret-position="272">
+          <caret line="25" column="51" lean-forward="true" selection-start-line="25" selection-start-column="51" selection-end-line="25" selection-end-column="51" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1949#1950#0" expanded="true" />
-            <element signature="e#1975#1976#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/baryonyx/fishingplus/fishing/Rarity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="317">
-          <caret line="20" column="5" selection-start-line="20" selection-start-column="5" selection-end-line="20" selection-end-column="5" />
         </state>
       </provider>
     </entry>

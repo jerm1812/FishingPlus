@@ -1,39 +1,34 @@
 package me.baryonyx.fishingplus;
 
-import com.google.inject.Inject;
-import com.google.inject.Injector;
-import com.google.inject.Singleton;
-import me.baryonyx.fishingplus.binding.PluginBinder;
 import me.baryonyx.fishingplus.commands.MainCommand;
 import me.baryonyx.fishingplus.configuration.Config;
 import me.baryonyx.fishingplus.events.FishListener;
+import me.baryonyx.fishingplus.fishing.RewardMap;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 
-@Singleton
 public final class FishingPlus extends JavaPlugin {
     private Config config;
+    private FishingPlus plugin;
+    private RewardMap rewardMap;
 
     @Override
     public void onEnable() {
         // Plugin startup logic
-        setupInjection();
+        plugin = this;
         checkFiles();
+
+        config = new Config(this);
+        rewardMap = new RewardMap(config);
+
         registerEvents();
         registerCommands();
-        config = new Config(this);
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-    }
-
-    private void setupInjection() {
-        PluginBinder binder = new PluginBinder(this);
-        Injector injector = binder.createInjector();
-        injector.injectMembers(this);
     }
 
     private void checkFiles() {
@@ -44,11 +39,11 @@ public final class FishingPlus extends JavaPlugin {
     }
 
     private void registerEvents() {
-        getServer().getPluginManager().registerEvents(new FishListener(), this);
+        getServer().getPluginManager().registerEvents(new FishListener(rewardMap), this);
     }
 
     private void registerCommands() {
-        getCommand("fishingplus").setExecutor(new MainCommand());
+        getCommand("fishingplus").setExecutor(new MainCommand(plugin, rewardMap));
     }
 
     public void applyConfig() {
