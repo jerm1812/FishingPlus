@@ -1,9 +1,6 @@
 package me.baryonyx.fishingplus.configuration;
 
-import com.google.inject.Inject;
 import me.baryonyx.fishingplus.FishingPlus;
-import me.baryonyx.fishingplus.competition.fish.Type;
-import me.baryonyx.fishingplus.utils.SeedData;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -12,10 +9,12 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 
+
 public class Config {
     private File datafile;
     private FishingPlus plugin;
     public YamlConfiguration yaml;
+    public YamlConfiguration fishConfig;
 
     public Config(FishingPlus plugin) {
         this.plugin = plugin;
@@ -31,9 +30,6 @@ public class Config {
     private void createFishConfig() {
         yaml = new YamlConfiguration();
         yaml.createSection("fish-types");
-        for (Type type : SeedData.seedFishTypes()) {
-            addFishType(type.name, type.minLength, type.maxLength, type.item, type.price);
-        }
         saveFishTypes(yaml);
     }
 
@@ -58,7 +54,7 @@ public class Config {
         return yaml.getConfigurationSection("fish-Types");
     }
 
-    public void addItemRarity() {
+    public void addRewardRarity() {
 
     }
 }
