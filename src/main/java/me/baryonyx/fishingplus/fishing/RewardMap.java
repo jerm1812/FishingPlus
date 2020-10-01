@@ -1,6 +1,7 @@
 package me.baryonyx.fishingplus.fishing;
 
 import me.baryonyx.fishingplus.configuration.Config;
+import me.baryonyx.fishingplus.exceptions.ItemNotFoundException;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -34,6 +35,15 @@ public class RewardMap {
             Reward reward = new Reward(name, displayName, item, chance, price);
             addToRewardMap(reward.chance, reward);
         }
+    }
+
+    private Reward loadNewReward(ConfigurationSection section, String name) {
+        String displayname = section.getString(name + ".display-name");
+
+        Material material = Material.matchMaterial(section.getString(name + "item.id"));
+        if (material == null)
+            throw new ItemNotFoundException(name);
+
     }
 
     private void addToRewardMap(double weight, Reward reward) {

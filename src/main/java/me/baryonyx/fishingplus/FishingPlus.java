@@ -10,7 +10,7 @@ import java.io.File;
 
 public final class FishingPlus extends JavaPlugin {
     private Config config;
-    private FishingPlus plugin;
+    private static FishingPlus plugin;
     private RewardMap rewardMap;
 
     @Override
@@ -50,5 +50,9 @@ public final class FishingPlus extends JavaPlugin {
 
     public void applyConfig() {
 
+    }
+
+    public static FishingPlus getPlugin() {
+        return plugin;
     }
 }

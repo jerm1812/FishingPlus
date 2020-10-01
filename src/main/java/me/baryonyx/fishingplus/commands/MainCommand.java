@@ -32,7 +32,7 @@ public class MainCommand implements CommandExecutor {
             }
         }
         else {
-            sender.sendMessage(Messages.playerOnlyCommand);
+            plugin.getLogger().info(Messages.playerOnlyCommand);
         }
 
         return false;
