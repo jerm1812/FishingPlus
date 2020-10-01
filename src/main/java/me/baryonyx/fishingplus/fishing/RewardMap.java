@@ -3,6 +3,7 @@ package me.baryonyx.fishingplus.fishing;
 import me.baryonyx.fishingplus.configuration.Config;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -23,16 +24,16 @@ public class RewardMap {
     }
 
     private void loadRewardMap() {
-        Reward reward = new Reward("Fry", Material.COD, .75f, 1f);
-        Reward reward2 = new Reward("Bass", Material.COD, .25f, 1f);
-        Reward reward4 = new Reward("yup", Material.COD, .25f, 1f);
-        Reward reward5 = new Reward("test", Material.COD, .25f, 1f);
-        Reward reward6 = new Reward("yeah", Material.COD, .25f, 1f);
-        addToRewardMap(10d, reward);
-        addToRewardMap(15d, reward2);
-        addToRewardMap(20d, reward4);
-        addToRewardMap(25d, reward5);
-        addToRewardMap(30d, reward6);
+        ConfigurationSection section = config.getRewards();
+        for (String name: section.getKeys(false)) {
+            String displayName = section.getString(name + ".display-name");
+            Material item = Material.matchMaterial(section.getString(name + ".item.id"));
+            double chance = section.getDouble(name + ".chance");
+            double price = section.getDouble(name + ".display-name");
+
+            Reward reward = new Reward(name, displayName, item, chance, price);
+            addToRewardMap(reward.chance, reward);
+        }
     }
 
     private void addToRewardMap(double weight, Reward reward) {

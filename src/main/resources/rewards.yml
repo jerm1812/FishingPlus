@@ -1,0 +1,55 @@
+rewards:
+  fry:
+    display-name: "Fry"
+    max-length: 1
+    min-length: 3
+    item:
+      id: "minecraft:cod"
+      lore:
+        - "&btest lore"
+        - "&6test2 lore"
+    chance: 10
+    price: 1
+  bass:
+    display-name: "Bass"
+    max-length: 3
+    min-length: 5
+    item:
+      id: "minecraft:cod"
+      lore:
+        - "&btest lore"
+        - "&6test2 lore"
+    chance: 15
+    price: 1
+  guppy:
+    display-name: "Guppy"
+    max-length: 5
+    min-length: 10
+    item:
+      id: "minecraft:cod"
+      lore:
+        - "&btest lore"
+        - "&6test2 lore"
+    chance: 20
+    price: 1
+  goldfish:
+    display-name: "Goldfish"
+    max-length: 2
+    min-length: 8
+    item:
+      id: "minecraft:cod"
+      lore:
+        - "&btest lore"
+        - "&6test2 lore"
+    chance: 25
+    price: 1
+
+modifiers:
+  default:
+    display-name: ""
+    price-increase: 0
+    chance: 100
+  common:
+    display-name: "&bCommon"
+    price-increase: 0
+    chance: 25

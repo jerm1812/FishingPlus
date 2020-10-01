@@ -3,44 +3,51 @@ package me.baryonyx.fishingplus.fishing;
 import org.bukkit.Material;
 
 public class Reward {
-    String name;
-    String displayName;
-    Material item;
-    int amount = 1;
-    float chance;
-    Rarity rarity;
-    float price;
+    public String name;
+    public String displayName;
+    public Material item;
+    public int amount = 1;
+    double chance;
+    public Modifier modifier;
+    double price;
 
-    public Reward(String name, String displayName, Material item, int amount, float chance, Rarity rarity, float price) {
+    public Reward(String name, String displayName, String item, int amount, double chance, Modifier modifier, double price) {
         this.name = name;
         this.displayName = displayName;
-        this.item = item;
+        this.item = Material.getMaterial(item);
         this.amount = amount;
         this.chance = chance;
-        this.rarity = rarity;
+        this.modifier = modifier;
         this.price = price;
     }
 
-    public Reward(String name, String displayName, Material item, float chance, Rarity rarity, float price) {
+    public Reward(String name, String displayName, Material item, double chance, Modifier modifier, double price) {
         this.name = name;
         this.displayName = displayName;
         this.item = item;
         this.chance = chance;
-        this.rarity = rarity;
+        this.modifier = modifier;
+        this.price = price;
+    }
+    public Reward(String name, String displayName, Material item, double chance, double price) {
+        this.name = name;
+        this.displayName = displayName;
+        this.item = item;
+        this.chance = chance;
         this.price = price;
     }
 
-    public Reward(String name, Material item, int amount, float chance, Rarity rarity, float price) {
+    public Reward(String name, Material item, int amount, double chance, Modifier modifier, double price) {
         this.name = name;
         this.displayName = name;
         this.item = item;
         this.amount = amount;
         this.chance = chance;
-        this.rarity = rarity;
+        this.modifier = modifier;
         this.price = price;
     }
 
-    public Reward(String name, Material item, float chance, float price) {
+    public Reward(String name, Material item, double chance, float price) {
         this.name = name;
         this.displayName = name;
         this.item = item;

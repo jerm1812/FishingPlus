@@ -1,0 +1,11 @@
+
+rewards:
+  competition-only: false
+
+
+modifiers:
+  allow-modifiers: true
+  price-increase-addition: true
+  price-increase-multiplication: false
+  modifier-prefix: "&8[&r"
+  modifier-suffix: "&8] &6-&r"

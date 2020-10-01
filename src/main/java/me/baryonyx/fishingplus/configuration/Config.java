@@ -13,35 +13,34 @@ import java.io.IOException;
 public class Config {
     private File datafile;
     private FishingPlus plugin;
-    public YamlConfiguration yaml;
-    public YamlConfiguration fishConfig;
+    private YamlConfiguration rewardConfig;
 
     public Config(FishingPlus plugin) {
         this.plugin = plugin;
         datafile = this.plugin.getDataFolder();
+        loadRewards();
     }
 
-    public void loadFishTypes() {
-        File file = new File(datafile, "FishConfig.yml");
-        if (!file.exists()) { createFishConfig(); }
-        YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
+    private void loadRewards() {
+        File file = new File(datafile, "rewards.yml");
+        rewardConfig = YamlConfiguration.loadConfiguration(file);
     }
 
-    private void createFishConfig() {
-        yaml = new YamlConfiguration();
-        yaml.createSection("fish-types");
-        saveFishTypes(yaml);
+    private void createRewardConfig() {
+        rewardConfig = new YamlConfiguration();
+        rewardConfig.createSection("fish-types");
+        saveFishTypes(rewardConfig);
     }
 
     public void addFishType(String name, float minLength, float maxLength, Material item, float price) {
-        yaml.set("fish-types." + name + ".price", price);
-        yaml.set("fish-types." + name + ".maxLength", maxLength);
-        yaml.set("fish-types." + name + ".minLength", minLength);
-        yaml.set("fish-types." + name + ".item", item);
+        rewardConfig.set("rewards." + name + ".price", price);
+        rewardConfig.set("rewards." + name + ".maxLength", maxLength);
+        rewardConfig.set("rewards." + name + ".minLength", minLength);
+        rewardConfig.set("rewards." + name + ".item", item);
     }
 
     private void saveFishTypes(YamlConfiguration config) {
-        File file = new File(datafile, "FishConfig.yml");
+        File file = new File(datafile, "rewards.yml");
         try {
             config.save(file);
         } catch (IOException e) {
@@ -50,11 +49,7 @@ public class Config {
         }
     }
 
-    public ConfigurationSection getFishTypes() {
-        return yaml.getConfigurationSection("fish-Types");
-    }
-
-    public void addRewardRarity() {
-
+    public ConfigurationSection getRewards() {
+        return rewardConfig.getConfigurationSection("rewards");
     }
 }
