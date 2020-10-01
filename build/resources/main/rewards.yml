@@ -1,0 +1,21 @@
+rewards:
+  fry:
+    display-name: "Fry"
+    item: "minecraft:cod"
+    chance: 10
+    price: 1
+  bass:
+    display-name: "Bass"
+    item: "minecraft:cod"
+    chance: 15
+    price: 1
+  guppy:
+    display-name: "Guppy"
+    item: "minecraft:cod"
+    chance: 20
+    price: 1
+  goldfish:
+    display-name: "Goldfish"
+    item: "minecraft:cod"
+    chance: 25
+    price: 1

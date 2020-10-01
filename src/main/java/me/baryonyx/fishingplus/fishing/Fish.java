@@ -9,7 +9,7 @@ public class Fish extends Reward {
     public float actualLength;
     public String caughtBy;
 
-    public Fish(String name, Material item, float chance, Rarity rarity, float price, float minLength, float maxLength) {
+    public Fish(String name, Material item, float chance, Modifier modifier, float price, float minLength, float maxLength) {
         super(name, item, chance, price);
     }
 }

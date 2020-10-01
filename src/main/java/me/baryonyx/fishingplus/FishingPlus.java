@@ -33,9 +33,11 @@ public final class FishingPlus extends JavaPlugin {
 
     private void checkFiles() {
         File file = new File(this.getDataFolder(), "config.yml");
-        if (!file.exists()) {
+        if (!file.exists())
             saveDefaultConfig();
-        }
+        file = new File(this.getDataFolder(), "rewards.yml");
+        if (!file.exists())
+            saveResource("rewards.yml", false);
     }
 
     private void registerEvents() {
