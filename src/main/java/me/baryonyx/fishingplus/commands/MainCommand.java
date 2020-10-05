@@ -1,20 +1,21 @@
 package me.baryonyx.fishingplus.commands;
 
 import me.baryonyx.fishingplus.FishingPlus;
-import me.baryonyx.fishingplus.fishing.RewardMap;
+import me.baryonyx.fishingplus.fishing.FishingMap;
 import me.baryonyx.fishingplus.utils.Messages;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+
 public class MainCommand implements CommandExecutor {
     private FishingPlus plugin;
-    private RewardMap rewardMap;
+    private FishingMap fishingMap;
 
-    public MainCommand(FishingPlus plugin, RewardMap rewardMap) {
+    public MainCommand(FishingPlus plugin, FishingMap fishingMap) {
         this.plugin = plugin;
-        this.rewardMap = rewardMap;
+        this.fishingMap = fishingMap;
     }
 
     @Override
@@ -55,7 +56,7 @@ public class MainCommand implements CommandExecutor {
     private boolean testMap(CommandSender sender) {
         Player target = sender.getServer().getPlayerExact(sender.getName());
         for (int i = 0; i < 100; i++) {
-            target.getInventory().addItem(rewardMap.createReward(sender));
+            target.getInventory().addItem(fishingMap.createReward((Player)sender));
         }
 
         return true;
