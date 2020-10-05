@@ -1,11 +1,35 @@
+#### REWARDS ####
 
-rewards:
-  competition-only: false
+# Set whether or not to get custom fish outside of competitions
+competition-only: false
+
+# Display who caught a reward
+display-who-caught: true
+
+# Reward name's prefix and suffix
+reward-prefix: ""
+reward-suffix: ""
 
 
-modifiers:
-  allow-modifiers: true
-  price-increase-addition: true
-  price-increase-multiplication: false
-  modifier-prefix: "&8[&r"
-  modifier-suffix: "&8] &6-&r"
+#### FISH ####
+
+# Recommended value: 1.35 - Will favor the minimum fish length twice as much as maximum fish length
+# The weight for the fish length
+fish-length-weight: 1.35
+
+
+#### RARITY MODIFIERS ####
+
+# Allow rarity modifiers
+allow-modifiers: true
+
+# Price increase for modifiers is addition
+price-increase-addition: true
+
+# Price increase for modifiers multiplication
+price-increase-multiplication: false
+
+# Modifier's prefix and suffix
+modifier-prefix: "&8[&r"
+modifier-suffix: "&8] &6-&r "
+

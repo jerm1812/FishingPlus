@@ -1,9 +1,10 @@
 name: FishingPlus
 version: @version@
 main: me.baryonyx.fishingplus.FishingPlus
-api-version: 1.13
+api-version: 1.16
 authors: [Jerm1812]
 description: A plugin to create custome fishing rewards and fishing compeitions
+softdepend: [Vault]
 commands:
   fishingplus:
     description: command for fishing plus

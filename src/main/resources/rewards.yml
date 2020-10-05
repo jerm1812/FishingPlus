@@ -52,4 +52,16 @@ modifiers:
   common:
     display-name: "&bCommon"
     price-increase: 0
-    chance: 25
+    chance: 100
+  rare:
+    display-name: "&bRare"
+    price-increase: 1
+    chance: 5
+  epic:
+    display-name: "&6Epic"
+    price-increase: 2
+    chance: 2.5
+  legendary:
+    display-name: "&9Legendary"
+    price-increase: 3
+    chance: 1.25
