@@ -1,13 +1,10 @@
 package me.baryonyx.fishingplus.handlers;
 
-import me.baryonyx.fishingplus.FishingPlus;
 import me.baryonyx.fishingplus.configuration.Config;
 import me.baryonyx.fishingplus.fishing.Modifier;
+import me.baryonyx.fishingplus.shop.RewardConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.NamespacedKey;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import me.baryonyx.fishingplus.exceptions.InvalidFishLengthException;
@@ -27,15 +24,11 @@ import java.util.stream.Collectors;
 
 public class RewardHandler {
     private Config config;
-    private NamespacedKey fishLength;
-    private NamespacedKey rewardModifier;
-    private NamespacedKey rewardType;
+    private RewardConverter rewardConverter;
 
-    public RewardHandler(Config config) {
+    public RewardHandler(Config config, RewardConverter rewardConverter) {
         this.config = config;
-        this.fishLength = new NamespacedKey(FishingPlus.getPlugin(), "fishLength");
-        this.rewardModifier = new NamespacedKey(FishingPlus.getPlugin(), "rewardModifier");
-        this.rewardType = new NamespacedKey(FishingPlus.getPlugin(), "rewardType");
+        this.rewardConverter = rewardConverter;
     }
 
     private String getRewardDisplayName(@NotNull ConfigurationSection section, @NotNull String name) {
@@ -153,22 +146,20 @@ public class RewardHandler {
         if (meta == null)
             throw new ItemNotFoundException(reward.item.name(), reward.name);
 
-        PersistentDataContainer persistentData = meta.getPersistentDataContainer();
+        rewardConverter.writePersistentDataToItem(meta, reward);
+
+        //FIXME Change modifier to be added to the item in a caught item
+
         String name;
 
         if (modifier != null || !modifier.displayName.equals("")) {
             name = modifier.displayName + reward.displayName;
-            persistentData.set(rewardModifier, PersistentDataType.STRING, modifier.name);
         }
 
         else
             name = reward.displayName;
 
-        if (reward instanceof Fish)
-            persistentData.set(fishLength, PersistentDataType.DOUBLE, ((Fish) reward).actualLength);
-
         meta.setDisplayName(convertToColor(name));
-        persistentData.set(rewardType, PersistentDataType.STRING, reward.name);
         List<String> lore = createRewardLore(player, reward);
         meta.setLore(convertLoreListToColor(lore));
 
