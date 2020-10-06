@@ -24,7 +24,7 @@ public final class FishingPlus extends JavaPlugin {
         setupHooks();
 
         config = new Config(this);
-        rewardHandler = new RewardHandler(config);
+        rewardHandler = new RewardHandler(config, rewardConverter);
         fishingMap = new FishingMap(config, rewardHandler);
 
         registerEvents();

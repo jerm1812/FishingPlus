@@ -46,6 +46,17 @@ public class RewardConverter {
         return reward;
     }
 
+    public void writePersistentDataToItem(ItemMeta meta, Reward reward) {
+        PersistentDataContainer data = meta.getPersistentDataContainer();
+        data.set(rewardType, PersistentDataType.STRING, reward.name);
+
+        if (reward instanceof Fish)
+            data.set(fishLength, PersistentDataType.DOUBLE, ((Fish) reward).actualLength);
+
+        if (reward.modifier != null)
+            data.set(rewardModifier, PersistentDataType.STRING, reward.modifier.name);
+    }
+
     public boolean isAReward(ItemStack item) {
         return item.getItemMeta().getPersistentDataContainer().has(rewardType, PersistentDataType.STRING);
     }
