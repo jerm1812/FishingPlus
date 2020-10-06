@@ -28,17 +28,11 @@ public class Config {
         rewardConfig = YamlConfiguration.loadConfiguration(file);
     }
 
-    private void createRewardConfig() {
-        rewardConfig = new YamlConfiguration();
-        rewardConfig.createSection("fish-types");
-        saveFishTypes(rewardConfig);
-    }
-
     public void addFishType(String name, float minLength, float maxLength, Material item, float price) {
         rewardConfig.set("rewards." + name + ".price", price);
         rewardConfig.set("rewards." + name + ".maxLength", maxLength);
         rewardConfig.set("rewards." + name + ".minLength", minLength);
-        rewardConfig.set("rewards." + name + ".item", item);
+        rewardConfig.set("rewards." + name + ".item.id", item.name());
     }
 
     private void saveFishTypes(YamlConfiguration config) {
@@ -85,5 +79,9 @@ public class Config {
 
     public String getModifierSuffix() {
         return config.getString("modifier-suffix");
+    }
+
+    public boolean getModifierAddition() {
+        return config.getBoolean("price-increase-addition");
     }
 }

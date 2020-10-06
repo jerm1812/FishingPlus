@@ -17,4 +17,10 @@ public class Fish extends Reward {
         this.minLength = minLength;
         this.maxLength = maxLength;
     }
+
+    public Fish(String name, double price) {
+        super(name, price);
+    }
+
+    //FIXME create a "caught fish" that has a name, price, modifier, length
 }

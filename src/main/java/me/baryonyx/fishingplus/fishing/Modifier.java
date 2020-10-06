@@ -12,4 +12,9 @@ public class Modifier {
         this.chance = chance;
         this.priceModifier = priceModifier;
     }
+
+    public Modifier(String name, double priceModifier) {
+        this.name = name;
+        this.priceModifier = priceModifier;
+    }
 }
