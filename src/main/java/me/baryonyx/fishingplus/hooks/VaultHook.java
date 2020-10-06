@@ -17,7 +17,9 @@ public class VaultHook {
         return true;
     }
 
-    public Economy getEconomy() {
+    public static Economy getEconomy() {
         return economy;
     }
+
+    //FIXME Implement checks for the hook
 }

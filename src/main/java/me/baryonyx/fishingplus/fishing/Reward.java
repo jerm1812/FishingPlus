@@ -23,4 +23,11 @@ public class Reward {
         this.lore = lore;
         this.amount = amount;
     }
+
+    public Reward(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
+
+    //FIXME implement a separate "shop reward" to for just the name, price, and modifier
 }

@@ -11,3 +11,6 @@ commands:
     aliases: [fp, fishplus]
     permission: fishingplus.use
     usage: /fishingplus {command}
+
+    #TODO setup commands in plugin.yml when commands are setup
+    #TODO create more descriptive plugin.yml

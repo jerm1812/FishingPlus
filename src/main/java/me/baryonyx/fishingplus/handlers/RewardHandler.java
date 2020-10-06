@@ -228,4 +228,7 @@ public class RewardHandler {
 
         return new Modifier(name, displayName, chance, priceIncrease);
     }
+
+    //FIXME move the persistent data writing to the reward converter
+    // - Move the creation of items to an item handler?
 }

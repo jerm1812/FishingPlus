@@ -80,6 +80,29 @@ public class FishingMap {
         return reward;
     }
 
+    @Nullable
+    public Reward getReward(String name) {
+        for (Reward reward : rewardMap.values())
+            if (reward.name.equals(name)) {
+                if (reward instanceof Fish)
+                    return new Fish(reward.name, reward.price);
+                else
+                    return new Reward(reward.name, reward.price);
+            }
+
+        return null;
+    }
+
+    @Nullable
+    public Modifier getModifier(String name) {
+        for (Modifier modifier : modifierMap.values()) {
+            if (modifier.name.equals(name))
+                return new Modifier(modifier.name, modifier.priceModifier);
+        }
+
+        return null;
+    }
+
     @NotNull
     private Modifier getRandomModifier() {
         double value = random.nextDouble() * modifierWeight;

@@ -61,14 +61,9 @@ public final class FishingPlus extends JavaPlugin {
         VaultHook.hook(this);
     }
 
-    //TODO create shop GUI
-    //TODO create item reader to get Reward and Modifier from ItemStack
-    //TODO create a hook into Vault and other economy plugins
-    //TODO create a competition handler
-    //TODO setup using commands
-    //TODO setup permissions
+
+    //TODO implement more economy hooks
     //TODO create a fully functioning reward config
     //TODO add a biome check
     //TODO add fish based on their biomes
-    //TODO create a NPC shop
 }
