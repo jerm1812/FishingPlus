@@ -11,7 +11,7 @@ import java.util.TreeMap;
 public class ModifierHandler {
     private final RewardConfiguration config;
     private final Random random = new Random();
-    private NavigableMap<Double, Modifier> modifierMap = new TreeMap<>();
+    public NavigableMap<Double, Modifier> modifierMap = new TreeMap<>();
     private double totalWeight = 0;
 
     public ModifierHandler(RewardConfiguration config) {

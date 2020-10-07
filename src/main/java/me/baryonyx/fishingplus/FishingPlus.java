@@ -2,9 +2,11 @@ package me.baryonyx.fishingplus;
 
 import me.baryonyx.fishingplus.commands.MainCommand;
 import me.baryonyx.fishingplus.configuration.Config;
+import me.baryonyx.fishingplus.configuration.RewardConfiguration;
 import me.baryonyx.fishingplus.events.FishListener;
 import me.baryonyx.fishingplus.fishing.FishingMap;
-import me.baryonyx.fishingplus.handlers.RewardHandler;
+import me.baryonyx.fishingplus.fishing.Reward;
+import me.baryonyx.fishingplus.handlers.*;
 import me.baryonyx.fishingplus.hooks.VaultHook;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -12,9 +14,13 @@ import java.io.File;
 
 public final class FishingPlus extends JavaPlugin {
     private Config config;
+    private RewardConfiguration rewardConfiguration;
     private static FishingPlus plugin;
-    private FishingMap fishingMap;
+    private ItemHandler itemHandler;
     private RewardHandler rewardHandler;
+    private ModifierHandler modifierHandler;
+    private CatchHandler catchHandler;
+    private CompetitionHandler competitionHandler;
 
     @Override
     public void onEnable() {
@@ -24,8 +30,12 @@ public final class FishingPlus extends JavaPlugin {
         setupHooks();
 
         config = new Config(this);
-        rewardHandler = new RewardHandler(config, rewardConverter);
-        fishingMap = new FishingMap(config, rewardHandler);
+        rewardConfiguration = new RewardConfiguration(plugin, plugin.getDataFolder());
+        itemHandler = new ItemHandler(config, plugin);
+        rewardHandler = new RewardHandler(config, rewardConfiguration);
+        modifierHandler = new ModifierHandler(rewardConfiguration);
+        catchHandler = new CatchHandler(plugin, rewardConfiguration, config, rewardHandler, itemHandler, modifierHandler);
+        competitionHandler = new CompetitionHandler();
 
         registerEvents();
         registerCommands();
@@ -46,11 +56,11 @@ public final class FishingPlus extends JavaPlugin {
     }
 
     private void registerEvents() {
-        getServer().getPluginManager().registerEvents(new FishListener(fishingMap), this);
+        getServer().getPluginManager().registerEvents(new FishListener(config, catchHandler, competitionHandler), this);
     }
 
     private void registerCommands() {
-        getCommand("fishingplus").setExecutor(new MainCommand(plugin, fishingMap));
+        getCommand("fishingplus").setExecutor(new MainCommand(plugin, catchHandler));
     }
 
     public static FishingPlus getPlugin() {

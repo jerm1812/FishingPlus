@@ -44,4 +44,8 @@ public class Config {
     public boolean getModifierAddition() {
         return config.getBoolean("price-increase-addition");
     }
+
+    public boolean rewardsOnlyDuringCompetition() {
+        return config.getBoolean("competition-only");
+    }
 }

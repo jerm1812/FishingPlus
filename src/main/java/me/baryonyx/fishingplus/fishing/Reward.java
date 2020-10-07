@@ -5,6 +5,7 @@ public class Reward {
     public double chance;
     public double price;
 
+    // A standard reward to be stored in a loot table
     public Reward(String name, double chance, double price) {
         this.name = name;
         this.chance = chance;
