@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 public class ItemHandler {
     private Config config;
-    private HashMap<String, ItemStack> itemMap = new HashMap<>();
+    public HashMap<String, ItemStack> itemMap = new HashMap<>();
     private NamespacedKey lengthKey;
     private NamespacedKey modifierKey;
     private NamespacedKey rewardKey;

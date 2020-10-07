@@ -21,7 +21,7 @@ fish-length-weight: 1.35
 #### RARITY MODIFIERS ####
 
 # Allow rarity modifiers
-allow-modifiers: true
+enable-modifiers: true
 
 # Price increase for modifiers is addition
 price-increase-addition: true
@@ -31,5 +31,5 @@ price-increase-multiplication: false
 
 # Modifier's prefix and suffix
 modifier-prefix: "&8[&r"
-modifier-suffix: "&8] &6-&r"
+modifier-suffix: "&8] &6-&r "
 

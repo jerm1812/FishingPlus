@@ -2,6 +2,7 @@ package me.baryonyx.fishingplus.hooks;
 
 import me.baryonyx.fishingplus.FishingPlus;
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 public class VaultHook {
@@ -14,6 +15,7 @@ public class VaultHook {
             return false;
 
         economy = service.getProvider();
+        Bukkit.getLogger().info("VAULT AS BEEN HOOKED");
         return true;
     }
 

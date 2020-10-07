@@ -1,7 +1,9 @@
 package me.baryonyx.fishingplus.commands;
 
 import me.baryonyx.fishingplus.FishingPlus;
-import me.baryonyx.fishingplus.fishing.FishingMap;
+import me.baryonyx.fishingplus.fishing.Modifier;
+import me.baryonyx.fishingplus.fishing.Reward;
+import me.baryonyx.fishingplus.handlers.CatchHandler;
 import me.baryonyx.fishingplus.utils.Messages;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,11 +13,11 @@ import org.bukkit.entity.Player;
 
 public class MainCommand implements CommandExecutor {
     private FishingPlus plugin;
-    private FishingMap fishingMap;
+    private CatchHandler catchHandler;
 
-    public MainCommand(FishingPlus plugin, FishingMap fishingMap) {
+    public MainCommand(FishingPlus plugin, CatchHandler catchHandler) {
         this.plugin = plugin;
-        this.fishingMap = fishingMap;
+        this.catchHandler = catchHandler;
     }
 
     @Override
@@ -56,12 +58,30 @@ public class MainCommand implements CommandExecutor {
     private boolean testMap(CommandSender sender) {
         Player target = sender.getServer().getPlayerExact(sender.getName());
         for (int i = 0; i < 100; i++) {
-            target.getInventory().addItem(fishingMap.createReward((Player)sender));
+            target.getInventory().addItem(catchHandler.triggerCatchEvent((Player)sender));
         }
 
         return true;
     }
 
+    private void printMaps(CommandSender sender) {
+        String maps = "items: ";
+        for (String name : catchHandler.itemHandler.itemMap.keySet()) {
+            maps += name;
+        }
+        sender.sendMessage(maps);
+        maps = "rewards: ";
+        for (Reward name : catchHandler.rewardHandler.rewardMap.values()) {
+            maps += name.name;
+        }
+        sender.sendMessage(maps);
+        maps = "modifiers: ";
+        for (Modifier name : catchHandler.modifierHandler.modifierMap.values()) {
+            maps += name.name;
+        }
+        sender.sendMessage(maps);
+    }
+
     //TODO Setup commands
-    // - setup permission for the commandds
+    // - setup permission for the commands
 }

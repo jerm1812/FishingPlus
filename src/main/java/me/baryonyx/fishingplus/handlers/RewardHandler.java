@@ -16,7 +16,7 @@ import java.util.TreeMap;
 public class RewardHandler {
     private final Config config;
     private final RewardConfiguration rewardConfig;
-    private NavigableMap<Double, Reward> rewardMap = new TreeMap<>();
+    public NavigableMap<Double, Reward> rewardMap = new TreeMap<>();
     private final Random random = new Random();
     private double totalWeight = 0;
 
