@@ -2,10 +2,14 @@ package me.baryonyx.fishingplus.exceptions;
 
 public class ItemNotFoundException extends Exception {
     private final String rewardName;
-    private final String itemName;
+    private String itemName;
 
     public ItemNotFoundException(final String itemName, final String rewardName) {
         this.itemName = itemName;
+        this.rewardName = rewardName;
+    }
+
+    public ItemNotFoundException(final String rewardName) {
         this.rewardName = rewardName;
     }
 

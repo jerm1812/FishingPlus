@@ -1,56 +1,16 @@
 package me.baryonyx.fishingplus.configuration;
 
 import me.baryonyx.fishingplus.FishingPlus;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
-
-import java.io.File;
-import java.io.IOException;
-
+import org.bukkit.configuration.file.FileConfiguration;
+import org.jetbrains.annotations.NotNull;
 
 public class Config {
-    private final File datafile;
     private FishingPlus plugin;
-    private YamlConfiguration rewardConfig;
-    private YamlConfiguration config;
+    private FileConfiguration config;
 
-    public Config(FishingPlus plugin) {
+    public Config(@NotNull FishingPlus plugin) {
         this.plugin = plugin;
-        datafile = this.plugin.getDataFolder();
-        config = (YamlConfiguration) plugin.getConfig();
-        loadRewardFile();
-    }
-
-    private void loadRewardFile() {
-        File file = new File(datafile, "rewards.yml");
-        rewardConfig = YamlConfiguration.loadConfiguration(file);
-    }
-
-    public void addFishType(String name, float minLength, float maxLength, Material item, float price) {
-        rewardConfig.set("rewards." + name + ".price", price);
-        rewardConfig.set("rewards." + name + ".maxLength", maxLength);
-        rewardConfig.set("rewards." + name + ".minLength", minLength);
-        rewardConfig.set("rewards." + name + ".item.id", item.name());
-    }
-
-    private void saveFishTypes(YamlConfiguration config) {
-        File file = new File(datafile, "rewards.yml");
-        try {
-            config.save(file);
-        } catch (IOException e) {
-            Bukkit.getLogger().severe("Could not save fish types");
-            Bukkit.getLogger().severe(e.getMessage());
-        }
-    }
-
-    public ConfigurationSection getRewards() {
-        return rewardConfig.getConfigurationSection("rewards");
-    }
-
-    public ConfigurationSection getModifiers() {
-        return rewardConfig.getConfigurationSection("modifiers");
+        config = plugin.getConfig();
     }
 
     public double getFishLengthWeight() {
@@ -70,7 +30,7 @@ public class Config {
     }
 
     public boolean getAllowModifiers() {
-        return config.getBoolean("allow-modifiers");
+        return config.getBoolean("enable-modifiers");
     }
 
     public String getModifierPrefix() {
