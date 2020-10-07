@@ -15,11 +15,9 @@ import java.util.*;
 public class FishingMap {
     private Config config;
     private RewardHandler rewardHandler;
-    private NavigableMap<Double, Modifier> modifierMap = new TreeMap<>();
     private NavigableMap<Double, Reward> rewardMap = new TreeMap<>();
     private final Random random;
     private double rewardWeight = 0;
-    private double modifierWeight = 0;
 
     public FishingMap(Config config, RewardHandler rewardHandler) {
         this.config = config;
@@ -91,22 +89,6 @@ public class FishingMap {
             }
 
         return null;
-    }
-
-    @Nullable
-    public Modifier getModifier(String name) {
-        for (Modifier modifier : modifierMap.values()) {
-            if (modifier.name.equals(name))
-                return new Modifier(modifier.name, modifier.priceModifier);
-        }
-
-        return null;
-    }
-
-    @NotNull
-    private Modifier getRandomModifier() {
-        double value = random.nextDouble() * modifierWeight;
-        return modifierMap.higherEntry(value).getValue();
     }
 
     @Nullable

@@ -6,15 +6,10 @@ public class Modifier {
     public double chance;
     public double priceModifier;
 
-    public Modifier(String name, String displayName, double chance, double priceModifier) {
+    public Modifier(String name, String displayName, double priceModifier, double chance) {
         this.name = name;
         this.displayName = displayName;
         this.chance = chance;
-        this.priceModifier = priceModifier;
-    }
-
-    public Modifier(String name, double priceModifier) {
-        this.name = name;
         this.priceModifier = priceModifier;
     }
 }
