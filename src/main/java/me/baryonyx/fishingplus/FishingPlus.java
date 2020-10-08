@@ -3,7 +3,7 @@ package me.baryonyx.fishingplus;
 import me.baryonyx.fishingplus.commands.MainCommand;
 import me.baryonyx.fishingplus.configuration.Config;
 import me.baryonyx.fishingplus.configuration.RewardConfiguration;
-import me.baryonyx.fishingplus.events.FishListener;
+import me.baryonyx.fishingplus.listener.FishingListener;
 import me.baryonyx.fishingplus.handlers.*;
 import me.baryonyx.fishingplus.hooks.VaultHook;
 import me.baryonyx.fishingplus.shop.FishingShop;
@@ -57,11 +57,11 @@ public final class FishingPlus extends JavaPlugin {
     }
 
     private void registerEvents() {
-        getServer().getPluginManager().registerEvents(new FishListener(config, catchHandler, competitionHandler), this);
+        getServer().getPluginManager().registerEvents(new FishingListener(config, catchHandler, competitionHandler), this);
     }
 
     private void registerCommands() {
-        getCommand("fishingplus").setExecutor(new MainCommand(plugin, catchHandler, fishingShop));
+        getCommand("fishingplus").setExecutor(new MainCommand(plugin, catchHandler, fishingShop, fishingShopGui));
     }
 
     public static FishingPlus getPlugin() {

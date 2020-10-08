@@ -1,4 +1,4 @@
-package me.baryonyx.fishingplus.events;
+package me.baryonyx.fishingplus.listener;
 
 import me.baryonyx.fishingplus.configuration.Config;
 import me.baryonyx.fishingplus.handlers.CatchHandler;
@@ -10,12 +10,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class FishListener implements Listener {
+public class FishingListener implements Listener {
     private final Config config;
     private final CatchHandler catchHandler;
     private CompetitionHandler competitionHandler;
 
-    public FishListener(Config config, CatchHandler catchHandler, CompetitionHandler competitionHandler) {
+    public FishingListener(Config config, CatchHandler catchHandler, CompetitionHandler competitionHandler) {
         this.config = config;
         this.catchHandler = catchHandler;
         this.competitionHandler = competitionHandler;

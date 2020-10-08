@@ -3,12 +3,12 @@ package me.baryonyx.fishingplus.commands;
 import me.baryonyx.fishingplus.FishingPlus;
 import me.baryonyx.fishingplus.handlers.CatchHandler;
 import me.baryonyx.fishingplus.shop.FishingShop;
+import me.baryonyx.fishingplus.shop.FishingShopGui;
 import me.baryonyx.fishingplus.utils.Messages;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -16,11 +16,13 @@ public class MainCommand implements CommandExecutor {
     private FishingPlus plugin;
     private CatchHandler catchHandler;
     private FishingShop fishingShop;
+    private FishingShopGui fishingShopGui;
 
-    public MainCommand(FishingPlus plugin, CatchHandler catchHandler, FishingShop fishingShop) {
+    public MainCommand(FishingPlus plugin, CatchHandler catchHandler, FishingShop fishingShop, FishingShopGui fishingShopGui) {
         this.plugin = plugin;
         this.catchHandler = catchHandler;
         this.fishingShop = fishingShop;
+        this.fishingShopGui = fishingShopGui;
     }
 
     @Override
@@ -52,8 +54,7 @@ public class MainCommand implements CommandExecutor {
     }
 
     private boolean rewardShop(Player sender) {
-        Inventory inventory = new Inventory() {
-        }
+        FishingShopGui
 
     }
 
