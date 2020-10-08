@@ -8,6 +8,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Map;
 
 public class FishingShopGui {
     private Inventory inventory;
@@ -18,8 +20,18 @@ public class FishingShopGui {
     }
 
     private void setupInventory() {
-        inventory.addItem(new ItemStack(Material.EMERALD));
+        inventory.addItem(createInventoryItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE, "", ""));
+        inventory.addItem(createInventoryItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE, "", ""));
+        inventory.addItem(createInventoryItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE, "", ""));
+        inventory.addItem(createInventoryItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE, "", ""));
+        inventory.addItem(createInventoryItem(Material.EMERALD, "Sell All Items", "Total: 0"));
+        inventory.addItem(createInventoryItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE, "", ""));
+        inventory.addItem(createInventoryItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE, "", ""));
+        inventory.addItem(createInventoryItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE, "", ""));
+        inventory.addItem(createInventoryItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE, "", ""));
     }
+
+
 
     private ItemStack createInventoryItem(Material material, String name, String... lore) {
         ItemStack item = new ItemStack(material);
@@ -34,9 +46,20 @@ public class FishingShopGui {
         player.openInventory(inventory);
     }
 
-    public void dropItems() {
-        inventory.getContents();
+    public void dropItems(Inventory inventory, Player player) {
+        ItemStack[] items = inventory.getContents();
+        Map<Integer, ItemStack> map = player.getInventory().addItem(items);
 
+        for (ItemStack item : map.values()) {
+            player.getWorld().dropItemNaturally(player.getLocation(), item);
+        }
+    }
+
+    public void updateTotal(Inventory inventory, double total) {
+        ItemStack item = inventory.getItem(4);
+        ItemMeta meta = item.getItemMeta();
+        meta.setLore(Collections.singletonList("Total: " + total));
+        item.setItemMeta(meta);
     }
 
     //TODO Make a GUI for the shop
