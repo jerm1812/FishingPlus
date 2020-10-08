@@ -46,7 +46,7 @@ rewards:
 
 modifiers:
   default:
-    display-name: ""
+    display-name: "&7Default"
     price-increase: 0
     chance: 100
   common:

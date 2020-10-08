@@ -18,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
 
 public class CatchHandler {
     private final FishingPlus plugin;
@@ -68,7 +69,7 @@ public class CatchHandler {
             String displayName = section.getString(key + ".display-name", key);
             double price = section.getDouble(key + ".price", 0);
             int amount = section.getInt(key + ".item.amount", 1);
-            List<String> lore = section.getStringList(key + "item.lore");
+            List<String> lore = section.getStringList(key + ".item.lore");
             Material material = getRewardMaterial(section, key);
             double chance = getChance(section, key);
             double maxLength = getMaxFishLength(section, key);
@@ -167,13 +168,12 @@ public class CatchHandler {
         else
             item = itemHandler.createRewardItem(reward.name, player.getName());
 
-        Bukkit.getLogger().info(item.toString());
 
         if (item == null)
             return null;
 
         if (modifier != null) {
-            itemHandler.addModidiferToItem(Objects.requireNonNull(item.getItemMeta()), modifier.displayName);
+            itemHandler.addModifierToItem(item, modifier.displayName);
         }
 
         return item;

@@ -4,10 +4,9 @@ import me.baryonyx.fishingplus.commands.MainCommand;
 import me.baryonyx.fishingplus.configuration.Config;
 import me.baryonyx.fishingplus.configuration.RewardConfiguration;
 import me.baryonyx.fishingplus.events.FishListener;
-import me.baryonyx.fishingplus.fishing.FishingMap;
-import me.baryonyx.fishingplus.fishing.Reward;
 import me.baryonyx.fishingplus.handlers.*;
 import me.baryonyx.fishingplus.hooks.VaultHook;
+import me.baryonyx.fishingplus.shop.FishingShop;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -21,6 +20,7 @@ public final class FishingPlus extends JavaPlugin {
     private ModifierHandler modifierHandler;
     private CatchHandler catchHandler;
     private CompetitionHandler competitionHandler;
+    private FishingShop fishingShop;
 
     @Override
     public void onEnable() {
@@ -36,6 +36,7 @@ public final class FishingPlus extends JavaPlugin {
         modifierHandler = new ModifierHandler(rewardConfiguration);
         catchHandler = new CatchHandler(plugin, rewardConfiguration, config, rewardHandler, itemHandler, modifierHandler);
         competitionHandler = new CompetitionHandler();
+        fishingShop = new FishingShop(itemHandler, rewardHandler, config);
 
         registerEvents();
         registerCommands();
@@ -60,7 +61,7 @@ public final class FishingPlus extends JavaPlugin {
     }
 
     private void registerCommands() {
-        getCommand("fishingplus").setExecutor(new MainCommand(plugin, catchHandler));
+        getCommand("fishingplus").setExecutor(new MainCommand(plugin, catchHandler, fishingShop));
     }
 
     public static FishingPlus getPlugin() {
