@@ -54,8 +54,9 @@ public class MainCommand implements CommandExecutor {
     }
 
     private boolean rewardShop(Player sender) {
-        FishingShopGui
 
+
+        return true;
     }
 
     private boolean helpCommand(CommandSender sender) {
