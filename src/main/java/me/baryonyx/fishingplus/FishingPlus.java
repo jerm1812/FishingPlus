@@ -7,6 +7,7 @@ import me.baryonyx.fishingplus.listener.FishingListener;
 import me.baryonyx.fishingplus.handlers.*;
 import me.baryonyx.fishingplus.hooks.VaultHook;
 import me.baryonyx.fishingplus.shop.FishingShop;
+import me.baryonyx.fishingplus.shop.FishingShopGui;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -21,6 +22,7 @@ public final class FishingPlus extends JavaPlugin {
     private CatchHandler catchHandler;
     private CompetitionHandler competitionHandler;
     private FishingShop fishingShop;
+    private FishingShopGui fishingShopGui;
 
     @Override
     public void onEnable() {
@@ -37,6 +39,7 @@ public final class FishingPlus extends JavaPlugin {
         catchHandler = new CatchHandler(plugin, rewardConfiguration, config, rewardHandler, itemHandler, modifierHandler);
         competitionHandler = new CompetitionHandler();
         fishingShop = new FishingShop(itemHandler, rewardHandler, config);
+        fishingShopGui = new FishingShopGui();
 
         registerEvents();
         registerCommands();
@@ -72,8 +75,6 @@ public final class FishingPlus extends JavaPlugin {
         VaultHook.hook(this);
     }
 
-
-    //TODO implement more economy hooks
     //TODO create a fully functioning reward config
     //TODO add a biome check
     //TODO add fish based on their biomes
