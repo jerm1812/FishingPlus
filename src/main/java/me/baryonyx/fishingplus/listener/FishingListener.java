@@ -9,6 +9,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class FishingListener implements Listener {
     private final Config config;
@@ -22,11 +23,16 @@ public class FishingListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void playerFishEvent(PlayerFishEvent event) {
-        if (event.getState() == PlayerFishEvent.State.CAUGHT_FISH && event.getCaught() instanceof Item) {
-            Item caught = (Item) event.getCaught();
-            ItemStack fish = catchHandler.triggerCatchEvent(event.getPlayer());
-            caught.setItemStack(fish);
+    public void playerFishEvent(@NotNull PlayerFishEvent event) {
+        // If using a FishingPlus reward is appropriate
+        if (!config.rewardsOnlyDuringCompetition() || competitionHandler.running) {
+            // If a fish was caught
+            if (event.getState() == PlayerFishEvent.State.CAUGHT_FISH && event.getCaught() instanceof Item) {
+                Item caught = (Item) event.getCaught();
+                ItemStack fish = catchHandler.handleCatchEvent(event.getPlayer());
+                if (fish != null)
+                    caught.setItemStack(fish);
+            }
         }
     }
 }

@@ -2,6 +2,7 @@ package me.baryonyx.fishingplus.commands;
 
 import me.baryonyx.fishingplus.FishingPlus;
 import me.baryonyx.fishingplus.handlers.CatchHandler;
+import me.baryonyx.fishingplus.hooks.VaultHook;
 import me.baryonyx.fishingplus.shop.FishingShop;
 import me.baryonyx.fishingplus.shop.FishingShopGui;
 import me.baryonyx.fishingplus.utils.Messages;
@@ -9,8 +10,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
-
+import org.jetbrains.annotations.Nullable;
 
 public class MainCommand implements CommandExecutor {
     private FishingPlus plugin;
@@ -18,7 +20,7 @@ public class MainCommand implements CommandExecutor {
     private FishingShop fishingShop;
     private FishingShopGui fishingShopGui;
 
-    public MainCommand(FishingPlus plugin, CatchHandler catchHandler, FishingShop fishingShop, FishingShopGui fishingShopGui) {
+    public MainCommand(FishingPlus plugin, CatchHandler catchHandler, @Nullable FishingShop fishingShop, @Nullable FishingShopGui fishingShopGui) {
         this.plugin = plugin;
         this.catchHandler = catchHandler;
         this.fishingShop = fishingShop;
@@ -40,7 +42,7 @@ public class MainCommand implements CommandExecutor {
             }
 
             if (args[0].equals("sellall")) {
-                fishingShop.sellRewards((Player)sender);
+                fishingShop.sellRewards(((Player) sender).getInventory(), (Player)sender);
             }
 
             if (args[0].equals("shop"))
@@ -53,13 +55,19 @@ public class MainCommand implements CommandExecutor {
         return false;
     }
 
-    private boolean rewardShop(Player sender) {
+    private boolean rewardShop(Player player) {
+        if (!VaultHook.isHooked) {
+            player.sendMessage(Messages.shopDisabled);
+            return true;
+        }
 
-
+        Inventory inventory = fishingShopGui.setupInventory(player);
+        fishingShopGui.inventories.put(player, inventory);
+        player.openInventory(inventory);
         return true;
     }
 
-    private boolean helpCommand(CommandSender sender) {
+    private boolean helpCommand(@NotNull CommandSender sender) {
         sender.sendMessage(Messages.helpCommand);
         return true;
     }
@@ -76,7 +84,7 @@ public class MainCommand implements CommandExecutor {
     private boolean testMap(@NotNull CommandSender sender) {
         Player target = sender.getServer().getPlayerExact(sender.getName());
         for (int i = 0; i < 100; i++) {
-            target.getInventory().addItem(catchHandler.triggerCatchEvent((Player)sender));
+            target.getInventory().addItem(catchHandler.handleCatchEvent((Player)sender));
         }
 
         return true;
