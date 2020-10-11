@@ -18,13 +18,15 @@ import java.util.*;
 public class FishingShopGui implements Listener {
     private FishingShop fishingShop;
     private ItemHandler itemHandler;
-    private ItemStack rowIcon = createInventoryItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE, " ", " ");
+    private final FishingPlus plugin;
+    private final ItemStack rowIcon = createInventoryItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE, " ", " ");
     private ItemStack sellIcon = createInventoryItem(Material.EMERALD, "Sell All FishingPlus Rewards", "Total: 0");
     public Map<Player, Inventory> inventories = new HashMap<>();
 
-    public FishingShopGui(FishingShop fishingShop, ItemHandler itemHandler) {
+    public FishingShopGui(FishingShop fishingShop, ItemHandler itemHandler, FishingPlus plugin) {
         this.fishingShop = fishingShop;
         this.itemHandler = itemHandler;
+        this.plugin = plugin;
     }
 
     // Creates a FishingPlus shop inventory
@@ -98,7 +100,7 @@ public class FishingShopGui implements Listener {
                 double total = fishingShop.calculateTotalValue(map);
                 updateTotal(inventory, total);
             }
-        }.runTaskLater(FishingPlus.getPlugin(), 1);
+        }.runTaskLater(plugin, 1);
     }
 
     // Updates the displayed total for a FishingPlus shop inventory

@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -149,7 +150,7 @@ public class ItemHandler {
 
             // If the item has lore add to it else just set it
             if (meta.hasLore()) {
-                List<String> lore = meta.getLore();
+                List<String> lore = Objects.requireNonNull(meta.getLore());
                 lore.add(convertToColor(string));
                 meta.setLore(lore);
             }
@@ -177,33 +178,72 @@ public class ItemHandler {
 
     // Returns if the item is a FishingPlus reward
     public boolean isReward(@NotNull ItemStack item) {
-        return item.getItemMeta().getPersistentDataContainer().has(rewardKey, PersistentDataType.STRING);
+        try {
+            return Objects.requireNonNull(Objects.requireNonNull(item.getItemMeta()).getPersistentDataContainer()).has(rewardKey, PersistentDataType.STRING);
+
+        } catch (NullPointerException e) {
+            Bukkit.getLogger().warning("Tried to see if an item was a FishingPlus reward but the item's meta was null");
+        }
+
+        return false;
     }
 
     // Returns the item's FishingPlus reward name
+    @Nullable
     public String getRewardName(@NotNull ItemStack item) {
-        return Objects.requireNonNull(item.getItemMeta()).getPersistentDataContainer().get(rewardKey, PersistentDataType.STRING);
+        try {
+            return Objects.requireNonNull(item.getItemMeta()).getPersistentDataContainer().get(rewardKey, PersistentDataType.STRING);
+        } catch (NullPointerException e) {
+            Bukkit.getLogger().warning("Tried to get a FishingPlus reward name from an item but the item meta was null");
+        }
+
+        return null;
     }
 
     // Returns if the item is a FishingPlus fish from the persistent item data
     public boolean isFish(@NotNull ItemStack item) {
-        return Objects.requireNonNull(item.getItemMeta()).getPersistentDataContainer().has(lengthKey, PersistentDataType.DOUBLE);
+        try {
+            return Objects.requireNonNull(item.getItemMeta()).getPersistentDataContainer().has(lengthKey, PersistentDataType.DOUBLE);
+        } catch (NullPointerException e) {
+            Bukkit.getLogger().warning("Tried to see if an item was a FishingPlus fish but the item's meta was null");
+        }
+
+        return false;
     }
 
     // Returns the fish length from the persistent item data
     public double getFishLength(@NotNull ItemStack item) {
-        return Objects.requireNonNull(item.getItemMeta()).getPersistentDataContainer().get(lengthKey, PersistentDataType.DOUBLE);
+        try {
+            ItemMeta meta = Objects.requireNonNull(item.getItemMeta());
+            PersistentDataContainer data = Objects.requireNonNull(meta.getPersistentDataContainer());
+            return Objects.requireNonNull(data.get(lengthKey, PersistentDataType.DOUBLE));
+        } catch (NullPointerException e) {
+            Bukkit.getLogger().warning("Tried to get a FishingPlus fish length from an item but item meta was null");
+        }
+
+        return 0;
     }
 
     // Returns if the item has a FishingPlus modifier
     public boolean hasModifier(@NotNull ItemStack item) {
-        return Objects.requireNonNull(item.getItemMeta()).getPersistentDataContainer().has(modifierKey, PersistentDataType.STRING);
+        try {
+            return Objects.requireNonNull(item.getItemMeta()).getPersistentDataContainer().has(modifierKey, PersistentDataType.STRING);
+        } catch (NullPointerException e) {
+            Bukkit.getLogger().warning("Tried to see if an item had a FishingPlus modifier but item meta was null");
+        }
+
+        return false;
     }
 
     // Returns the item's FishingPlus modifier
+    @Nullable
     public String getModifierName(@NotNull ItemStack item) {
-        return Objects.requireNonNull(item.getItemMeta()).getPersistentDataContainer().get(modifierKey, PersistentDataType.STRING);
-    }
+        try {
+            return Objects.requireNonNull(item.getItemMeta()).getPersistentDataContainer().get(modifierKey, PersistentDataType.STRING);
+        } catch (NullPointerException e) {
+            Bukkit.getLogger().warning("Tried to get a FishingPlus modifier from an item but item meta was null");
+        }
 
-    //FIXME add error handling for getting the persistent data
+        return null;
+    }
 }

@@ -17,7 +17,6 @@ import java.io.File;
 public final class FishingPlus extends JavaPlugin {
     private final Config config = new Config(this);
     private RewardConfiguration rewardConfiguration = new RewardConfiguration(this);
-    private static FishingPlus plugin;
     private ItemHandler itemHandler;
     private RewardHandler rewardHandler;
     private ModifierHandler modifierHandler = new ModifierHandler();
@@ -29,14 +28,13 @@ public final class FishingPlus extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-        plugin = this;
         checkFiles();
         setupHooks();
 
-        itemHandler = new ItemHandler(config, plugin);
+        itemHandler = new ItemHandler(config, this);
         rewardHandler = new RewardHandler(config);
-        catchHandler = new CatchHandler(plugin, rewardConfiguration, config, rewardHandler, itemHandler, modifierHandler);
-        competitionHandler = new CompetitionHandler();
+        catchHandler = new CatchHandler(this, rewardConfiguration, config, rewardHandler, itemHandler, modifierHandler);
+        competitionHandler = new CompetitionHandler(this);
 
         setupShop();
 
@@ -64,21 +62,16 @@ public final class FishingPlus extends JavaPlugin {
     }
 
     private void registerCommands() {
-        getCommand("fishingplus").setExecutor(new MainCommand(plugin, catchHandler, fishingShop, fishingShopGui));
+        getCommand("fishingplus").setExecutor(new MainCommand(this, catchHandler, fishingShop, fishingShopGui));
     }
 
     // Sets the shop up and inventory listener if vault is hooked
     private void setupShop() {
         if (VaultHook.isHooked) {
             fishingShop = new FishingShop(itemHandler, rewardHandler);
-            fishingShopGui = new FishingShopGui(fishingShop, itemHandler);
+            fishingShopGui = new FishingShopGui(fishingShop, itemHandler, this);
             getServer().getPluginManager().registerEvents(new ShopListener(fishingShopGui), this);
         }
-    }
-
-    //FIXME Remove this bad practice
-    public static FishingPlus getPlugin() {
-        return plugin;
     }
 
     // Registers hooks
