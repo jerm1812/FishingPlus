@@ -4,6 +4,7 @@ public class ItemNotFoundException extends Exception {
     private final String rewardName;
     private String itemName;
 
+    // Should be thrown when an item cannot be created with the id in the reward list
     public ItemNotFoundException(final String itemName, final String rewardName) {
         this.itemName = itemName;
         this.rewardName = rewardName;

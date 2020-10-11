@@ -5,11 +5,9 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
 
 public class Config {
-    private FishingPlus plugin;
     private FileConfiguration config;
 
     public Config(@NotNull FishingPlus plugin) {
-        this.plugin = plugin;
         config = plugin.getConfig();
     }
 

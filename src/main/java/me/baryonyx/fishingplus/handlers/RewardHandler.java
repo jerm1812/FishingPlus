@@ -14,27 +14,28 @@ import java.util.Random;
 import java.util.TreeMap;
 
 public class RewardHandler {
-    private final Config config;
-    private final RewardConfiguration rewardConfig;
-    public NavigableMap<Double, Reward> rewardMap = new TreeMap<>();
+    private NavigableMap<Double, Reward> rewardMap = new TreeMap<>();
     private final Random random = new Random();
     private double totalWeight = 0;
+    private double fishLengthWeight;
 
-    public RewardHandler(Config config, RewardConfiguration rewardConfig) {
-        this.config = config;
-        this.rewardConfig = rewardConfig;
+    public RewardHandler(@NotNull Config config) {
+        fishLengthWeight = config.getFishLengthWeight();
     }
 
-    public void addItemToMap(Reward reward) {
+    // Adds a FishingPlus reward to the map
+    void addRewardToMap(@NotNull Reward reward) {
         totalWeight += reward.chance;
         rewardMap.put(totalWeight, reward);
     }
 
-    public Reward getRandomReward() {
+    // Gets a random reward from the map
+    Reward getRandomReward() {
         double value = random.nextDouble() * totalWeight;
         return rewardMap.higherEntry(value).getValue();
     }
 
+    // Gets a specific reward from the map
     @Nullable
     public Reward getReward(String name) {
         for (Reward reward : rewardMap.values()) {
@@ -45,8 +46,9 @@ public class RewardHandler {
         return null;
     }
 
-    public double generateWeightedLength(@NotNull Fish fish) {
+    // Generates a fish length for a fish
+    double generateWeightedLength(@NotNull Fish fish) {
         return Math.round((fish.minLength + (fish.maxLength + 1 - fish.minLength) *
-                Math.pow(Math.random(), config.getFishLengthWeight())) * 100d) / 100d;
+                Math.pow(Math.random(), fishLengthWeight)) * 100d) / 100d;
     }
 }
