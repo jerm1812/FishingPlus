@@ -13,4 +13,8 @@ public class Modifier {
         this.chance = chance;
         this.priceModifier = priceModifier;
     }
+
+    public Modifier(String name) {
+        this.name = name;
+    }
 }

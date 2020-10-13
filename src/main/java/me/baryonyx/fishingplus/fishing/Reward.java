@@ -11,4 +11,8 @@ public class Reward {
         this.chance = chance;
         this.price = price;
     }
+
+    public Reward(String name) {
+        this.name = name;
+    }
 }

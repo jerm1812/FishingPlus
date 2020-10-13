@@ -25,13 +25,15 @@ public class FishingListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void playerFishEvent(@NotNull PlayerFishEvent event) {
         // If using a FishingPlus reward is appropriate
-        if (!config.rewardsOnlyDuringCompetition() || competitionHandler.running) {
+        if (!config.rewardsOnlyDuringCompetition() || competitionHandler.isCompetitionRunning()) {
             // If a fish was caught
             if (event.getState() == PlayerFishEvent.State.CAUGHT_FISH && event.getCaught() instanceof Item) {
                 Item caught = (Item) event.getCaught();
                 ItemStack fish = catchHandler.handleCatchEvent(event.getPlayer());
-                if (fish != null)
+                if (fish != null) {
                     caught.setItemStack(fish);
+                    competitionHandler.logFish(event.getPlayer(), fish);
+                }
             }
         }
     }

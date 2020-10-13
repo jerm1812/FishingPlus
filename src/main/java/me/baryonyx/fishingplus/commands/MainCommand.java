@@ -2,6 +2,7 @@ package me.baryonyx.fishingplus.commands;
 
 import me.baryonyx.fishingplus.FishingPlus;
 import me.baryonyx.fishingplus.handlers.CatchHandler;
+import me.baryonyx.fishingplus.handlers.CompetitionHandler;
 import me.baryonyx.fishingplus.hooks.VaultHook;
 import me.baryonyx.fishingplus.shop.FishingShop;
 import me.baryonyx.fishingplus.shop.FishingShopGui;
@@ -19,12 +20,14 @@ public class MainCommand implements CommandExecutor {
     private CatchHandler catchHandler;
     private FishingShop fishingShop;
     private FishingShopGui fishingShopGui;
+    private CompetitionHandler competitionHandler;
 
-    public MainCommand(FishingPlus plugin, CatchHandler catchHandler, @Nullable FishingShop fishingShop, @Nullable FishingShopGui fishingShopGui) {
+    public MainCommand(FishingPlus plugin, CatchHandler catchHandler, @Nullable FishingShop fishingShop, @Nullable FishingShopGui fishingShopGui, CompetitionHandler competitionHandler) {
         this.plugin = plugin;
         this.catchHandler = catchHandler;
         this.fishingShop = fishingShop;
         this.fishingShopGui = fishingShopGui;
+        this.competitionHandler = competitionHandler;
     }
 
     @Override
@@ -47,9 +50,25 @@ public class MainCommand implements CommandExecutor {
 
             if (args[0].equals("shop"))
                 return rewardShop((Player)sender);
+
+            if (args[0].equals("start")) {
+                return startCompetition(args);
+            }
         }
         else {
             plugin.getLogger().info(Messages.playerOnlyCommand);
+        }
+
+        return false;
+    }
+
+    private boolean startCompetition(@NotNull String[] args) {
+        if (args.length == 2) {
+
+        }
+        else if (args.length == 1) {
+            competitionHandler.startUndefinedCompetition();
+            return true;
         }
 
         return false;
@@ -72,12 +91,25 @@ public class MainCommand implements CommandExecutor {
         return true;
     }
 
-    private boolean competitionCommand(CommandSender sender, String[] args) {
-        if (args.length == 1)
-            sender.sendMessage("Starting a competition");
-        else
-            sender.sendMessage("Starting competition that will last " + args[1] + " seconds");
+    private boolean competitionCommand(CommandSender sender, @NotNull String[] args) {
+        if (args.length == 2 && args[1].toLowerCase().equals("start")) {
+            competitionHandler.startUndefinedCompetition();
+            return true;
+        }
+        else if (args.length == 2 && args[1].toLowerCase().equals("stop")) {
+            competitionHandler.startTimedCompetition(Long.parseLong(args[1]));
+            return true;
+        }
+        else if (args.length == 3 && args[1].toLowerCase().equals("start")) {
+            try {
+                competitionHandler.startTimedCompetition(Long.parseLong(args[1]));
+                return true;
+            } catch (NumberFormatException e) {
+                sender.sendMessage("You tried to enter a time that was not a whole number!");
+            }
+        }
 
+        sender.sendMessage("/fishingplus comp {start|stop} {minutes}");
         return true;
     }
 

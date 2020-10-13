@@ -46,4 +46,12 @@ public class Config {
     public boolean rewardsOnlyDuringCompetition() {
         return config.getBoolean("competition-only");
     }
+
+    public boolean isBroadcastStartEnabled() {
+        return config.getBoolean("broadcast-competition-start");
+    }
+
+    public boolean isBroadcastEndEnabled() {
+        return config.getBoolean("broadcast-competition-end");
+    }
 }
