@@ -17,6 +17,7 @@ public class CompetitionHandler {
     private ItemHandler itemHandler;
     private ChatHandler chatHandler;
     private BukkitTask competitionTimer;
+    private Long endTime;
 
 
     public CompetitionHandler(FishingPlus plugin, Competition competition, ItemHandler itemHandler, ChatHandler chatHandler) {
@@ -28,11 +29,12 @@ public class CompetitionHandler {
 
     public void startTimedCompetition(Long time) {
         try {
+            endTime = System.currentTimeMillis() / 1000 + time * 60;
             competition.startCompetition();
             competitionTimer = plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, this::stopCompetition, time * 20 * 60);
 
             if (time > 5)
-                plugin.getServer().getScheduler().runTaskAsynchronously(plugin, this::dispplayCompetitionTime);
+                plugin.getServer().getScheduler().runTaskAsynchronously(plugin, this::displayCompetitionTime);
             
             chatHandler.broadcastCompetitionStart(time * 20 * 60);
         } catch (InvalidCompetitionStateException e) {
@@ -58,11 +60,13 @@ public class CompetitionHandler {
         }
     }
 
-    private void dispplayCompetitionTime() {
+    private void displayCompetitionTime() {
         throw new NotImplementedException();
 
         while (true) {
-            competition.
+            long elapsed = System.currentTimeMillis() / 1000 - competition.startTime;
+            timeLeft = elapsed;
+            if time
         }
     }
 

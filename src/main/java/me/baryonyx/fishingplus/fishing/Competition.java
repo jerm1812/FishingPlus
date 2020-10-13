@@ -10,7 +10,6 @@ public class Competition {
     private boolean running = false;
     private Map<Player, Entry> map = new HashMap<>();
     public long startTime;
-    public long time;
 
     public void startCompetition() throws InvalidCompetitionStateException {
         if (running)
