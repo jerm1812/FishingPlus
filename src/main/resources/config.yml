@@ -1,3 +1,9 @@
+#### Competition ####
+broadcast-competition-start: true
+broadcast-competition-end: true
+broadcast-competition-winner: true
+
+
 #### REWARDS ####
 
 # Set whether or not to get custom fish outside of competitions
@@ -13,9 +19,13 @@ reward-suffix: ""
 
 #### FISH ####
 
-# Recommended value: 1.35 - Will favor the minimum fish length twice as much as maximum fish length
+# Recommended value: 1.35 - Will favor the minimum fish length twice as much as maximum fish length.
+# Changing this by even just .01 will have a noticeable difference
 # The weight for the fish length
 fish-length-weight: 1.35
+
+# Display the fish's length in the item lore
+display-fish-lengh: true
 
 
 #### RARITY MODIFIERS ####
