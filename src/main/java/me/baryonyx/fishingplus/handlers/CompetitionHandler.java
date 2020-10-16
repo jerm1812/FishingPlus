@@ -3,20 +3,21 @@ package me.baryonyx.fishingplus.handlers;
 import me.baryonyx.fishingplus.FishingPlus;
 import me.baryonyx.fishingplus.exceptions.InvalidCompetitionStateException;
 import me.baryonyx.fishingplus.fishing.Competition;
+import me.baryonyx.fishingplus.fishing.Entry;
 import me.baryonyx.fishingplus.fishing.Fish;
 import me.baryonyx.fishingplus.fishing.Modifier;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitTask;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.util.Map;
 
 public class CompetitionHandler {
     private final FishingPlus plugin;
     private Competition competition;
     private ItemHandler itemHandler;
     private ChatHandler chatHandler;
-    private BukkitTask competitionTimer;
+    private boolean fiveMinuteWarning = false;
 
 
     public CompetitionHandler(FishingPlus plugin, Competition competition, ItemHandler itemHandler, ChatHandler chatHandler) {
@@ -29,17 +30,21 @@ public class CompetitionHandler {
     public void startTimedCompetition(Long time) {
         try {
             competition.startCompetition();
-            competitionTimer = plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, this::stopCompetition, time * 20 * 60);
+            plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, this::stopCompetition, time * 20 * 60);
 
-            if (time > 5)
-                plugin.getServer().getScheduler().runTaskAsynchronously(plugin, this::dispplayCompetitionTime);
-            
-            chatHandler.broadcastCompetitionStart(time * 20 * 60);
+            if (time > 5) {
+                //FIXME change it so time is a linked list maybe?
+                plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, this::competitionTimeWarning, (time - 5) * 20 * 60);
+                plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, this::competitionTimeWarning, (time - 1) * 20 * 60);
+            }
+
+            chatHandler.broadcastCompetitionStart(time);
         } catch (InvalidCompetitionStateException e) {
             Bukkit.getLogger().info("Could not start a fishing competition because there is already one running!");
         }
     }
 
+    // Starts a competition with no end if one is not already running
     public void startUndefinedCompetition() {
         try {
             competition.startCompetition();
@@ -49,20 +54,30 @@ public class CompetitionHandler {
         }
     }
 
+    // Stops a competition if one is running
     public void stopCompetition() {
         try {
+            Map<Player, Entry> map = competition.getCompetitionStats();
             competition.stopCompetition();
+
             chatHandler.broadcastCompetitionEnd();
+            fiveMinuteWarning = false;
         } catch (InvalidCompetitionStateException e) {
             Bukkit.getLogger().info("Could not stop the fishing competition because there no competition running!");
         }
     }
 
-    private void dispplayCompetitionTime() {
-        throw new NotImplementedException();
+    private void getTopThree() {
 
-        while (true) {
-            competition.
+    }
+
+    private void competitionTimeWarning() {
+        if (!fiveMinuteWarning) {
+            chatHandler.broadcastCompetitionTimeLeft(5);
+            fiveMinuteWarning = true;
+        }
+        else {
+            chatHandler.broadcastCompetitionTimeLeft(1);
         }
     }
 
@@ -78,10 +93,4 @@ public class CompetitionHandler {
 
         competition.logFish(player, new Fish(name, length), new Modifier(modifier));
     }
-
-    public boolean isCompetitionRunning() {
-        return competition.isRunning();
-    }
-
-    //TODO Implement a competition handler
 }
