@@ -3,15 +3,18 @@ package me.baryonyx.fishingplus.handlers;
 import me.baryonyx.fishingplus.FishingPlus;
 import me.baryonyx.fishingplus.configuration.Config;
 import me.baryonyx.fishingplus.exceptions.ItemNotFoundException;
+import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.yaml.snakeyaml.constructor.DuplicateKeyException;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -30,6 +33,7 @@ public class ItemHandler {
         this.rewardKey = new NamespacedKey(plugin, "rewardType");
     }
 
+    // Creates an item to be mapped
     @NotNull
     private ItemStack createMappableItemFromReward(String displayName, Material material, int amount, List<String> lore) {
         ItemStack item = new ItemStack(material, amount);
@@ -37,26 +41,29 @@ public class ItemHandler {
         return item;
     }
 
+    // Sets the items display name and lore
     private void setItemMeta(String displayName, List<String> lore, @NotNull ItemStack item) {
-        ItemMeta meta = item.getItemMeta();
-        Objects.requireNonNull(meta).setDisplayName(displayName);
-        lore = convertLoreListToColor(lore);
-        meta.setLore(lore);
-        item.setItemMeta(meta);
+        try {
+            ItemMeta meta = Objects.requireNonNull(item.getItemMeta());
+            meta.setDisplayName(displayName);
+            meta.setLore(convertLoreListToColor(lore));
+            item.setItemMeta(meta);
+        } catch (NullPointerException e) {
+            Bukkit.getLogger().warning("Item's meta was null while it was being set");
+        }
     }
 
-    //
+    // Adds an item to the item map
     void addItemToMap(String itemName, String displayName, Material material, int amount, List<String> lore) {
         try {
             ItemStack item = createMappableItemFromReward(displayName, material, amount, lore);
             itemMap.put(itemName, item);
-        }
-        catch (Exception e) {
-            Bukkit.getLogger().severe("Could not add an item to the item table");
+        } catch (DuplicateKeyException e) {
+            Bukkit.getLogger().warning("There are duplicate reward names! Please remove one or change the name of one.");
         }
     }
 
-    // Creates and returns a FishingPlus reward with lore and attributes
+    // Creates a FishingPlus reward item with persistent data
     @Nullable
     ItemStack createRewardItem(String itemName, String playerName) {
         ItemStack item = getItemFromMap(itemName);
@@ -71,7 +78,7 @@ public class ItemHandler {
         return item;
     }
 
-    // Creates and returns a FishingPlus fish with lore and attributes
+    // Creates a FishingPlus fish item with persistent data
     @Nullable
     ItemStack createFishItem(String name, String playerName, double length) {
         ItemStack item = createRewardItem(name, playerName);
@@ -86,16 +93,24 @@ public class ItemHandler {
 
     // Adds a fish length to the item's persistent data
     private void addFishLengthPersistentData(@NotNull ItemStack item, double length) {
-        ItemMeta meta = item.getItemMeta();
-        meta.getPersistentDataContainer().set(lengthKey, PersistentDataType.DOUBLE, length);
-        item.setItemMeta(meta);
+        try {
+            ItemMeta meta = Objects.requireNonNull(item.getItemMeta());
+            meta.getPersistentDataContainer().set(lengthKey, PersistentDataType.DOUBLE, length);
+            item.setItemMeta(meta);
+        } catch (NullPointerException e) {
+            Bukkit.getLogger().warning("Could not add fish's length persistent data because item's meta was null");
+        }
     }
 
     // Adds the FishingPlus reward name to the item's persistent data
     private void addRewardPersistentData(@NotNull ItemStack item, String reward) {
-        ItemMeta meta = item.getItemMeta();
-        meta.getPersistentDataContainer().set(rewardKey, PersistentDataType.STRING, reward);
-        item.setItemMeta(meta);
+        try {
+            ItemMeta meta = Objects.requireNonNull(item.getItemMeta());
+            meta.getPersistentDataContainer().set(rewardKey, PersistentDataType.STRING, reward);
+            item.setItemMeta(meta);
+        } catch (NullPointerException e) {
+            Bukkit.getLogger().warning("Could not add reward's name persistent data because item's meta was null");
+        }
     }
 
     // Returns a cloned item from the item map
@@ -117,71 +132,111 @@ public class ItemHandler {
 
     // Adds a FishingPlus modifier to an item
     void addModifierToItem(@NotNull ItemStack item, String modifierName) {
-        ItemMeta meta = item.getItemMeta();
-        String name = convertToColor(modifierName + meta.getDisplayName());
-        meta.setDisplayName(name);
-        meta.getPersistentDataContainer().set(modifierKey, PersistentDataType.STRING, modifierName);
-        item.setItemMeta(meta);
+        try {
+            ItemMeta meta = Objects.requireNonNull(item.getItemMeta());
+            String name = ChatHandler.coloredMessage(modifierName + meta.getDisplayName());
+            meta.setDisplayName(name);
+            meta.getPersistentDataContainer().set(modifierKey, PersistentDataType.STRING, modifierName);
+            item.setItemMeta(meta);
+        } catch (NullPointerException e) {
+            Bukkit.getLogger().warning("Could not add modifier to a reward because the item's meta was null");
+        }
     }
 
     // Adds a lore to an item
     private void addLoreToItemReward(@NotNull ItemStack item, String string) {
-        ItemMeta meta = item.getItemMeta();
+        try {
+            ItemMeta meta = Objects.requireNonNull(item.getItemMeta());
 
-        // If the item has lore add to it else just set it
-        if (meta.hasLore()) {
-            List<String> lore = meta.getLore();
-            lore.add(convertToColor(string));
-            meta.setLore(lore);
+            // If the item has lore add to it else just set it
+            if (meta.hasLore()) {
+                List<String> lore = Objects.requireNonNull(meta.getLore());
+                lore.add(ChatHandler.coloredMessage(string));
+                meta.setLore(lore);
+            }
+            else
+                meta.setLore(Collections.singletonList(ChatHandler.coloredMessage(string)));
+
+            item.setItemMeta(meta);
+        } catch (NullPointerException e) {
+            Bukkit.getLogger().warning("Could not add lore to a reward because the item's meta was null");
         }
-        else
-            meta.setLore(Collections.singletonList(convertToColor(string)));
-
-        item.setItemMeta(meta);
-    }
-
-    // Converts a string to use minecraft color
-    @NotNull
-    private String convertToColor(String string) {
-        return ChatColor.translateAlternateColorCodes('&', string);
     }
 
     // Converts a list of strings to minecraft color strings
     @NotNull
-    private List<String> convertLoreListToColor(@NotNull List<String> lore) {
-        return lore.stream().map(this::convertToColor).collect(Collectors.toList());
+    public List<String> convertLoreListToColor(@NotNull List<String> lore) {
+        return lore.stream().map(ChatHandler::coloredMessage).collect(Collectors.toList());
     }
 
     // Returns if the item is a FishingPlus reward
     public boolean isReward(@NotNull ItemStack item) {
-        return item.getItemMeta().getPersistentDataContainer().has(rewardKey, PersistentDataType.STRING);
+        try {
+            return Objects.requireNonNull(Objects.requireNonNull(item.getItemMeta()).getPersistentDataContainer()).has(rewardKey, PersistentDataType.STRING);
+
+        } catch (NullPointerException e) {
+            Bukkit.getLogger().warning("Tried to see if an item was a FishingPlus reward but the item's meta was null");
+        }
+
+        return false;
     }
 
     // Returns the item's FishingPlus reward name
+    @Nullable
     public String getRewardName(@NotNull ItemStack item) {
-        return Objects.requireNonNull(item.getItemMeta()).getPersistentDataContainer().get(rewardKey, PersistentDataType.STRING);
+        try {
+            return Objects.requireNonNull(item.getItemMeta()).getPersistentDataContainer().get(rewardKey, PersistentDataType.STRING);
+        } catch (NullPointerException e) {
+            Bukkit.getLogger().warning("Tried to get a FishingPlus reward name from an item but the item meta was null");
+        }
+
+        return null;
     }
 
     // Returns if the item is a FishingPlus fish from the persistent item data
     public boolean isFish(@NotNull ItemStack item) {
-        return Objects.requireNonNull(item.getItemMeta()).getPersistentDataContainer().has(lengthKey, PersistentDataType.DOUBLE);
+        try {
+            return Objects.requireNonNull(item.getItemMeta()).getPersistentDataContainer().has(lengthKey, PersistentDataType.DOUBLE);
+        } catch (NullPointerException e) {
+            Bukkit.getLogger().warning("Tried to see if an item was a FishingPlus fish but the item's meta was null");
+        }
+
+        return false;
     }
 
     // Returns the fish length from the persistent item data
     public double getFishLength(@NotNull ItemStack item) {
-        return Objects.requireNonNull(item.getItemMeta()).getPersistentDataContainer().get(lengthKey, PersistentDataType.DOUBLE);
+        try {
+            ItemMeta meta = Objects.requireNonNull(item.getItemMeta());
+            PersistentDataContainer data = Objects.requireNonNull(meta.getPersistentDataContainer());
+            return Objects.requireNonNull(data.get(lengthKey, PersistentDataType.DOUBLE));
+        } catch (NullPointerException e) {
+            Bukkit.getLogger().warning("Tried to get a FishingPlus fish length from an item but item meta was null");
+        }
+
+        return 0;
     }
 
     // Returns if the item has a FishingPlus modifier
     public boolean hasModifier(@NotNull ItemStack item) {
-        return Objects.requireNonNull(item.getItemMeta()).getPersistentDataContainer().has(modifierKey, PersistentDataType.STRING);
+        try {
+            return Objects.requireNonNull(item.getItemMeta()).getPersistentDataContainer().has(modifierKey, PersistentDataType.STRING);
+        } catch (NullPointerException e) {
+            Bukkit.getLogger().warning("Tried to see if an item had a FishingPlus modifier but item meta was null");
+        }
+
+        return false;
     }
 
     // Returns the item's FishingPlus modifier
+    @Nullable
     public String getModifierName(@NotNull ItemStack item) {
-        return Objects.requireNonNull(item.getItemMeta()).getPersistentDataContainer().get(modifierKey, PersistentDataType.STRING);
-    }
+        try {
+            return Objects.requireNonNull(item.getItemMeta()).getPersistentDataContainer().get(modifierKey, PersistentDataType.STRING);
+        } catch (NullPointerException e) {
+            Bukkit.getLogger().warning("Tried to get a FishingPlus modifier from an item but item meta was null");
+        }
 
-    //FIXME add more error handling
-    // - make setting item meta, lore, and name more efficient
+        return null;
+    }
 }

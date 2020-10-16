@@ -2,49 +2,56 @@ package me.baryonyx.fishingplus.commands;
 
 import me.baryonyx.fishingplus.FishingPlus;
 import me.baryonyx.fishingplus.handlers.CatchHandler;
+import me.baryonyx.fishingplus.handlers.CompetitionHandler;
+import me.baryonyx.fishingplus.hooks.VaultHook;
 import me.baryonyx.fishingplus.shop.FishingShop;
 import me.baryonyx.fishingplus.shop.FishingShopGui;
 import me.baryonyx.fishingplus.utils.Messages;
+import me.baryonyx.fishingplus.utils.Permissions;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
-
+import org.jetbrains.annotations.Nullable;
 
 public class MainCommand implements CommandExecutor {
     private FishingPlus plugin;
     private CatchHandler catchHandler;
     private FishingShop fishingShop;
     private FishingShopGui fishingShopGui;
+    private CompetitionHandler competitionHandler;
 
-    public MainCommand(FishingPlus plugin, CatchHandler catchHandler, FishingShop fishingShop, FishingShopGui fishingShopGui) {
+    public MainCommand(FishingPlus plugin, CatchHandler catchHandler, @Nullable FishingShop fishingShop, @Nullable FishingShopGui fishingShopGui, CompetitionHandler competitionHandler) {
         this.plugin = plugin;
         this.catchHandler = catchHandler;
         this.fishingShop = fishingShop;
         this.fishingShopGui = fishingShopGui;
+        this.competitionHandler = competitionHandler;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (sender instanceof Player) {
+            Player player = (Player)sender;
             if (args.length == 0)
-                return helpCommand(sender);
+                return helpCommand(player);
 
             if (args[0].equals("competition") || args[0].equals("comp"))
-                return competitionCommand(sender, args);
+                return competitionCommand(player, args);
 
             if (args[0].equals("test")) {
-                return testMap(sender);
+                return testMap(player);
             }
 
             if (args[0].equals("sellall")) {
-                fishingShop.sellRewards((Player)sender);
+                return sellCommand(player);
             }
 
             if (args[0].equals("shop"))
-                return rewardShop((Player)sender);
+                return shopCommand((Player)sender);
         }
         else {
             plugin.getLogger().info(Messages.playerOnlyCommand);
@@ -53,34 +60,77 @@ public class MainCommand implements CommandExecutor {
         return false;
     }
 
-    private boolean rewardShop(Player sender) {
-        FishingShopGui
-
-    }
-
-    private boolean helpCommand(CommandSender sender) {
-        sender.sendMessage(Messages.helpCommand);
+    private boolean sellCommand(Player player) {
+        fishingShop.sellRewards(player.getInventory(), player);
         return true;
     }
 
-    private boolean competitionCommand(CommandSender sender, String[] args) {
-        if (args.length == 1)
-            sender.sendMessage("Starting a competition");
-        else
-            sender.sendMessage("Starting competition that will last " + args[1] + " seconds");
+    private boolean shopCommand(Player player) {
+        if (!player.hasPermission(Permissions.shopAccess)) {
+            player.sendMessage("You do not have permission to access the FishingPlus shop!");
+            return true;
+        }
 
+        if (!VaultHook.isHooked) {
+            player.sendMessage(Messages.shopDisabled);
+            return true;
+        }
+
+        Inventory inventory = fishingShopGui.setupInventory(player);
+        fishingShopGui.inventories.put(player, inventory);
+        player.openInventory(inventory);
         return true;
     }
 
-    private boolean testMap(@NotNull CommandSender sender) {
-        Player target = sender.getServer().getPlayerExact(sender.getName());
-        for (int i = 0; i < 100; i++) {
-            target.getInventory().addItem(catchHandler.triggerCatchEvent((Player)sender));
+    private boolean helpCommand(@NotNull Player player) {
+        //FIXME create a help message
+        player.sendMessage(Messages.helpCommand);
+        return true;
+    }
+
+    private boolean competitionCommand(Player player, @NotNull String[] args) {
+        if (args.length == 2 && args[1].toLowerCase().equals("start")) {
+            if (!player.hasPermission(Permissions.mod) || !player.hasPermission(Permissions.startUntimedComp)) {
+                player.sendMessage("You do not have permission to start an un-timed FishingPlus competition!");
+                return true;
+            }
+
+            competitionHandler.startUndefinedCompetition();
+            return true;
+        }
+        else if (args.length == 2 && args[1].toLowerCase().equals("stop")) {
+            if (!player.hasPermission(Permissions.mod) || !player.hasPermission(Permissions.endComp)) {
+                player.sendMessage("You do not have permission to end a FishingPlus competition!");
+                return true;
+            }
+
+            competitionHandler.stopCompetition();
+            return true;
+        }
+        else if (args.length == 3 && args[1].toLowerCase().equals("start")) {
+            if (!player.hasPermission(Permissions.mod) || !player.hasPermission(Permissions.startComp)) {
+                player.sendMessage("You do not have permission to start a FishingPlus competition!");
+                return true;
+            }
+
+            try {
+                competitionHandler.startTimedCompetition(Long.parseLong(args[2]));
+                return true;
+            } catch (NumberFormatException e) {
+                player.sendMessage("/FishingPlus comp [start|stop] {minutes}");
+            }
         }
 
         return true;
     }
 
-    //TODO Setup commands
-    // - setup permission for the commands
+    private boolean testMap(@NotNull Player player) {
+        for (int i = 0; i < 100; i++) {
+            player.getInventory().addItem(catchHandler.handleCatchEvent(player));
+        }
+
+        return true;
+    }
+
+    //TODO create commands to add and remove fish
 }
