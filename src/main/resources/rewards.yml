@@ -1,13 +1,18 @@
 rewards:
+  boot:
+    display-name: "Old Boot"
+    item:
+      id: "minecraft:leather_boots"
+      lore:
+        - "&7 Who knows where this came from but it sure does smell!"
+    chance: 2
+    price: .5
   fry:
     display-name: "Fry"
     max-length: 1
     min-length: 3
     item:
       id: "minecraft:cod"
-      lore:
-        - "&btest lore"
-        - "&6test2 lore"
     chance: 10
     price: 1
   bass:
@@ -16,9 +21,6 @@ rewards:
     min-length: 5
     item:
       id: "minecraft:cod"
-      lore:
-        - "&btest lore"
-        - "&6test2 lore"
     chance: 15
     price: 1
   guppy:
@@ -27,9 +29,6 @@ rewards:
     min-length: 10
     item:
       id: "minecraft:cod"
-      lore:
-        - "&btest lore"
-        - "&6test2 lore"
     chance: 20
     price: 1
   goldfish:
@@ -38,21 +37,66 @@ rewards:
     min-length: 8
     item:
       id: "minecraft:cod"
-      lore:
-        - "&btest lore"
-        - "&6test2 lore"
     chance: 25
     price: 1
+  catfish:
+    display-name: "Catfish"
+    max-length: 24
+    min-length: 15
+    item:
+      id: "minecraft:cod"
+    chance: 25
+    price: 3
+  bluegill:
+    display-name: "Bluegill"
+    max-length: 10
+    min-length: 6
+    item:
+      id: "minecraft:cod"
+    chance: 25
+    price: 5
+  sunfish:
+    display-name: "Sunfish"
+    max-length: 11
+    min-length: 8
+    item:
+      id: "minecraft:cod"
+    chance: 10
+    price: 7
+  trout:
+    display-name: "Trout"
+    max-length: 31
+    min-length: 7
+    item:
+      id: "minecraft:cod"
+    chance: 5
+    price: 10
+  carp:
+    display-name: "Carp"
+    max-length: 34
+    min-length: 16
+    item:
+      id: "minecraft:cod"
+    chance: 5
+    price: 10
+  Muskie:
+    display-name: "Muskie"
+    max-length: 59
+    min-length: 23
+    item:
+      id: "minecraft:cod"
+    chance: 5
+    price: 25
 
 modifiers:
   default:
-    display-name: "&7Default"
+    display-name: ""
     price-increase: 0
     chance: 100
   common:
     display-name: "&bCommon"
     price-increase: 0
-    chance: 100
+    chance: 25
   rare:
     display-name: "&bRare"
     price-increase: 1

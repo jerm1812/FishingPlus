@@ -28,10 +28,10 @@ public class FishingShop {
 
     // Sells all FishingPlus rewards
     public void sellRewards(@NotNull Inventory inventory, @NotNull Player player) {
-        Map<ItemStack, Double> map = getRewardsInInventory(inventory);
-        double total = calculateTotalValue(map);
+        Map<ItemStack, Double> rewards = getRewardsInInventory(inventory);
+        double total = calculateTotalValue(rewards);
 
-        for (ItemStack item : map.keySet()) {
+        for (ItemStack item : rewards.keySet()) {
             inventory.remove(item);
         }
 

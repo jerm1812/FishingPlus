@@ -9,10 +9,10 @@ import me.baryonyx.fishingplus.listener.FishingListener;
 import me.baryonyx.fishingplus.handlers.*;
 import me.baryonyx.fishingplus.hooks.VaultHook;
 import me.baryonyx.fishingplus.listener.ShopListener;
+import me.baryonyx.fishingplus.shop.CitizensShop;
 import me.baryonyx.fishingplus.shop.FishingShop;
 import me.baryonyx.fishingplus.shop.FishingShopGui;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -63,6 +63,7 @@ public final class FishingPlus extends JavaPlugin {
 
     private void registerEvents() {
         getServer().getPluginManager().registerEvents(new FishingListener(config, catchHandler, competitionHandler), this);
+        net.citizensnpcs.api.CitizensAPI.getTraitFactory().registerTrait(net.citizensnpcs.api.trait.TraitInfo.create(CitizensShop.class).withName("fishingshop"));
     }
 
     private void registerCommands() {
@@ -74,7 +75,7 @@ public final class FishingPlus extends JavaPlugin {
         if (VaultHook.isHooked) {
             fishingShop = new FishingShop(itemHandler, rewardHandler);
             fishingShopGui = new FishingShopGui(fishingShop, itemHandler, this);
-            getServer().getPluginManager().registerEvents(new ShopListener(fishingShopGui), this);
+            getServer().getPluginManager().registerEvents(new ShopListener(fishingShopGui, fishingShop, itemHandler), this);
         }
     }
 
@@ -84,7 +85,5 @@ public final class FishingPlus extends JavaPlugin {
         CitizensHook.hook(this);
     }
 
-    //TODO create a fully functioning reward config
-    //TODO add a biome check
-    //TODO add fish based on their biomes
+    //TODO add a biome check and fish based on their biome
 }
