@@ -6,10 +6,15 @@ public class Modifier {
     public double chance;
     public double priceModifier;
 
+    // Modifier for a FishingPlus reward
     public Modifier(String name, String displayName, double priceModifier, double chance) {
         this.name = name;
         this.displayName = displayName;
         this.chance = chance;
         this.priceModifier = priceModifier;
+    }
+
+    public Modifier(String name) {
+        this.name = name;
     }
 }

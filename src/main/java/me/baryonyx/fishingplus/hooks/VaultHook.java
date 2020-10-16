@@ -4,24 +4,26 @@ import me.baryonyx.fishingplus.FishingPlus;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.jetbrains.annotations.NotNull;
 
 public class VaultHook {
     private static Economy economy;
+    public static boolean isHooked = false;
 
-    public static boolean hook(FishingPlus plugin) {
+    // Hooks vault
+    public static boolean hook(@NotNull FishingPlus plugin) {
         RegisteredServiceProvider<Economy> service =  plugin.getServer().getServicesManager().getRegistration(Economy.class);
 
         if (service == null)
             return false;
 
         economy = service.getProvider();
-        Bukkit.getLogger().info("VAULT AS BEEN HOOKED");
+        isHooked = true;
         return true;
     }
 
+    // Returns the instance of the Vault economy
     public static Economy getEconomy() {
         return economy;
     }
-
-    //FIXME Implement checks for the hook
 }

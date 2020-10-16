@@ -15,18 +15,17 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.logging.Level;
 
 public class CatchHandler {
     private final FishingPlus plugin;
     private final RewardConfiguration rewardConfiguration;
     private final Config config;
-    public RewardHandler rewardHandler;
-    public ItemHandler itemHandler;
-    public ModifierHandler modifierHandler;
+    private RewardHandler rewardHandler;
+    private ItemHandler itemHandler;
+    private ModifierHandler modifierHandler;
 
     public CatchHandler(final FishingPlus plugin, final RewardConfiguration rewardConfiguration, final Config config, RewardHandler rewardHandler, ItemHandler itemHandler, ModifierHandler modifierHandler) {
         this.plugin = plugin;
@@ -39,19 +38,25 @@ public class CatchHandler {
         getModifiersFromConfig();
     }
 
+    // Gets the rewards from the rewards file and disables the plugin if there are no rewards
     private void getRewardsFromConfig() {
         ConfigurationSection rewardSection = rewardConfiguration.getRewards();
 
-        if (rewardSection == null) {
-            plugin.getLogger().info("The reward config is empty disabling plugin");
-            plugin.getServer().getPluginManager().disablePlugin(plugin);
+        if (rewardSection != null) {
+
+            // Sends each reward section to be loaded
+            for (String key : rewardSection.getKeys(false)) {
+                loadRewardToMaps(rewardSection, key);
+            }
+
+            return;
         }
 
-        for (String key : rewardSection.getKeys(false)) {
-            loadNewReward(rewardSection, key);
-        }
+        Bukkit.getLogger().info("The reward config is empty disabling plugin");
+        Bukkit.getServer().getPluginManager().disablePlugin(plugin);
     }
 
+    // Gets the modifiers from the rewards file
     private void getModifiersFromConfig() {
         ConfigurationSection modifierSection = rewardConfiguration.getModifiers();
 
@@ -59,11 +64,12 @@ public class CatchHandler {
             return;
 
         for (String key : modifierSection.getKeys(false)) {
-            loadNewModifier(modifierSection, key);
+            loadModifierToMap(modifierSection, key);
         }
     }
 
-    private void loadNewReward(ConfigurationSection section, String key) {
+    // Loads a reward into the item handler and reward handler maps
+    private void loadRewardToMaps(@NotNull ConfigurationSection section, String key) {
         try {
             Reward reward;
             String displayName = section.getString(key + ".display-name", key);
@@ -71,7 +77,7 @@ public class CatchHandler {
             int amount = section.getInt(key + ".item.amount", 1);
             List<String> lore = section.getStringList(key + ".item.lore");
             Material material = getRewardMaterial(section, key);
-            double chance = getChance(section, key);
+            double chance = getCatchChance(section, key);
             double maxLength = getMaxFishLength(section, key);
             double minLength = getMinFishLength(section, key);
 
@@ -80,7 +86,9 @@ public class CatchHandler {
             else
                 reward = new Fish(key, chance, price, minLength, maxLength);
 
-            rewardHandler.addItemToMap(reward);
+            // Adds the reward to the reward map
+            rewardHandler.addRewardToMap(reward);
+            // Adds the item to the item map
             itemHandler.addItemToMap(key, displayName, material, amount, lore);
         } catch (ItemNotFoundException e) {
             Bukkit.getLogger().warning("Could not load the reward " + e.getRewardName()
@@ -94,11 +102,12 @@ public class CatchHandler {
         }
     }
 
-    private void loadNewModifier(ConfigurationSection section, String key) {
+    // Loads a modifier to the modifier handler map
+    private void loadModifierToMap(ConfigurationSection section, String key) {
         try {
             String displayName = getModifierDisplayName(section, key);
             double priceIncrease = section.getDouble(key + ".price-increase", 0);
-            double chance = getChance(section, key);
+            double chance = getCatchChance(section, key);
 
             modifierHandler.addToMap(new Modifier(key, displayName, priceIncrease, chance));
         } catch (NoChanceToCatchException e) {
@@ -107,6 +116,7 @@ public class CatchHandler {
         }
     }
 
+    // Gets a fish's minimum length from a yaml section
     private double getMinFishLength(@NotNull ConfigurationSection section, @NotNull String name) throws InvalidFishLengthException {
         double minLength = section.getDouble(name + ".min-length");
 
@@ -116,6 +126,7 @@ public class CatchHandler {
         return minLength;
     }
 
+    // Gets a fish's maximum length from a yaml section
     private double getMaxFishLength(@NotNull ConfigurationSection section, @NotNull String name) throws InvalidFishLengthException {
         double maxLength = section.getDouble(name + ".max-length");
 
@@ -125,7 +136,8 @@ public class CatchHandler {
         return maxLength;
     }
 
-    private double getChance(@NotNull ConfigurationSection section, @NotNull String name) throws NoChanceToCatchException {
+    // Gets a reward's chance to be caught
+    private double getCatchChance(@NotNull ConfigurationSection section, @NotNull String name) throws NoChanceToCatchException {
         double chance = section.getDouble(name + ".chance");
 
         if (chance == 0)
@@ -134,6 +146,7 @@ public class CatchHandler {
         return chance;
     }
 
+    // Gets a reward's item material from a yaml section
     @NotNull
     private Material getRewardMaterial(@NotNull ConfigurationSection section, @NotNull String name) throws ItemNotFoundException {
         String itemName = section.getString(name + ".item.id");
@@ -149,16 +162,19 @@ public class CatchHandler {
         return material;
     }
 
+
+    // Gets a modifier's display name from a yaml section
     @NotNull
     private String getModifierDisplayName(@NotNull ConfigurationSection section, String key) {
         String displayName = section.getString(key + ".display-name", "");
-        if (!displayName.equals(""))
+        if (displayName != null && !displayName.equals(""))
             return config.getModifierPrefix() + displayName + config.getModifierSuffix();
-        else
-            return "";
+        return "";
     }
 
-    public ItemStack triggerCatchEvent(Player player) {
+    // Replaces caught fish with a FishingPlus reward
+    @Nullable
+    public ItemStack handleCatchEvent(Player player) {
         Reward reward = rewardHandler.getRandomReward();
         Modifier modifier = modifierHandler.getRandomModifier();
         ItemStack item;

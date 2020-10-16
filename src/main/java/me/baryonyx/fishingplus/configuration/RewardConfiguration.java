@@ -7,12 +7,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 
 public class RewardConfiguration {
-    private FishingPlus plugin;
     private YamlConfiguration config;
 
-    public RewardConfiguration(FishingPlus plugin, File datafile) {
-        this.plugin = plugin;
-        loadRewardFile(datafile);
+    public RewardConfiguration(FishingPlus plugin) {
+        loadRewardFile(plugin.getDataFolder());
     }
 
     private void loadRewardFile(File datafile) {

@@ -5,11 +5,9 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
 
 public class Config {
-    private FishingPlus plugin;
     private FileConfiguration config;
 
     public Config(@NotNull FishingPlus plugin) {
-        this.plugin = plugin;
         config = plugin.getConfig();
     }
 
@@ -47,5 +45,13 @@ public class Config {
 
     public boolean rewardsOnlyDuringCompetition() {
         return config.getBoolean("competition-only");
+    }
+
+    public boolean isBroadcastStartEnabled() {
+        return config.getBoolean("broadcast-competition-start");
+    }
+
+    public boolean isBroadcastEndEnabled() {
+        return config.getBoolean("broadcast-competition-end");
     }
 }
