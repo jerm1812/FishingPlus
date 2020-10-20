@@ -1,31 +1,43 @@
 package me.baryonyx.fishingplus.listener;
 
+import me.baryonyx.fishingplus.handlers.ItemHandler;
+import me.baryonyx.fishingplus.shop.FishingShop;
 import me.baryonyx.fishingplus.shop.FishingShopGui;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class ShopListener implements Listener {
     private FishingShopGui fishingShopGui;
+    private FishingShop fishingShop;
+    private ItemHandler itemHandler;
 
-    public ShopListener(FishingShopGui fishingShopGui) {
+    public ShopListener(FishingShopGui fishingShopGui, FishingShop fishingShop, ItemHandler itemHandler) {
         this.fishingShopGui = fishingShopGui;
+        this.fishingShop = fishingShop;
+        this.itemHandler = itemHandler;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void InventoryListener(@NotNull InventoryClickEvent event) {
         Inventory inventory = event.getClickedInventory();
 
         // If the FishingPlus inventory was clicked
         if (fishingShopGui.inventories.containsValue(inventory)) {
             if (event.getSlot() == 31) {
-                fishingShopGui.sellRewards((Player)event.getWhoClicked(), inventory);
+                fishingShop.sellRewards(inventory, (Player)event.getWhoClicked());
             }
+
             if (event.getSlot() >= 27) {
+                event.setCancelled(true);
+            }
+
+            if (isIllegalItemMove(event.getAction(), event.getCurrentItem(), event.getCursor())){
                 event.setCancelled(true);
             }
 
@@ -33,12 +45,42 @@ public class ShopListener implements Listener {
             return;
         }
 
-        //FIXME Only allow FishingPlus rewards to be added to the FishingPlus shop inventories
-
         // If the player's inventory was clicked while in a FishingPlus shop
-        if (fishingShopGui.inventories.containsValue(event.getInventory())) {
+        if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY && fishingShopGui.inventories.containsValue(event.getInventory())) {
+
+            if (isIllegalItemMove(event.getCurrentItem())) {
+                event.setCancelled(true);
+                return;
+            }
+
             fishingShopGui.calculateGuiTotal(fishingShopGui.getPlayersShop((Player)event.getWhoClicked()));
         }
+    }
+
+    @EventHandler
+    public void shopDragEvent(InventoryDragEvent event) {
+        if (fishingShopGui.inventories.containsValue(event.getView().getTopInventory())) {
+            if (isIllegalItemMove(event.getCursor())) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    // Returns true if a non FishingPlus reward is being moved into the FishingPlus shop
+    private boolean isIllegalItemMove(InventoryAction action, ItemStack item, ItemStack cursor) {
+        if (item == null) {
+            return true;
+        }
+        else if ((action == InventoryAction.PLACE_ALL || action == InventoryAction.PLACE_ONE || action == InventoryAction.PLACE_SOME) && !itemHandler.isReward(item)) {
+            return true;
+        }
+        else {
+            return action == InventoryAction.SWAP_WITH_CURSOR && cursor != null && !itemHandler.isReward(cursor);
+        }
+    }
+
+    private boolean isIllegalItemMove(ItemStack item) {
+        return item == null || !itemHandler.isReward(item);
     }
 
     @EventHandler

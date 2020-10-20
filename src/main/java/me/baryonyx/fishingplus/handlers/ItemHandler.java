@@ -134,7 +134,7 @@ public class ItemHandler {
     void addModifierToItem(@NotNull ItemStack item, String modifierName) {
         try {
             ItemMeta meta = Objects.requireNonNull(item.getItemMeta());
-            String name = convertToColor(modifierName + meta.getDisplayName());
+            String name = ChatHandler.coloredMessage(modifierName + meta.getDisplayName());
             meta.setDisplayName(name);
             meta.getPersistentDataContainer().set(modifierKey, PersistentDataType.STRING, modifierName);
             item.setItemMeta(meta);
@@ -151,29 +151,22 @@ public class ItemHandler {
             // If the item has lore add to it else just set it
             if (meta.hasLore()) {
                 List<String> lore = Objects.requireNonNull(meta.getLore());
-                lore.add(convertToColor(string));
+                lore.add(ChatHandler.coloredMessage(string));
                 meta.setLore(lore);
             }
             else
-                meta.setLore(Collections.singletonList(convertToColor(string)));
+                meta.setLore(Collections.singletonList(ChatHandler.coloredMessage(string)));
 
             item.setItemMeta(meta);
         } catch (NullPointerException e) {
             Bukkit.getLogger().warning("Could not add lore to a reward because the item's meta was null");
         }
-
-    }
-
-    // Converts a string to use minecraft color
-    @NotNull
-    private String convertToColor(String string) {
-        return ChatColor.translateAlternateColorCodes('&', string);
     }
 
     // Converts a list of strings to minecraft color strings
     @NotNull
     public List<String> convertLoreListToColor(@NotNull List<String> lore) {
-        return lore.stream().map(this::convertToColor).collect(Collectors.toList());
+        return lore.stream().map(ChatHandler::coloredMessage).collect(Collectors.toList());
     }
 
     // Returns if the item is a FishingPlus reward

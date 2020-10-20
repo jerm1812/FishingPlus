@@ -54,4 +54,12 @@ public class Config {
     public boolean isBroadcastEndEnabled() {
         return config.getBoolean("broadcast-competition-end");
     }
+
+    public String getBroadcastPrefix() {
+        return config.getString("broadcast-prefix");
+    }
+
+    public int getAmountOfWinnersDisplayed() {
+        return config.getInt("amount-displayed");
+    }
 }
