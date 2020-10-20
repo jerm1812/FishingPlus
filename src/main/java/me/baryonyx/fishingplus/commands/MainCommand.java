@@ -2,7 +2,7 @@ package me.baryonyx.fishingplus.commands;
 
 import me.baryonyx.fishingplus.FishingPlus;
 import me.baryonyx.fishingplus.handlers.CatchHandler;
-import me.baryonyx.fishingplus.handlers.CompetitionHandler;
+import me.baryonyx.fishingplus.fishing.Competition.Runner;
 import me.baryonyx.fishingplus.hooks.VaultHook;
 import me.baryonyx.fishingplus.shop.FishingShop;
 import me.baryonyx.fishingplus.shop.FishingShopGui;
@@ -21,14 +21,14 @@ public class MainCommand implements CommandExecutor {
     private CatchHandler catchHandler;
     private FishingShop fishingShop;
     private FishingShopGui fishingShopGui;
-    private CompetitionHandler competitionHandler;
+    private Runner runner;
 
-    public MainCommand(FishingPlus plugin, CatchHandler catchHandler, @Nullable FishingShop fishingShop, @Nullable FishingShopGui fishingShopGui, CompetitionHandler competitionHandler) {
+    public MainCommand(FishingPlus plugin, CatchHandler catchHandler, @Nullable FishingShop fishingShop, @Nullable FishingShopGui fishingShopGui, Runner runner) {
         this.plugin = plugin;
         this.catchHandler = catchHandler;
         this.fishingShop = fishingShop;
         this.fishingShopGui = fishingShopGui;
-        this.competitionHandler = competitionHandler;
+        this.runner = runner;
     }
 
     @Override
@@ -95,7 +95,7 @@ public class MainCommand implements CommandExecutor {
                 return true;
             }
 
-            competitionHandler.startUndefinedCompetition();
+            runner.startUndefinedCompetition();
             return true;
         }
         else if (args.length == 2 && args[1].toLowerCase().equals("stop")) {
@@ -104,7 +104,7 @@ public class MainCommand implements CommandExecutor {
                 return true;
             }
 
-            competitionHandler.stopCompetition();
+            runner.stopCompetition();
             return true;
         }
         else if (args.length == 3 && args[1].toLowerCase().equals("start")) {
@@ -114,7 +114,7 @@ public class MainCommand implements CommandExecutor {
             }
 
             try {
-                competitionHandler.startTimedCompetition(Long.parseLong(args[2]));
+                runner.startTimedCompetition(Long.parseLong(args[2]));
                 return true;
             } catch (NumberFormatException e) {
                 player.sendMessage("/FishingPlus comp [start|stop] {minutes}");

@@ -1,4 +1,22 @@
-rewards:
+compeition-rewards:
+  sword:
+    display-name: "Holy Slicer"
+    item:
+      id: "minecraft:netherite_sword"
+      lore:
+        - "&7This sword is holy"
+    chance: 50
+    price: 0
+  dirt:
+    display-name: "Plain old dirt"
+    item:
+      id: "minecraft:dirt"
+      lore:
+        - "&7Yes this is just dirt"
+    chance: 50
+    price: 3
+
+fishing-rewards:
   boot:
     display-name: "Old Boot"
     item:

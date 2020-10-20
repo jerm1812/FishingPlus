@@ -62,4 +62,8 @@ public class Config {
     public int getAmountOfWinnersDisplayed() {
         return config.getInt("amount-displayed");
     }
+
+    public int getMinimumParticipants() {
+        return config.getInt("minimum-fishers");
+    }
 }

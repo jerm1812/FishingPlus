@@ -3,7 +3,9 @@ package me.baryonyx.fishingplus;
 import me.baryonyx.fishingplus.commands.MainCommand;
 import me.baryonyx.fishingplus.configuration.Config;
 import me.baryonyx.fishingplus.configuration.RewardConfiguration;
+import me.baryonyx.fishingplus.fishing.Competition.Announcements;
 import me.baryonyx.fishingplus.fishing.Competition.Competition;
+import me.baryonyx.fishingplus.fishing.Competition.Runner;
 import me.baryonyx.fishingplus.hooks.CitizensHook;
 import me.baryonyx.fishingplus.listener.FishingListener;
 import me.baryonyx.fishingplus.handlers.*;
@@ -22,11 +24,10 @@ public final class FishingPlus extends JavaPlugin {
     private RewardConfiguration rewardConfiguration = new RewardConfiguration(this);
     private Competition competition = new Competition();
     private ModifierHandler modifierHandler = new ModifierHandler();
-    private ChatHandler chatHandler;
     private ItemHandler itemHandler;
     private RewardHandler rewardHandler;
     private CatchHandler catchHandler;
-    private CompetitionHandler competitionHandler;
+    private Runner runner;
     private FishingShop fishingShop;
     private FishingShopGui fishingShopGui;
 
@@ -35,11 +36,11 @@ public final class FishingPlus extends JavaPlugin {
         // Plugin startup logic
         checkFiles();
 
-        chatHandler = new ChatHandler(config);
+        Announcements announcements = new Announcements(config);
         itemHandler = new ItemHandler(config, this);
         rewardHandler = new RewardHandler(config);
         catchHandler = new CatchHandler(this, rewardConfiguration, config, rewardHandler, itemHandler, modifierHandler);
-        competitionHandler = new CompetitionHandler(this, config, competition, itemHandler, chatHandler);
+        runner = new Runner(this, config, competition, itemHandler, rewardHandler, announcements);
 
 
         setupHooks();
@@ -56,7 +57,7 @@ public final class FishingPlus extends JavaPlugin {
                 fishingShopGui.closeInventory(fishingShopGui.inventories.get(player), player);
             }
 
-        competitionHandler.stopCompetition();
+        runner.stopCompetition();
     }
 
     // Saves default config and rewards config if they do not exist
@@ -70,12 +71,12 @@ public final class FishingPlus extends JavaPlugin {
     }
 
     private void registerEvents() {
-        getServer().getPluginManager().registerEvents(new FishingListener(config, catchHandler, competitionHandler), this);
+        getServer().getPluginManager().registerEvents(new FishingListener(config, catchHandler, runner), this);
         net.citizensnpcs.api.CitizensAPI.getTraitFactory().registerTrait(net.citizensnpcs.api.trait.TraitInfo.create(CitizensShop.class).withName("fishingshop"));
     }
 
     private void registerCommands() {
-        getCommand("fishingplus").setExecutor(new MainCommand(this, catchHandler, fishingShop, fishingShopGui, competitionHandler));
+        getCommand("fishingplus").setExecutor(new MainCommand(this, catchHandler, fishingShop, fishingShopGui, runner));
     }
 
     // Sets the shop up and inventory listener if vault is hooked

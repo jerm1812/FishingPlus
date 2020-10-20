@@ -1,38 +1,42 @@
-package me.baryonyx.fishingplus.handlers;
+package me.baryonyx.fishingplus.fishing.Competition;
 
 import me.baryonyx.fishingplus.FishingPlus;
 import me.baryonyx.fishingplus.configuration.Config;
 import me.baryonyx.fishingplus.exceptions.InvalidCompetitionStateException;
+import me.baryonyx.fishingplus.fishing.Competition.Announcements;
 import me.baryonyx.fishingplus.fishing.Competition.Competition;
 import me.baryonyx.fishingplus.fishing.Competition.Entry;
 import me.baryonyx.fishingplus.fishing.Fish;
 import me.baryonyx.fishingplus.fishing.Modifier;
+import me.baryonyx.fishingplus.handlers.ItemHandler;
+import me.baryonyx.fishingplus.handlers.RewardHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
-public class CompetitionHandler {
+public class Runner {
     private final FishingPlus plugin;
     private Config config;
     private Competition competition;
     private ItemHandler itemHandler;
-    private ChatHandler chatHandler;
+    private RewardHandler rewardHandler;
+    private Announcements announcements;
     private boolean fiveMinuteWarning = false;
 
 
-    public CompetitionHandler(FishingPlus plugin, Config config, Competition competition, ItemHandler itemHandler, ChatHandler chatHandler) {
+    public Runner(FishingPlus plugin, Config config, Competition competition, ItemHandler itemHandler, RewardHandler rewardHandler, Announcements announcements) {
         this.plugin = plugin;
         this.config = config;
         this.competition = competition;
         this.itemHandler = itemHandler;
-        this.chatHandler = chatHandler;
+        this.rewardHandler = rewardHandler;
+        this.announcements = announcements;
     }
 
     public void startTimedCompetition(Long time) {
         try {
-            endTime = System.currentTimeMillis() / 1000 + time * 60;
             competition.startCompetition();
             plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, this::stopCompetition, time * 20 * 60);
 
@@ -42,7 +46,7 @@ public class CompetitionHandler {
                 plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, this::competitionTimeWarning, (time - 1) * 20 * 60);
             }
 
-            chatHandler.broadcastCompetitionStart(time);
+            announcements.broadcastCompetitionStart(time);
         } catch (InvalidCompetitionStateException e) {
             Bukkit.getLogger().info("Could not start a fishing competition because there is already one running!");
         }
@@ -52,7 +56,7 @@ public class CompetitionHandler {
     public void startUndefinedCompetition() {
         try {
             competition.startCompetition();
-            chatHandler.broadcastCompetitionStart(0);
+            announcements.broadcastCompetitionStart(0);
         } catch (InvalidCompetitionStateException e) {
             Bukkit.getLogger().info("Could not start a fishing competition because there is already one running!");
         }
@@ -63,7 +67,7 @@ public class CompetitionHandler {
         try {
             List<Entry> entries = sortCompetitionMap(competition.getCompetitionStats());
             competition.stopCompetition();
-            chatHandler.broadcastCompetitionEnd();
+            announcements.broadcastCompetitionEnd();
             handleResults(entries);
             fiveMinuteWarning = false;
         } catch (InvalidCompetitionStateException e) {
@@ -71,6 +75,7 @@ public class CompetitionHandler {
         }
     }
 
+    // Sorts the competition map
     private List<Entry> sortCompetitionMap(Map<Player, Entry> map) {
         List<Entry> entries = new ArrayList<>(map.values());
         Collections.sort(entries);
@@ -79,11 +84,13 @@ public class CompetitionHandler {
 
     // Sends winners to chat handler and gives rewards
     private void handleResults(List<Entry> entries) {
-        if (entries == null) {
+        if (entries == null || entries.size() < config.getMinimumParticipants()) {
+            announcements.broadcastNotEnoughParticipants();
             return;
         }
 
         int size = config.getAmountOfWinnersDisplayed();
+        //FIXME Replace this with an ordinal number function
         String[] sfx = new String[] { "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th" };
 
         // Caps size to competition players
@@ -94,18 +101,19 @@ public class CompetitionHandler {
         // Sends winners to be displayed
         for (int i = 0; i < size; i++) {
             Entry entry = entries.get(i);
-            chatHandler.broadcastCompetitionResults(entry.player.getName(), sfx[i], entry.fish.name, entry.fish.actualLength);
+            announcements.broadcastCompetitionResults(entry.player.getName(), sfx[i], entry.fish.name, entry.fish.actualLength);
         }
     }
 
+    //TODO add a boss bar for the timer
     private void competitionTimeWarning() {
         //FIXME make this so it is not bad
         if (!fiveMinuteWarning) {
-            chatHandler.broadcastCompetitionTimeLeft(5);
+            announcements.broadcastCompetitionTimeLeft(5);
             fiveMinuteWarning = true;
         }
         else {
-            chatHandler.broadcastCompetitionTimeLeft(1);
+            announcements.broadcastCompetitionTimeLeft(1);
         }
     }
 
