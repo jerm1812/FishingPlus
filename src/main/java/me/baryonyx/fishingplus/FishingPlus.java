@@ -3,30 +3,30 @@ package me.baryonyx.fishingplus;
 import me.baryonyx.fishingplus.commands.MainCommand;
 import me.baryonyx.fishingplus.configuration.Config;
 import me.baryonyx.fishingplus.configuration.RewardConfiguration;
-import me.baryonyx.fishingplus.fishing.Competition;
+import me.baryonyx.fishingplus.fishing.Competition.Competition;
 import me.baryonyx.fishingplus.hooks.CitizensHook;
 import me.baryonyx.fishingplus.listener.FishingListener;
 import me.baryonyx.fishingplus.handlers.*;
 import me.baryonyx.fishingplus.hooks.VaultHook;
 import me.baryonyx.fishingplus.listener.ShopListener;
+import me.baryonyx.fishingplus.shop.CitizensShop;
 import me.baryonyx.fishingplus.shop.FishingShop;
 import me.baryonyx.fishingplus.shop.FishingShopGui;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 
 public final class FishingPlus extends JavaPlugin {
     private final Config config = new Config(this);
-    private final ChatHandler chatHandler = new ChatHandler(config);
-    private Competition competition = new Competition();
     private RewardConfiguration rewardConfiguration = new RewardConfiguration(this);
-    private ItemHandler itemHandler = new ItemHandler(config, this);
-    private RewardHandler rewardHandler = new RewardHandler(config);
+    private Competition competition = new Competition();
     private ModifierHandler modifierHandler = new ModifierHandler();
-    private CatchHandler catchHandler = new CatchHandler(this, rewardConfiguration, config, rewardHandler, itemHandler, modifierHandler);
-    private CompetitionHandler competitionHandler = new CompetitionHandler(this, competition, itemHandler, chatHandler);
+    private ChatHandler chatHandler;
+    private ItemHandler itemHandler;
+    private RewardHandler rewardHandler;
+    private CatchHandler catchHandler;
+    private CompetitionHandler competitionHandler;
     private FishingShop fishingShop;
     private FishingShopGui fishingShopGui;
 
@@ -34,6 +34,14 @@ public final class FishingPlus extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         checkFiles();
+
+        chatHandler = new ChatHandler(config);
+        itemHandler = new ItemHandler(config, this);
+        rewardHandler = new RewardHandler(config);
+        catchHandler = new CatchHandler(this, rewardConfiguration, config, rewardHandler, itemHandler, modifierHandler);
+        competitionHandler = new CompetitionHandler(this, config, competition, itemHandler, chatHandler);
+
+
         setupHooks();
         setupShop();
         registerEvents();
@@ -63,6 +71,7 @@ public final class FishingPlus extends JavaPlugin {
 
     private void registerEvents() {
         getServer().getPluginManager().registerEvents(new FishingListener(config, catchHandler, competitionHandler), this);
+        net.citizensnpcs.api.CitizensAPI.getTraitFactory().registerTrait(net.citizensnpcs.api.trait.TraitInfo.create(CitizensShop.class).withName("fishingshop"));
     }
 
     private void registerCommands() {
@@ -74,7 +83,7 @@ public final class FishingPlus extends JavaPlugin {
         if (VaultHook.isHooked) {
             fishingShop = new FishingShop(itemHandler, rewardHandler);
             fishingShopGui = new FishingShopGui(fishingShop, itemHandler, this);
-            getServer().getPluginManager().registerEvents(new ShopListener(fishingShopGui), this);
+            getServer().getPluginManager().registerEvents(new ShopListener(fishingShopGui, fishingShop, itemHandler), this);
         }
     }
 
@@ -84,7 +93,5 @@ public final class FishingPlus extends JavaPlugin {
         CitizensHook.hook(this);
     }
 
-    //TODO create a fully functioning reward config
-    //TODO add a biome check
-    //TODO add fish based on their biomes
+    //TODO add a biome check and fish based on their biome
 }

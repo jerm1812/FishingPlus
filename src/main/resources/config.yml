@@ -1,7 +1,20 @@
 #### Competition ####
+
+# Broadcast the competition start and end
 broadcast-competition-start: true
 broadcast-competition-end: true
+
+# Displays the competition winners
 broadcast-competition-winner: true
+
+# Display the top number of players in a competition - Max is 10
+amount-displayed: 3
+
+# The competition prefix
+broadcast-prefix: "&8[&r&bFishingPlus&8] &6-&r "
+
+# Minimum amount of people to participate in a competition
+minimum-fishers: 3
 
 
 #### REWARDS ####

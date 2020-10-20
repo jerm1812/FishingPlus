@@ -1,6 +1,7 @@
 package me.baryonyx.fishingplus.listener;
 
 import me.baryonyx.fishingplus.configuration.Config;
+import me.baryonyx.fishingplus.fishing.Competition.Competition;
 import me.baryonyx.fishingplus.handlers.CatchHandler;
 import me.baryonyx.fishingplus.handlers.CompetitionHandler;
 import org.bukkit.entity.Item;
@@ -25,7 +26,7 @@ public class FishingListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void playerFishEvent(@NotNull PlayerFishEvent event) {
         // If using a FishingPlus reward is appropriate
-        if (!config.rewardsOnlyDuringCompetition() || competitionHandler.isCompetitionRunning()) {
+        if (!config.rewardsOnlyDuringCompetition() || Competition.isRunning()) {
             // If a fish was caught
             if (event.getState() == PlayerFishEvent.State.CAUGHT_FISH && event.getCaught() instanceof Item) {
                 Item caught = (Item) event.getCaught();

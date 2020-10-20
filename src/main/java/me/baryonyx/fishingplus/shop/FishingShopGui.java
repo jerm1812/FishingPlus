@@ -75,10 +75,7 @@ public class FishingShopGui implements Listener {
 
     // Drops all non-shop items in a FishingPlus inventory
     private void dropItems(@NotNull Inventory inventory, @NotNull Player player) {
-        //FIXME change to only drop fish items (going to change so that only allowed to add FishingPlus rewards to shop)
-        inventory.setItem(31, null);
-        ItemStack[] items = Arrays.stream(inventory.getContents()).filter(Objects::nonNull).toArray(ItemStack[]::new);
-        items = Arrays.stream(items).filter(i -> !i.isSimilar(rowIcon) && !i.isSimilar(sellIcon)).toArray(ItemStack[]::new);
+        ItemStack[] items = Arrays.stream(inventory.getContents()).filter(i -> i != null && itemHandler.isReward(i)).toArray(ItemStack[]::new);
         Map<Integer, ItemStack> map = player.getInventory().addItem(items);
 
         for (ItemStack item : map.values()) {
@@ -114,6 +111,5 @@ public class FishingShopGui implements Listener {
         } catch (NullPointerException e) {
             Bukkit.getLogger().warning("Tried to update the total in the shop but the item or item meta was null");
         }
-
     }
 }
