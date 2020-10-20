@@ -1,27 +1,30 @@
 package me.baryonyx.fishingplus.handlers;
 
 import me.baryonyx.fishingplus.FishingPlus;
+import me.baryonyx.fishingplus.configuration.Config;
 import me.baryonyx.fishingplus.exceptions.InvalidCompetitionStateException;
-import me.baryonyx.fishingplus.fishing.Competition;
-import me.baryonyx.fishingplus.fishing.Entry;
+import me.baryonyx.fishingplus.fishing.Competition.Competition;
+import me.baryonyx.fishingplus.fishing.Competition.Entry;
 import me.baryonyx.fishingplus.fishing.Fish;
 import me.baryonyx.fishingplus.fishing.Modifier;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Map;
+import java.util.*;
 
 public class CompetitionHandler {
     private final FishingPlus plugin;
+    private Config config;
     private Competition competition;
     private ItemHandler itemHandler;
     private ChatHandler chatHandler;
     private boolean fiveMinuteWarning = false;
 
 
-    public CompetitionHandler(FishingPlus plugin, Competition competition, ItemHandler itemHandler, ChatHandler chatHandler) {
+    public CompetitionHandler(FishingPlus plugin, Config config, Competition competition, ItemHandler itemHandler, ChatHandler chatHandler) {
         this.plugin = plugin;
+        this.config = config;
         this.competition = competition;
         this.itemHandler = itemHandler;
         this.chatHandler = chatHandler;
@@ -57,21 +60,45 @@ public class CompetitionHandler {
     // Stops a competition if one is running
     public void stopCompetition() {
         try {
-            Map<Player, Entry> map = competition.getCompetitionStats();
+            List<Entry> entries = sortCompetitionMap(competition.getCompetitionStats());
             competition.stopCompetition();
-
             chatHandler.broadcastCompetitionEnd();
+            handleResults(entries);
             fiveMinuteWarning = false;
         } catch (InvalidCompetitionStateException e) {
             Bukkit.getLogger().info("Could not stop the fishing competition because there no competition running!");
         }
     }
 
-    private void getTopThree() {
+    private List<Entry> sortCompetitionMap(Map<Player, Entry> map) {
+        List<Entry> entries = new ArrayList<>(map.values());
+        Collections.sort(entries);
+        return entries;
+    }
 
+    // Sends winners to chat handler and gives rewards
+    private void handleResults(List<Entry> entries) {
+        if (entries == null) {
+            return;
+        }
+
+        int size = config.getAmountOfWinnersDisplayed();
+        String[] sfx = new String[] { "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th" };
+
+        // Caps size to competition players
+        if (entries.size() < size) {
+            size = entries.size();
+        }
+
+        // Sends winners to be displayed
+        for (int i = 0; i < size; i++) {
+            Entry entry = entries.get(i);
+            chatHandler.broadcastCompetitionResults(entry.player.getName(), sfx[i], entry.fish.name, entry.fish.actualLength);
+        }
     }
 
     private void competitionTimeWarning() {
+        //FIXME make this so it is not bad
         if (!fiveMinuteWarning) {
             chatHandler.broadcastCompetitionTimeLeft(5);
             fiveMinuteWarning = true;

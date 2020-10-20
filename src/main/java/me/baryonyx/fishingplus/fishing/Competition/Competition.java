@@ -1,6 +1,8 @@
-package me.baryonyx.fishingplus.fishing;
+package me.baryonyx.fishingplus.fishing.Competition;
 
 import me.baryonyx.fishingplus.exceptions.InvalidCompetitionStateException;
+import me.baryonyx.fishingplus.fishing.Fish;
+import me.baryonyx.fishingplus.fishing.Modifier;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -31,10 +33,10 @@ public class Competition {
     public void logFish(Player player, Fish fish, Modifier modifier) {
         if (running) {
             if (!map.containsKey(player))
-                map.put(player, new Entry(fish, modifier));
+                map.put(player, new Entry(player, fish, modifier));
 
             else if (map.get(player).fish.actualLength < fish.actualLength)
-                map.replace(player, new Entry(fish, modifier));
+                map.replace(player, new Entry(player, fish, modifier));
         }
     }
 
