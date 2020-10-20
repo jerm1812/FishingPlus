@@ -34,19 +34,20 @@ public class CatchHandler {
         this.rewardHandler = rewardHandler;
         this.itemHandler = itemHandler;
         this.modifierHandler = modifierHandler;
-        getRewardsFromConfig();
+        getFishingRewardsFromConfig();
+        getCompetitionRewardsFromConfig();
         getModifiersFromConfig();
     }
 
-    // Gets the rewards from the rewards file and disables the plugin if there are no rewards
-    private void getRewardsFromConfig() {
-        ConfigurationSection rewardSection = rewardConfiguration.getRewards();
+    // Gets the fishing rewards from the rewards file and disables the plugin if there are no rewards
+    private void getFishingRewardsFromConfig() {
+        ConfigurationSection rewardSection = rewardConfiguration.getFishingRewards();
 
         if (rewardSection != null) {
 
             // Sends each reward section to be loaded
             for (String key : rewardSection.getKeys(false)) {
-                loadRewardToMaps(rewardSection, key);
+                loadRewardToMaps(rewardSection, key, true);
             }
 
             return;
@@ -54,6 +55,18 @@ public class CatchHandler {
 
         Bukkit.getLogger().info("The reward config is empty disabling plugin");
         Bukkit.getServer().getPluginManager().disablePlugin(plugin);
+    }
+
+    // Gets the competition rewards from the rewards file
+    private void getCompetitionRewardsFromConfig() {
+        ConfigurationSection rewardSection = rewardConfiguration.getCompetitionRewards();
+
+        if (rewardSection != null) {
+            // Sends each reward section to be loaded
+            for (String key : rewardSection.getKeys(false)) {
+                loadRewardToMaps(rewardSection, key, false);
+            }
+        }
     }
 
     // Gets the modifiers from the rewards file
@@ -69,7 +82,7 @@ public class CatchHandler {
     }
 
     // Loads a reward into the item handler and reward handler maps
-    private void loadRewardToMaps(@NotNull ConfigurationSection section, String key) {
+    private void loadRewardToMaps(@NotNull ConfigurationSection section, String key, boolean isFishingReward ) {
         try {
             Reward reward;
             String displayName = section.getString(key + ".display-name", key);
@@ -86,8 +99,13 @@ public class CatchHandler {
             else
                 reward = new Fish(key, chance, price, minLength, maxLength);
 
-            // Adds the reward to the reward map
-            rewardHandler.addRewardToMap(reward);
+            // Adds the reward to the correct map
+            if (isFishingReward) {
+                rewardHandler.addFishingRewardToMap(reward);
+            }
+            else {
+                rewardHandler.addCompetitionRewardToMap(reward);
+            }
             // Adds the item to the item map
             itemHandler.addItemToMap(key, displayName, material, amount, lore);
         } catch (ItemNotFoundException e) {
@@ -175,7 +193,7 @@ public class CatchHandler {
     // Replaces caught fish with a FishingPlus reward
     @Nullable
     public ItemStack handleCatchEvent(Player player) {
-        Reward reward = rewardHandler.getRandomReward();
+        Reward reward = rewardHandler.getRandomFishingReward();
         Modifier modifier = modifierHandler.getRandomModifier();
         ItemStack item;
 

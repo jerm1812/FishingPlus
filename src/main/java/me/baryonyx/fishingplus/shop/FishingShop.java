@@ -49,7 +49,7 @@ public class FishingShop {
             try {
                 if (item != null && itemHandler.isReward(item)) {
                     String name = itemHandler.getRewardName(item);
-                    Reward reward = rewardHandler.getReward(name);
+                    Reward reward = rewardHandler.getFishingReward(name);
 
                     if (reward == null)
                         throw new RewardNotInMap(name);

@@ -3,7 +3,7 @@ package me.baryonyx.fishingplus.listener;
 import me.baryonyx.fishingplus.configuration.Config;
 import me.baryonyx.fishingplus.fishing.Competition.Competition;
 import me.baryonyx.fishingplus.handlers.CatchHandler;
-import me.baryonyx.fishingplus.handlers.CompetitionHandler;
+import me.baryonyx.fishingplus.fishing.Competition.Runner;
 import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -15,12 +15,12 @@ import org.jetbrains.annotations.NotNull;
 public class FishingListener implements Listener {
     private final Config config;
     private final CatchHandler catchHandler;
-    private CompetitionHandler competitionHandler;
+    private Runner runner;
 
-    public FishingListener(Config config, CatchHandler catchHandler, CompetitionHandler competitionHandler) {
+    public FishingListener(Config config, CatchHandler catchHandler, Runner runner) {
         this.config = config;
         this.catchHandler = catchHandler;
-        this.competitionHandler = competitionHandler;
+        this.runner = runner;
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -33,7 +33,7 @@ public class FishingListener implements Listener {
                 ItemStack fish = catchHandler.handleCatchEvent(event.getPlayer());
                 if (fish != null) {
                     caught.setItemStack(fish);
-                    competitionHandler.logFish(event.getPlayer(), fish);
+                    runner.logFish(event.getPlayer(), fish);
                 }
             }
         }
