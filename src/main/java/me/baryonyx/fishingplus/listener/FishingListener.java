@@ -1,7 +1,7 @@
 package me.baryonyx.fishingplus.listener;
 
 import me.baryonyx.fishingplus.configuration.Config;
-import me.baryonyx.fishingplus.fishing.Competition;
+import me.baryonyx.fishingplus.fishing.Competition.Competition;
 import me.baryonyx.fishingplus.handlers.CatchHandler;
 import me.baryonyx.fishingplus.handlers.CompetitionHandler;
 import org.bukkit.entity.Item;
