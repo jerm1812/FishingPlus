@@ -8,11 +8,13 @@ import me.baryonyx.fishingplus.fishing.Competition.Competition;
 import me.baryonyx.fishingplus.fishing.Competition.Entry;
 import me.baryonyx.fishingplus.fishing.Fish;
 import me.baryonyx.fishingplus.fishing.Modifier;
+import me.baryonyx.fishingplus.fishing.Reward;
 import me.baryonyx.fishingplus.handlers.ItemHandler;
 import me.baryonyx.fishingplus.handlers.RewardHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -102,6 +104,18 @@ public class Runner {
         for (int i = 0; i < size; i++) {
             Entry entry = entries.get(i);
             announcements.broadcastCompetitionResults(entry.player.getName(), sfx[i], entry.fish.name, entry.fish.actualLength);
+            giveCompetitionReward(entry.player);
+        }
+    }
+
+    // Gives a player a competition reward
+    private void giveCompetitionReward(@NotNull Player player) {
+        Reward reward = rewardHandler.getRandomCompetitionReward();
+        ItemStack item = itemHandler.createRewardItem(reward.name, player.getName(), false);
+        Map<Integer, ItemStack> items = player.getInventory().addItem(item);
+
+        for (ItemStack drop : items.values()) {
+            player.getWorld().dropItemNaturally(player.getLocation(), drop);
         }
     }
 

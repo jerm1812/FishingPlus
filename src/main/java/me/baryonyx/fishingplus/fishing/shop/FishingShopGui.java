@@ -1,4 +1,4 @@
-package me.baryonyx.fishingplus.shop;
+package me.baryonyx.fishingplus.fishing.shop;
 
 import me.baryonyx.fishingplus.FishingPlus;
 import me.baryonyx.fishingplus.handlers.ItemHandler;

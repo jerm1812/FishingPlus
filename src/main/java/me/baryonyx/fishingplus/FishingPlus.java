@@ -11,9 +11,9 @@ import me.baryonyx.fishingplus.listener.FishingListener;
 import me.baryonyx.fishingplus.handlers.*;
 import me.baryonyx.fishingplus.hooks.VaultHook;
 import me.baryonyx.fishingplus.listener.ShopListener;
-import me.baryonyx.fishingplus.shop.CitizensShop;
-import me.baryonyx.fishingplus.shop.FishingShop;
-import me.baryonyx.fishingplus.shop.FishingShopGui;
+import me.baryonyx.fishingplus.fishing.shop.CitizensShop;
+import me.baryonyx.fishingplus.fishing.shop.FishingShop;
+import me.baryonyx.fishingplus.fishing.shop.FishingShopGui;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -52,7 +52,7 @@ public final class FishingPlus extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        if (fishingShopGui.inventories.size() > 0)
+        if (fishingShopGui != null && fishingShopGui.inventories.size() > 0)
             for (Player player : fishingShopGui.inventories.keySet()) {
                 fishingShopGui.closeInventory(fishingShopGui.inventories.get(player), player);
             }
@@ -76,7 +76,7 @@ public final class FishingPlus extends JavaPlugin {
     }
 
     private void registerCommands() {
-        getCommand("fishingplus").setExecutor(new MainCommand(this, catchHandler, fishingShop, fishingShopGui, runner));
+        getCommand("fishingplus").setExecutor(new MainCommand(this, catchHandler, fishingShopGui, runner));
     }
 
     // Sets the shop up and inventory listener if vault is hooked

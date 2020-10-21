@@ -41,7 +41,7 @@ public class RewardHandler {
     }
 
     // Gets a random reward from the competition map
-    Reward getRandomCompetitionReward() {
+    public Reward getRandomCompetitionReward() {
         double value = random.nextDouble() * totalCompetitionWeight;
         return competitionRewardMap.higherEntry(value).getValue();
     }
