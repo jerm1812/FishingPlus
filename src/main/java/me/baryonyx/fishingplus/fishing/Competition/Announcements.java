@@ -47,7 +47,7 @@ public class Announcements {
     }
 
     @NotNull
-    static String coloredMessage(String message) {
+    public static String coloredMessage(String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 

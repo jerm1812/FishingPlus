@@ -4,8 +4,8 @@ import me.baryonyx.fishingplus.FishingPlus;
 import me.baryonyx.fishingplus.handlers.CatchHandler;
 import me.baryonyx.fishingplus.fishing.Competition.Runner;
 import me.baryonyx.fishingplus.hooks.VaultHook;
-import me.baryonyx.fishingplus.shop.FishingShop;
-import me.baryonyx.fishingplus.shop.FishingShopGui;
+import me.baryonyx.fishingplus.fishing.shop.FishingShop;
+import me.baryonyx.fishingplus.fishing.shop.FishingShopGui;
 import me.baryonyx.fishingplus.utils.Messages;
 import me.baryonyx.fishingplus.utils.Permissions;
 import org.bukkit.command.Command;
@@ -19,14 +19,12 @@ import org.jetbrains.annotations.Nullable;
 public class MainCommand implements CommandExecutor {
     private FishingPlus plugin;
     private CatchHandler catchHandler;
-    private FishingShop fishingShop;
     private FishingShopGui fishingShopGui;
     private Runner runner;
 
-    public MainCommand(FishingPlus plugin, CatchHandler catchHandler, @Nullable FishingShop fishingShop, @Nullable FishingShopGui fishingShopGui, Runner runner) {
+    public MainCommand(FishingPlus plugin, CatchHandler catchHandler, @Nullable FishingShopGui fishingShopGui, Runner runner) {
         this.plugin = plugin;
         this.catchHandler = catchHandler;
-        this.fishingShop = fishingShop;
         this.fishingShopGui = fishingShopGui;
         this.runner = runner;
     }
@@ -39,18 +37,14 @@ public class MainCommand implements CommandExecutor {
             if (args.length == 0)
                 return helpCommand(player);
 
-            if (args[0].equals("competition") || args[0].equals("comp"))
+            if (args[0].equalsIgnoreCase("comp"))
                 return competitionCommand(player, args);
 
-            if (args[0].equals("test")) {
+            if (args[0].equalsIgnoreCase("test")) {
                 return testMap(player);
             }
 
-            if (args[0].equals("sellall")) {
-                return sellCommand(player);
-            }
-
-            if (args[0].equals("shop"))
+            if (args[0].equalsIgnoreCase("shop"))
                 return shopCommand((Player)sender);
         }
         else {
@@ -60,12 +54,7 @@ public class MainCommand implements CommandExecutor {
         return false;
     }
 
-    private boolean sellCommand(Player player) {
-        fishingShop.sellRewards(player.getInventory(), player);
-        return true;
-    }
-
-    private boolean shopCommand(Player player) {
+    private boolean shopCommand(@NotNull Player player) {
         if (!player.hasPermission(Permissions.shopAccess)) {
             player.sendMessage("You do not have permission to access the FishingPlus shop!");
             return true;
@@ -83,13 +72,15 @@ public class MainCommand implements CommandExecutor {
     }
 
     private boolean helpCommand(@NotNull Player player) {
-        //FIXME create a help message
         player.sendMessage(Messages.helpCommand);
         return true;
     }
 
-    private boolean competitionCommand(Player player, @NotNull String[] args) {
-        if (args.length == 2 && args[1].toLowerCase().equals("start")) {
+    private boolean competitionCommand(@NotNull Player player, @NotNull String[] args) {
+        if (args.length == 1) {
+            player.sendMessage(Messages.compHelp);
+        }
+        else if (args.length == 2 && args[1].toLowerCase().equalsIgnoreCase("start")) {
             if (!player.hasPermission(Permissions.mod) || !player.hasPermission(Permissions.startUntimedComp)) {
                 player.sendMessage("You do not have permission to start an un-timed FishingPlus competition!");
                 return true;
@@ -98,7 +89,7 @@ public class MainCommand implements CommandExecutor {
             runner.startUndefinedCompetition();
             return true;
         }
-        else if (args.length == 2 && args[1].toLowerCase().equals("stop")) {
+        else if (args.length == 2 && args[1].toLowerCase().equalsIgnoreCase("end")) {
             if (!player.hasPermission(Permissions.mod) || !player.hasPermission(Permissions.endComp)) {
                 player.sendMessage("You do not have permission to end a FishingPlus competition!");
                 return true;
@@ -107,7 +98,7 @@ public class MainCommand implements CommandExecutor {
             runner.stopCompetition();
             return true;
         }
-        else if (args.length == 3 && args[1].toLowerCase().equals("start")) {
+        else if (args.length == 3 && args[1].toLowerCase().equalsIgnoreCase("start")) {
             if (!player.hasPermission(Permissions.mod) || !player.hasPermission(Permissions.startComp)) {
                 player.sendMessage("You do not have permission to start a FishingPlus competition!");
                 return true;
@@ -131,6 +122,4 @@ public class MainCommand implements CommandExecutor {
 
         return true;
     }
-
-    //TODO create commands to add and remove fish
 }

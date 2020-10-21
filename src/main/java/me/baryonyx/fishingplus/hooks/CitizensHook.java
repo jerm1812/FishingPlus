@@ -1,7 +1,7 @@
 package me.baryonyx.fishingplus.hooks;
 
 import me.baryonyx.fishingplus.FishingPlus;
-import me.baryonyx.fishingplus.shop.CitizensShop;
+import me.baryonyx.fishingplus.fishing.shop.CitizensShop;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.trait.TraitInfo;
 import org.bukkit.Bukkit;

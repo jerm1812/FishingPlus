@@ -1,4 +1,4 @@
-package me.baryonyx.fishingplus.shop;
+package me.baryonyx.fishingplus.fishing.shop;
 
 import me.baryonyx.fishingplus.exceptions.RewardNotInMap;
 import me.baryonyx.fishingplus.fishing.Reward;

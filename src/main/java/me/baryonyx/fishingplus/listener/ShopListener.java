@@ -1,8 +1,8 @@
 package me.baryonyx.fishingplus.listener;
 
 import me.baryonyx.fishingplus.handlers.ItemHandler;
-import me.baryonyx.fishingplus.shop.FishingShop;
-import me.baryonyx.fishingplus.shop.FishingShopGui;
+import me.baryonyx.fishingplus.fishing.shop.FishingShop;
+import me.baryonyx.fishingplus.fishing.shop.FishingShopGui;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

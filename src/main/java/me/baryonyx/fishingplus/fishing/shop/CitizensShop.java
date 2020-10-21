@@ -1,4 +1,4 @@
-package me.baryonyx.fishingplus.shop;
+package me.baryonyx.fishingplus.fishing.shop;
 
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.trait.Trait;

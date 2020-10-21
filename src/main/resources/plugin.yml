@@ -10,14 +10,4 @@ commands:
     description: command for fishing plus
     aliases: [fp, fishplus]
     permission: fishingplus.use
-    usage: /fishingplus {command}
-
-permissions:
-  fishingplus.admin:
-    default: op
-    description: Allows all FishingPlus commands
-    children:
-
-
-    #TODO setup commands in plugin.yml when commands are setup
-    #TODO create more descriptive plugin.yml
+    usage: /fishingplus [help|comp]
