@@ -16,6 +16,9 @@ broadcast-prefix: "&8[&r&bFishingPlus&8] &6-&r "
 # Minimum amount of people to participate in a competition
 minimum-fishers: 3
 
+# Run a fishing competition every x number of minutes. Enter 0 for never
+competition-delay: 30
+
 
 #### REWARDS ####
 

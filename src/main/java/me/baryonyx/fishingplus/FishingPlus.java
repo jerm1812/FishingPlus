@@ -6,6 +6,7 @@ import me.baryonyx.fishingplus.configuration.RewardConfiguration;
 import me.baryonyx.fishingplus.fishing.Competition.Announcements;
 import me.baryonyx.fishingplus.fishing.Competition.Competition;
 import me.baryonyx.fishingplus.fishing.Competition.Runner;
+import me.baryonyx.fishingplus.fishing.Competition.TimerBar;
 import me.baryonyx.fishingplus.hooks.CitizensHook;
 import me.baryonyx.fishingplus.listener.FishingListener;
 import me.baryonyx.fishingplus.handlers.*;
@@ -22,6 +23,7 @@ import java.io.File;
 public final class FishingPlus extends JavaPlugin {
     private final Config config = new Config(this);
     private RewardConfiguration rewardConfiguration = new RewardConfiguration(this);
+    private TimerBar timerBar = new TimerBar(this);
     private Competition competition = new Competition();
     private ModifierHandler modifierHandler = new ModifierHandler();
     private ItemHandler itemHandler;
@@ -40,7 +42,7 @@ public final class FishingPlus extends JavaPlugin {
         itemHandler = new ItemHandler(config, this);
         rewardHandler = new RewardHandler(config);
         catchHandler = new CatchHandler(this, rewardConfiguration, config, rewardHandler, itemHandler, modifierHandler);
-        runner = new Runner(this, config, competition, itemHandler, rewardHandler, announcements);
+        runner = new Runner(this, config, competition, itemHandler, rewardHandler, announcements, timerBar);
 
 
         setupHooks();

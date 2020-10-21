@@ -200,7 +200,7 @@ public class CatchHandler {
         if (reward instanceof Fish)
             item = itemHandler.createFishItem(reward.name, player.getName(), rewardHandler.generateWeightedLength((Fish)reward));
         else
-            item = itemHandler.createRewardItem(reward.name, player.getName());
+            item = itemHandler.createRewardItem(reward.name, player.getName(), true);
 
 
         if (item == null)

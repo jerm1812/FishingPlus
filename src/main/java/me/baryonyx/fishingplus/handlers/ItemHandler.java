@@ -64,12 +64,12 @@ public class ItemHandler {
 
     // Creates a FishingPlus reward item with persistent data
     @Nullable
-    public ItemStack createRewardItem(String itemName, String playerName, boolean displayCaught) {
+    public ItemStack createRewardItem(String itemName, String playerName, boolean catchEvent) {
         ItemStack item = getItemFromMap(itemName);
 
         if (item == null) return null;
 
-        if (config.getDisplayWhoCaught() && displayCaught) {
+        if (config.getDisplayWhoCaught() && catchEvent) {
             addLoreToItemReward(item, "&7" + playerName + " caught this!");
         }
 

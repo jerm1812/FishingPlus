@@ -3,9 +3,6 @@ package me.baryonyx.fishingplus.fishing.Competition;
 import me.baryonyx.fishingplus.FishingPlus;
 import me.baryonyx.fishingplus.configuration.Config;
 import me.baryonyx.fishingplus.exceptions.InvalidCompetitionStateException;
-import me.baryonyx.fishingplus.fishing.Competition.Announcements;
-import me.baryonyx.fishingplus.fishing.Competition.Competition;
-import me.baryonyx.fishingplus.fishing.Competition.Entry;
 import me.baryonyx.fishingplus.fishing.Fish;
 import me.baryonyx.fishingplus.fishing.Modifier;
 import me.baryonyx.fishingplus.fishing.Reward;
@@ -25,22 +22,25 @@ public class Runner {
     private ItemHandler itemHandler;
     private RewardHandler rewardHandler;
     private Announcements announcements;
+    private TimerBar timerBar;
     private boolean fiveMinuteWarning = false;
 
 
-    public Runner(FishingPlus plugin, Config config, Competition competition, ItemHandler itemHandler, RewardHandler rewardHandler, Announcements announcements) {
+    public Runner(FishingPlus plugin, Config config, Competition competition, ItemHandler itemHandler, RewardHandler rewardHandler, Announcements announcements, TimerBar timerBar) {
         this.plugin = plugin;
         this.config = config;
         this.competition = competition;
         this.itemHandler = itemHandler;
         this.rewardHandler = rewardHandler;
         this.announcements = announcements;
+        this.timerBar = timerBar;
     }
 
     public void startTimedCompetition(Long time) {
         try {
             competition.startCompetition();
             plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, this::stopCompetition, time * 20 * 60);
+            timerBar.startTimer(time);
 
             if (time > 5) {
                 //FIXME change it so time is a linked list maybe?
@@ -69,6 +69,7 @@ public class Runner {
         try {
             List<Entry> entries = sortCompetitionMap(competition.getCompetitionStats());
             competition.stopCompetition();
+            timerBar.removeTimer();
             announcements.broadcastCompetitionEnd();
             handleResults(entries);
             fiveMinuteWarning = false;
@@ -119,7 +120,6 @@ public class Runner {
         }
     }
 
-    //TODO add a boss bar for the timer
     private void competitionTimeWarning() {
         //FIXME make this so it is not bad
         if (!fiveMinuteWarning) {
@@ -138,9 +138,8 @@ public class Runner {
             return;
 
         String name = itemHandler.getRewardName(item);
-        String modifier = itemHandler.getModifierName(item);
         double length = itemHandler.getFishLength(item);
 
-        competition.logFish(player, new Fish(name, length), new Modifier(modifier));
+        competition.logFish(player, new Fish(name, length));
     }
 }
