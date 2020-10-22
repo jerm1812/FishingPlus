@@ -41,6 +41,7 @@ public class TimerBar {
     // Stops the boss bar timer
     void removeTimer() {
         updater.cancel();
+        bar.setProgress(0);
         HandlerList.unregisterAll(competitionTimerListener);
         bar.removeAll();
         plugin.getServer().removeBossBar(key);
@@ -50,6 +51,11 @@ public class TimerBar {
     // Method to update the health bar and title
     private void updateTimer() {
         timeLeft--;
+
+        if (timeLeft < 0) {
+            return;
+        }
+
         bar.setTitle(Announcements.coloredMessage("&b&lFishing Contest &r[" + getTime() + "left]"));
         bar.setProgress(timeLeft.doubleValue() / totalTime);
     }

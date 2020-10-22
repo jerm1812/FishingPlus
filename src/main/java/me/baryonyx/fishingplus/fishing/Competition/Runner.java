@@ -11,9 +11,11 @@ import me.baryonyx.fishingplus.handlers.RewardHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.logging.Level;
 
 public class Runner {
     private final FishingPlus plugin;
@@ -23,7 +25,6 @@ public class Runner {
     private RewardHandler rewardHandler;
     private Announcements announcements;
     private TimerBar timerBar;
-    private boolean fiveMinuteWarning = false;
 
 
     public Runner(FishingPlus plugin, Config config, Competition competition, ItemHandler itemHandler, RewardHandler rewardHandler, Announcements announcements, TimerBar timerBar) {
@@ -34,21 +35,18 @@ public class Runner {
         this.rewardHandler = rewardHandler;
         this.announcements = announcements;
         this.timerBar = timerBar;
+
+        autoRunner();
     }
 
+    // Starts a competition with a defined ending if one is not already started
     public void startTimedCompetition(Long time) {
         try {
             competition.startCompetition();
             plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, this::stopCompetition, time * 20 * 60);
             timerBar.startTimer(time);
-
-            if (time > 5) {
-                //FIXME change it so time is a linked list maybe?
-                plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, this::competitionTimeWarning, (time - 5) * 20 * 60);
-                plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, this::competitionTimeWarning, (time - 1) * 20 * 60);
-            }
-
             announcements.broadcastCompetitionStart(time);
+            Bukkit.getLogger().log(Level.INFO, "Starting!");
         } catch (InvalidCompetitionStateException e) {
             Bukkit.getLogger().info("Could not start a fishing competition because there is already one running!");
         }
@@ -72,7 +70,6 @@ public class Runner {
             timerBar.removeTimer();
             announcements.broadcastCompetitionEnd();
             handleResults(entries);
-            fiveMinuteWarning = false;
         } catch (InvalidCompetitionStateException e) {
             Bukkit.getLogger().info("Could not stop the fishing competition because there no competition running!");
         }
@@ -120,26 +117,27 @@ public class Runner {
         }
     }
 
-    private void competitionTimeWarning() {
-        //FIXME make this so it is not bad
-        if (!fiveMinuteWarning) {
-            announcements.broadcastCompetitionTimeLeft(5);
-            fiveMinuteWarning = true;
-        }
-        else {
-            announcements.broadcastCompetitionTimeLeft(1);
-        }
-    }
-
     // Creates an entry for fishing competition
     public void logFish(Player player, ItemStack item) {
         // Canceling if reward is not a fish
-        if (!itemHandler.isFish(item))
+        if (!itemHandler.isFish(item)) {
             return;
+        }
 
         String name = itemHandler.getRewardName(item);
         double length = itemHandler.getFishLength(item);
 
         competition.logFish(player, new Fish(name, length));
+    }
+
+    private void autoRunner() {
+        int minutes = config.getCompetitionDelay() * 60 * 20;
+
+        plugin.getServer().getScheduler().runTaskTimer(plugin, this::run, minutes, minutes);
+    }
+
+    private void run() {
+        long duration = config.getCompetitionDuration();
+        startTimedCompetition(duration);
     }
 }
