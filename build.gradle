@@ -21,6 +21,18 @@ repositories {
         url = 'http://repo.citizensnpcs.co/'
     }
     maven { url 'https://jitpack.io' }
+    maven {
+        name = "Sponge"
+        url = "http://repo.spongepowered.org/maven"
+    }
+    maven {
+        name = "Forge"
+        url = "http://files.minecraftforge.net/maven"
+    }
+    maven {
+        name = "coreprotect"
+        url = "https://maven.playpro.com"
+    }
 }
 
 configurations {
@@ -34,6 +46,9 @@ dependencies {
     compile 'org.jetbrains:annotations:13.0'
     compile 'net.citizensnpcs:citizensapi:2.0.27-SNAPSHOT'
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
+    compile 'net.coreprotect:coreprotect:2.18.2'
+    compile 'org.spongepowered:spongeapi:5.1.0'
+    compile 'me.ryanhamshire:griefprevention:1.10.2-4.0.1.451:api'
 }
 
 import org.apache.tools.ant.filters.ReplaceTokens
