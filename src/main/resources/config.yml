@@ -17,7 +17,10 @@ broadcast-prefix: "&8[&r&bFishingPlus&8] &6-&r "
 minimum-fishers: 3
 
 # Run a fishing competition every x number of minutes. Enter 0 for never
-competition-delay: 30
+competition-delay: 2
+
+# How long the auto run competitions will last
+competition-duration: 1
 
 
 #### REWARDS ####

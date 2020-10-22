@@ -66,4 +66,12 @@ public class Config {
     public int getMinimumParticipants() {
         return config.getInt("minimum-fishers");
     }
+
+    public int getCompetitionDelay() {
+        return config.getInt("competition-delay");
+    }
+
+    public int getCompetitionDuration() {
+        return config.getInt("competition-duration");
+    }
 }
