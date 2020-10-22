@@ -7,4 +7,5 @@ public class Permissions {
     public static String startUntimedComp = "fishingplus.competition.start.untimed";
     public static String endComp = "fishingplus.competition.stop";
     public static String shopAccess = "fishingplus.shop";
+    public static String sellAll = "fishingplus.sellall";
 }

@@ -78,7 +78,7 @@ public final class FishingPlus extends JavaPlugin {
     }
 
     private void registerCommands() {
-        getCommand("fishingplus").setExecutor(new MainCommand(this, catchHandler, fishingShopGui, runner));
+        getCommand("fishingplus").setExecutor(new MainCommand(this, catchHandler, fishingShop, fishingShopGui, runner));
     }
 
     // Sets the shop up and inventory listener if vault is hooked

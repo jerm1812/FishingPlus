@@ -12,7 +12,7 @@ public class VaultHook {
 
     // Hooks vault
     public static boolean hook(@NotNull FishingPlus plugin) {
-        RegisteredServiceProvider<Economy> service =  plugin.getServer().getServicesManager().getRegistration(Economy.class);
+        RegisteredServiceProvider<Economy> service = plugin.getServer().getServicesManager().getRegistration(Economy.class);
 
         if (service == null)
             return false;
