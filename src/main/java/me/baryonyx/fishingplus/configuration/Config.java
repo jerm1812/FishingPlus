@@ -4,6 +4,9 @@ import me.baryonyx.fishingplus.FishingPlus;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalTime;
+import java.util.List;
+
 public class Config {
     private FileConfiguration config;
 
@@ -19,28 +22,16 @@ public class Config {
         return config.getBoolean("display-who-caught");
     }
 
-    public String getRewardPrefix() {
-        return config.getString("reward-prefix");
-    }
-
-    public String getRewardSuffix() {
-        return config.getString("reward-suffix");
+    public String getRewardNames() {
+        return config.getString("reward-names");
     }
 
     public boolean getAllowModifiers() {
         return config.getBoolean("enable-modifiers");
     }
 
-    public String getModifierPrefix() {
-        return config.getString("modifier-prefix");
-    }
-
-    public String getModifierSuffix() {
-        return config.getString("modifier-suffix");
-    }
-
-    public boolean getModifierAddition() {
-        return config.getBoolean("price-increase-addition");
+    public String getModifierNames() {
+        return config.getString("modifier-names");
     }
 
     public boolean rewardsOnlyDuringCompetition() {
@@ -56,22 +47,34 @@ public class Config {
     }
 
     public String getBroadcastPrefix() {
-        return config.getString("broadcast-prefix");
+        return config.getString("message-prefix");
     }
 
     public int getAmountOfWinnersDisplayed() {
-        return config.getInt("amount-displayed");
+        return config.getInt("players-displayed");
     }
 
     public int getMinimumParticipants() {
         return config.getInt("minimum-fishers");
     }
 
-    public int getCompetitionDelay() {
-        return config.getInt("competition-delay");
-    }
-
     public int getCompetitionDuration() {
         return config.getInt("competition-duration");
+    }
+
+    public List<String> getCompetitionRunTimes() {
+        return config.getStringList("competition-run-times");
+    }
+
+    public double getPriceMultiplier() {
+        return config.getDouble("price-multiplier");
+    }
+
+    public String getShopSellMessage() {
+        return config.getString("sell-message");
+    }
+
+    public String getShopName() {
+        return config.getString("shop-name");
     }
 }

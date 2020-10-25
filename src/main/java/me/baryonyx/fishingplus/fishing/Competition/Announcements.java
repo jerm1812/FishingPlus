@@ -3,6 +3,7 @@ package me.baryonyx.fishingplus.fishing.Competition;
 import me.baryonyx.fishingplus.configuration.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class Announcements {
@@ -31,11 +32,6 @@ public class Announcements {
         }
     }
 
-    // Broadcast for competition ending warning
-    public void broadcastCompetitionTimeLeft(int minutes) {
-        Bukkit.broadcastMessage(coloredMessage(prefix + "&7There is " + minutes + " minutes left in the fishing competition!"));
-    }
-
     // Broadcast for player results
     public void broadcastCompetitionResults(String player, String place, String fish, double length) {
         Bukkit.broadcastMessage(coloredMessage(prefix + "&7" + place + " : " + player + ", " + length + " " + fish));
@@ -44,6 +40,11 @@ public class Announcements {
     // Broadcast for when a competition ends without enough participants
     public void broadcastNotEnoughParticipants() {
         Bukkit.broadcastMessage(coloredMessage(prefix + "&7Not enough players joined the competition!"));
+    }
+
+    // Sends a player a message telling them what fish they caught
+    void messagePlayerCaughtFish(Player player, String fish, double length) {
+        player.sendMessage(coloredMessage(prefix + "&7You caught a " + fish + " that is " + length + " inches."));
     }
 
     @NotNull
