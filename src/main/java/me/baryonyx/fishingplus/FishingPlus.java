@@ -21,13 +21,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 
 public final class FishingPlus extends JavaPlugin {
-    private final Config config = new Config(this);
-    private RewardConfiguration rewardConfiguration = new RewardConfiguration(this);
-    private TimerBar timerBar = new TimerBar(this);
-    private Competition competition = new Competition();
-    private ModifierHandler modifierHandler = new ModifierHandler();
+    private Config config;
     private ItemHandler itemHandler;
-    private RewardHandler rewardHandler;
     private CatchHandler catchHandler;
     private Runner runner;
     private FishingShop fishingShop;
@@ -38,12 +33,16 @@ public final class FishingPlus extends JavaPlugin {
         // Plugin startup logic
         checkFiles();
 
+        config = new Config(this);
+        TimerBar timerBar = new TimerBar(this);
+        Competition competition = new Competition();
+        ModifierHandler modifierHandler = new ModifierHandler();
         Announcements announcements = new Announcements(config);
+        RewardConfiguration rewardConfiguration = new RewardConfiguration(this);
         itemHandler = new ItemHandler(config, this);
-        rewardHandler = new RewardHandler(config);
+        RewardHandler rewardHandler = new RewardHandler(config);
         catchHandler = new CatchHandler(this, rewardConfiguration, config, rewardHandler, itemHandler, modifierHandler);
         runner = new Runner(this, config, competition, itemHandler, rewardHandler, announcements, timerBar);
-
 
         setupHooks();
         setupShop();
@@ -59,7 +58,9 @@ public final class FishingPlus extends JavaPlugin {
                 fishingShopGui.closeInventory(fishingShopGui.inventories.get(player), player);
             }
 
-        runner.stopCompetition();
+        if (Competition.isRunning()) {
+            runner.stopCompetition();
+        }
     }
 
     // Saves default config and rewards config if they do not exist
@@ -68,8 +69,9 @@ public final class FishingPlus extends JavaPlugin {
         if (!file.exists())
             saveDefaultConfig();
         file = new File(this.getDataFolder(), "rewards.yml");
-        if (!file.exists())
+        if (!file.exists()) {
             saveResource("rewards.yml", false);
+        }
     }
 
     private void registerEvents() {
@@ -84,8 +86,8 @@ public final class FishingPlus extends JavaPlugin {
     // Sets the shop up and inventory listener if vault is hooked
     private void setupShop() {
         if (VaultHook.isHooked) {
-            fishingShop = new FishingShop(itemHandler, rewardHandler);
-            fishingShopGui = new FishingShopGui(fishingShop, itemHandler, this);
+            fishingShop = new FishingShop(itemHandler, config);
+            fishingShopGui = new FishingShopGui(fishingShop, itemHandler, this, config);
             getServer().getPluginManager().registerEvents(new ShopListener(fishingShopGui, fishingShop, itemHandler), this);
         }
     }

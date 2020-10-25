@@ -2,7 +2,6 @@ package me.baryonyx.fishingplus.fishing.Competition;
 
 import me.baryonyx.fishingplus.exceptions.InvalidCompetitionStateException;
 import me.baryonyx.fishingplus.fishing.Fish;
-import me.baryonyx.fishingplus.fishing.Modifier;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;

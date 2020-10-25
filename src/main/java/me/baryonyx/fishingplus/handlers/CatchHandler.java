@@ -6,11 +6,13 @@ import me.baryonyx.fishingplus.configuration.RewardConfiguration;
 import me.baryonyx.fishingplus.exceptions.InvalidFishLengthException;
 import me.baryonyx.fishingplus.exceptions.ItemNotFoundException;
 import me.baryonyx.fishingplus.exceptions.NoChanceToCatchException;
+import me.baryonyx.fishingplus.exceptions.NoFishInModifierException;
 import me.baryonyx.fishingplus.fishing.Fish;
 import me.baryonyx.fishingplus.fishing.Modifier;
 import me.baryonyx.fishingplus.fishing.Reward;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -18,6 +20,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class CatchHandler {
     private final FishingPlus plugin;
@@ -85,27 +89,31 @@ public class CatchHandler {
     private void loadRewardToMaps(@NotNull ConfigurationSection section, String key, boolean isFishingReward ) {
         try {
             Reward reward;
-            String displayName = section.getString(key + ".display-name", key);
-            double price = section.getDouble(key + ".price", 0);
+            String displayName = getRewardDisplayName(section, key);
             int amount = section.getInt(key + ".item.amount", 1);
             List<String> lore = section.getStringList(key + ".item.lore");
+            List<String> commands = section.getStringList(key + ".commands");
             Material material = getRewardMaterial(section, key);
-            double chance = getCatchChance(section, key);
+            double chance = getCatchChance(section, key, isFishingReward);
             double maxLength = getMaxFishLength(section, key);
             double minLength = getMinFishLength(section, key);
 
-            if (maxLength == 0)
-                reward = new Reward(key, chance, price);
-            else
-                reward = new Fish(key, chance, price, minLength, maxLength);
+            if (maxLength == 0) {
+                reward = new Reward(key, chance, commands);
+
+            }
+            else {
+                reward = new Fish(key, chance, commands, minLength, maxLength);
+            }
 
             // Adds the reward to the correct map
             if (isFishingReward) {
                 rewardHandler.addFishingRewardToMap(reward);
             }
             else {
-                rewardHandler.addCompetitionRewardToMap(reward);
+                rewardHandler.addCompetitionRewardToMap(reward, key);
             }
+
             // Adds the item to the item map
             itemHandler.addItemToMap(key, displayName, material, amount, lore);
         } catch (ItemNotFoundException e) {
@@ -125,41 +133,64 @@ public class CatchHandler {
         try {
             String displayName = getModifierDisplayName(section, key);
             double priceIncrease = section.getDouble(key + ".price-increase", 0);
-            double chance = getCatchChance(section, key);
+            double chance = getCatchChance(section, key, true);
+            List<String> modifiersFish = getModifiersFish(section, key);
+
+            // Adds the list of possible modifiers to a reward
+            for (String name : modifiersFish) {
+                Reward reward = rewardHandler.getFishingReward(name);
+
+                if (reward != null && name != null) {
+                    reward.modifiers.add(key);
+                }
+            }
 
             modifierHandler.addToMap(new Modifier(key, displayName, priceIncrease, chance));
         } catch (NoChanceToCatchException e) {
             Bukkit.getLogger().warning("There is no chance to get the modifier " + e.getRewardName()
                     + ". Leaving it out of the modifier map");
+        } catch (NoFishInModifierException e) {
+            Bukkit.getLogger().warning("This is no chance to get the modifier " + e.getModifier() + " because it has no fish." +
+                    " Leaving it out of the modifier map");
         }
+    }
+
+    // Gets a reward's display name
+    private String getRewardDisplayName(@NotNull ConfigurationSection section, @NotNull String name) {
+        String displayName = config.getRewardNames();
+        String rewardName = section.getString(name + ".display-name", name);
+        return displayName.replace("%reward-name%", rewardName);
     }
 
     // Gets a fish's minimum length from a yaml section
     private double getMinFishLength(@NotNull ConfigurationSection section, @NotNull String name) throws InvalidFishLengthException {
-        double minLength = section.getDouble(name + ".min-length");
+        double minLength = section.getDouble(name + ".length.min");
 
-        if (minLength < 0)
+        if (minLength < 0) {
             throw new InvalidFishLengthException(name, minLength);
+        }
 
         return minLength;
     }
 
     // Gets a fish's maximum length from a yaml section
     private double getMaxFishLength(@NotNull ConfigurationSection section, @NotNull String name) throws InvalidFishLengthException {
-        double maxLength = section.getDouble(name + ".max-length");
+        double maxLength = section.getDouble(name + ".length.max");
 
-        if (maxLength < 0)
+        if (maxLength < 0) {
             throw new InvalidFishLengthException(name, maxLength);
+        }
 
         return maxLength;
     }
 
     // Gets a reward's chance to be caught
-    private double getCatchChance(@NotNull ConfigurationSection section, @NotNull String name) throws NoChanceToCatchException {
+    private double getCatchChance(@NotNull ConfigurationSection section, @NotNull String name, boolean isFishingReward) throws NoChanceToCatchException {
         double chance = section.getDouble(name + ".chance");
 
-        if (chance == 0)
+        if (chance == 0 && isFishingReward) {
             throw new NoChanceToCatchException(name);
+        }
 
         return chance;
     }
@@ -169,13 +200,15 @@ public class CatchHandler {
     private Material getRewardMaterial(@NotNull ConfigurationSection section, @NotNull String name) throws ItemNotFoundException {
         String itemName = section.getString(name + ".item.id");
 
-        if (itemName == null)
+        if (itemName == null) {
             throw new ItemNotFoundException(null, name);
+        }
 
         Material material = Material.matchMaterial(itemName);
 
-        if (material == null)
+        if (material == null) {
             throw new ItemNotFoundException(itemName, name);
+        }
 
         return material;
     }
@@ -185,28 +218,39 @@ public class CatchHandler {
     @NotNull
     private String getModifierDisplayName(@NotNull ConfigurationSection section, String key) {
         String displayName = section.getString(key + ".display-name", "");
-        if (displayName != null && !displayName.equals(""))
-            return config.getModifierPrefix() + displayName + config.getModifierSuffix();
+        if (displayName != null && !displayName.equals("")) {
+            return config.getModifierNames().replace("%modifier-name%", displayName);
+        }
+
         return "";
+    }
+
+    private List<String> getModifiersFish(@NotNull ConfigurationSection section, String key) throws NoFishInModifierException {
+        List<String> modifiersFish = section.getStringList(key + ".fish");
+
+        if (modifiersFish.isEmpty()) {
+            throw new NoFishInModifierException(key);
+        }
+
+        return modifiersFish;
     }
 
     // Replaces caught fish with a FishingPlus reward
     @Nullable
     public ItemStack handleCatchEvent(Player player) {
         Reward reward = rewardHandler.getRandomFishingReward();
-        Modifier modifier = modifierHandler.getRandomModifier();
+        Modifier modifier = modifierHandler.getRandomPossibleModifier(reward);
+        rewardHandler.runCommands(reward, player);
         ItemStack item;
 
-        if (reward instanceof Fish)
+        if (reward instanceof Fish) {
             item = itemHandler.createFishItem(reward.name, player.getName(), rewardHandler.generateWeightedLength((Fish)reward));
-        else
+        }
+        else {
             item = itemHandler.createRewardItem(reward.name, player.getName(), true);
+        }
 
-
-        if (item == null)
-            return null;
-
-        if (modifier != null) {
+        if (item != null && modifier != null) {
             itemHandler.addModifierToItem(item, modifier.displayName);
         }
 

@@ -4,18 +4,17 @@ import me.baryonyx.fishingplus.FishingPlus;
 import me.baryonyx.fishingplus.configuration.Config;
 import me.baryonyx.fishingplus.exceptions.InvalidCompetitionStateException;
 import me.baryonyx.fishingplus.fishing.Fish;
-import me.baryonyx.fishingplus.fishing.Modifier;
 import me.baryonyx.fishingplus.fishing.Reward;
 import me.baryonyx.fishingplus.handlers.ItemHandler;
 import me.baryonyx.fishingplus.handlers.RewardHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.*;
-import java.util.logging.Level;
 
 public class Runner {
     private final FishingPlus plugin;
@@ -25,6 +24,7 @@ public class Runner {
     private RewardHandler rewardHandler;
     private Announcements announcements;
     private TimerBar timerBar;
+    private List<LocalTime> runTimes = new ArrayList<>();
 
 
     public Runner(FishingPlus plugin, Config config, Competition competition, ItemHandler itemHandler, RewardHandler rewardHandler, Announcements announcements, TimerBar timerBar) {
@@ -46,7 +46,6 @@ public class Runner {
             plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, this::stopCompetition, time * 20 * 60);
             timerBar.startTimer(time);
             announcements.broadcastCompetitionStart(time);
-            Bukkit.getLogger().log(Level.INFO, "Starting!");
         } catch (InvalidCompetitionStateException e) {
             Bukkit.getLogger().info("Could not start a fishing competition because there is already one running!");
         }
@@ -67,7 +66,11 @@ public class Runner {
         try {
             List<Entry> entries = sortCompetitionMap(competition.getCompetitionStats());
             competition.stopCompetition();
-            timerBar.removeTimer();
+
+            if (timerBar.bar != null) {
+                timerBar.removeTimer();
+            }
+
             announcements.broadcastCompetitionEnd();
             handleResults(entries);
         } catch (InvalidCompetitionStateException e) {
@@ -90,8 +93,6 @@ public class Runner {
         }
 
         int size = config.getAmountOfWinnersDisplayed();
-        //FIXME Replace this with an ordinal number function
-        String[] sfx = new String[] { "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th" };
 
         // Caps size to competition players
         if (entries.size() < size) {
@@ -101,19 +102,38 @@ public class Runner {
         // Sends winners to be displayed
         for (int i = 0; i < size; i++) {
             Entry entry = entries.get(i);
-            announcements.broadcastCompetitionResults(entry.player.getName(), sfx[i], entry.fish.name, entry.fish.actualLength);
-            giveCompetitionReward(entry.player);
+            announcements.broadcastCompetitionResults(entry.player.getName(), ordinal(i + 1), entry.fish.name, entry.fish.actualLength);
+            giveCompetitionReward(entry.player, i + 1);
+        }
+    }
+
+    // Returns the ordinal of a number
+    private String ordinal(int i)  {
+        String[] suffixes = new String[] { "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th" };
+        switch (i % 100) {
+            case 11:
+            case 12:
+            case 13:
+                return i + "th";
+            default:
+                return i + suffixes[i % 10];
+
         }
     }
 
     // Gives a player a competition reward
-    private void giveCompetitionReward(@NotNull Player player) {
-        Reward reward = rewardHandler.getRandomCompetitionReward();
+    private void giveCompetitionReward(@NotNull Player player, int i) {
+        Reward reward = rewardHandler.getCompetitionReward(i);
         ItemStack item = itemHandler.createRewardItem(reward.name, player.getName(), false);
-        Map<Integer, ItemStack> items = player.getInventory().addItem(item);
+        rewardHandler.runCommands(reward, player);
 
-        for (ItemStack drop : items.values()) {
-            player.getWorld().dropItemNaturally(player.getLocation(), drop);
+        if (item != null) {
+            Map<Integer, ItemStack> items = player.getInventory().addItem(item);
+
+            // drops items on floor if the inventory is too full
+            for (ItemStack drop : items.values()) {
+                player.getWorld().dropItemNaturally(player.getLocation(), drop);
+            }
         }
     }
 
@@ -127,17 +147,30 @@ public class Runner {
         String name = itemHandler.getRewardName(item);
         double length = itemHandler.getFishLength(item);
 
+        announcements.messagePlayerCaughtFish(player, name, length);
         competition.logFish(player, new Fish(name, length));
     }
 
+    // Sets up the competition run times
     private void autoRunner() {
-        int minutes = config.getCompetitionDelay() * 60 * 20;
+        for (String string : config.getCompetitionRunTimes()) {
+            try {
+                LocalTime time = LocalTime.parse(string);
+                runTimes.add(time);
+            } catch (DateTimeParseException e) {
+                Bukkit.getLogger().warning("Could not add the time: " + e.getParsedString() + " to the Fishing Competition auto runner");
+            }
+        }
 
-        plugin.getServer().getScheduler().runTaskTimer(plugin, this::run, minutes, minutes);
+        // Checks time to run every 45 seconds
+        plugin.getServer().getScheduler().runTaskTimer(plugin, this::run, 0, 900);
     }
 
+    // Runs a fishing competition at the defined times of day
     private void run() {
-        long duration = config.getCompetitionDuration();
-        startTimedCompetition(duration);
+        if (runTimes.contains(LocalTime.now().withSecond(0).withNano(0))) {
+            long duration = config.getCompetitionDuration();
+            startTimedCompetition(duration);
+        }
     }
 }

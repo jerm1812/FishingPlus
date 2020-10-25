@@ -1,12 +1,9 @@
 package me.baryonyx.fishingplus.fishing.shop;
 
-import me.baryonyx.fishingplus.exceptions.RewardNotInMap;
-import me.baryonyx.fishingplus.fishing.Reward;
+import me.baryonyx.fishingplus.configuration.Config;
 import me.baryonyx.fishingplus.handlers.ItemHandler;
-import me.baryonyx.fishingplus.handlers.RewardHandler;
 import me.baryonyx.fishingplus.hooks.VaultHook;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -17,12 +14,12 @@ import java.util.Map;
 
 public class FishingShop {
     private ItemHandler itemHandler;
-    private RewardHandler rewardHandler;
+    private Config config;
     private Economy economy;
 
-    public FishingShop(ItemHandler itemHandler, RewardHandler rewardHandler) {
+    public FishingShop(ItemHandler itemHandler, Config config) {
         this.itemHandler = itemHandler;
-        this.rewardHandler = rewardHandler;
+        this.config = config;
         this.economy = VaultHook.getEconomy();
     }
 
@@ -37,7 +34,7 @@ public class FishingShop {
 
         if (total > 0) {
             economy.depositPlayer(player, total);
-            player.sendMessage("You sold your rewards for: " + total);
+            player.sendMessage(config.getBroadcastPrefix() + config.getShopSellMessage().replace("%total%", String.valueOf(total)));
         }
     }
 
@@ -46,18 +43,10 @@ public class FishingShop {
         Map<ItemStack, Double> map = new HashMap<>();
 
         for (ItemStack item : inventory.getContents()) {
-            try {
-                if (item != null && itemHandler.isReward(item)) {
-                    String name = itemHandler.getRewardName(item);
-                    Reward reward = rewardHandler.getFishingReward(name);
-
-                    if (reward == null)
-                        throw new RewardNotInMap(name);
-
-                    map.put(item, reward.price);
-                }
-            } catch (RewardNotInMap e) {
-                Bukkit.getLogger().warning("Could not find " + e.getName() + " in the reward map");
+            if (item != null && itemHandler.isReward(item)) {
+                double length = itemHandler.getFishLength(item);
+                double price = config.getPriceMultiplier() * length * item.getAmount();
+                map.put(item, price);
             }
         }
 
