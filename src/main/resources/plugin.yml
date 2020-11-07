@@ -4,13 +4,10 @@ main: me.baryonyx.fishingplus.FishingPlus
 api-version: 1.16
 authors: [Jerm1812]
 description: A plugin to create custome fishing rewards and fishing compeitions
-softdepend: [Vault, Citizens]
+softdepend: [Vault]
 commands:
   fishingplus:
     description: command for fishing plus
     aliases: [fp, fishplus]
     permission: fishingplus.use
-    usage: /fishingplus {command}
-
-    #TODO setup commands in plugin.yml when commands are setup
-    #TODO create more descriptive plugin.yml
+    usage: /fishingplus [help|comp]

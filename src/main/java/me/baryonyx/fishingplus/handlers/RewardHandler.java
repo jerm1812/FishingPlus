@@ -1,44 +1,51 @@
 package me.baryonyx.fishingplus.handlers;
 
 import me.baryonyx.fishingplus.configuration.Config;
-import me.baryonyx.fishingplus.configuration.RewardConfiguration;
-import me.baryonyx.fishingplus.fishing.Modifier;
+import org.bukkit.Bukkit;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import me.baryonyx.fishingplus.fishing.Fish;
 import me.baryonyx.fishingplus.fishing.Reward;
-import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
 import java.util.NavigableMap;
 import java.util.Random;
 import java.util.TreeMap;
 
 public class RewardHandler {
-    private NavigableMap<Double, Reward> rewardMap = new TreeMap<>();
+    private NavigableMap<Double, Reward> fishingRewardMap = new TreeMap<>();
+    private Map<String, Reward> competitionRewardMap = new TreeMap<>();
     private final Random random = new Random();
-    private double totalWeight = 0;
+    private double totalFishingWeight = 0;
     private double fishLengthWeight;
 
     public RewardHandler(@NotNull Config config) {
         fishLengthWeight = config.getFishLengthWeight();
     }
 
-    // Adds a FishingPlus reward to the map
-    void addRewardToMap(@NotNull Reward reward) {
-        totalWeight += reward.chance;
-        rewardMap.put(totalWeight, reward);
+    // Adds a FishingPlus reward to the fishing map
+    void addFishingRewardToMap(@NotNull Reward reward) {
+        totalFishingWeight += reward.chance;
+        fishingRewardMap.put(totalFishingWeight, reward);
     }
 
-    // Gets a random reward from the map
-    Reward getRandomReward() {
-        double value = random.nextDouble() * totalWeight;
-        return rewardMap.higherEntry(value).getValue();
+    // Adds a FishingPlus reward to the competition map
+    void addCompetitionRewardToMap(@NotNull Reward reward, String key) {
+        competitionRewardMap.put(key, reward);
     }
 
-    // Gets a specific reward from the map
+    // Gets a random reward from the fishing map
+    Reward getRandomFishingReward() {
+        double value = random.nextDouble() * totalFishingWeight;
+        return fishingRewardMap.higherEntry(value).getValue();
+    }
+
+    // Gets a specific reward from the fishing map
     @Nullable
-    public Reward getReward(String name) {
-        for (Reward reward : rewardMap.values()) {
+    public Reward getFishingReward(String name) {
+        for (Reward reward : fishingRewardMap.values()) {
             if (reward.name.equals(name))
                 return reward;
         }
@@ -46,9 +53,26 @@ public class RewardHandler {
         return null;
     }
 
+    // Gets a specific reward from the competition map
+    @Nullable
+    public Reward getCompetitionReward(int i) {
+        return competitionRewardMap.get(String.valueOf(i));
+    }
+
     // Generates a fish length for a fish
     double generateWeightedLength(@NotNull Fish fish) {
         return Math.round((fish.minLength + (fish.maxLength + 1 - fish.minLength) *
                 Math.pow(Math.random(), fishLengthWeight)) * 100d) / 100d;
+    }
+
+    // Runs the commands of the reward
+    public void runCommands(Reward reward, Player player) {
+        if (!reward.commands.isEmpty()) {
+            for (String command : reward.commands) {
+                ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+                command = command.replace("%player%", player.getName());
+                Bukkit.dispatchCommand(console, command);
+            }
+        }
     }
 }

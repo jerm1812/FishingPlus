@@ -1,20 +1,52 @@
+#### Messages ####
+
+# The message prefix to all messages
+message-prefix: "&8[&r&bFishingPlus&8] &6-&r "
+
+
 #### Competition ####
+
+# Broadcast the competition start and end
 broadcast-competition-start: true
 broadcast-competition-end: true
+
+# Displays the competition winners
 broadcast-competition-winner: true
+
+# Display the top number of players in a competition - Max is 10
+players-displayed: 5
+
+# Minimum amount of people to participate in a competition
+minimum-fishers: 1
+
+# Run a fishing competition at the server's local times
+competition-run-times:
+  - '00:00'
+  - '03:00'
+  - '06:00'
+  - '09:00'
+  - '12:00'
+  - '15:00'
+  - '18:00'
+  - '21:00'
+
+# How long the auto run competitions will last in minutes
+competition-duration: 15
+
+# The boss bar title for a fishing competition - (%time% will be replaced with the actual time left in seconds and minutes)
+timebar-title: "&b&lFishing Contest &r[%time% left]"
 
 
 #### REWARDS ####
 
 # Set whether or not to get custom fish outside of competitions
-competition-only: false
+competition-only: true
 
 # Display who caught a reward
 display-who-caught: true
 
-# Reward name's prefix and suffix
-reward-prefix: ""
-reward-suffix: ""
+# Reward name's prefix and suffix - (%reward-name% will be replaced with the actual reward's name
+reward-names: "%reward-name%"
 
 
 #### FISH ####
@@ -30,16 +62,20 @@ display-fish-lengh: true
 
 #### RARITY MODIFIERS ####
 
-# Allow rarity modifiers
+# Allow reward modifiers
 enable-modifiers: true
 
-# Price increase for modifiers is addition
-price-increase-addition: true
+# Modifier's prefix and suffix - (%modifier-name% will be replaced with the actual modifier's name)
+modifier-names: "&8[&r%modifier-name%&8] &6-&r "
 
-# Price increase for modifiers multiplication
-price-increase-multiplication: false
 
-# Modifier's prefix and suffix
-modifier-prefix: "&8[&r"
-modifier-suffix: "&8] &6-&r "
+#### SHOP ####
+
+shop-name: "FishingPlus Shop"
+
+price-multiplier: .5
+
+# The message when a player sells their rewards - (%price% will be replaced with the actual total
+sell-message: "You sold your fish for %total%."
+
 

@@ -1,4 +1,21 @@
-rewards:
+competition-rewards:
+  1:
+    item:
+      id: "minecraft:netherite_sword"
+      lore:
+        - "&7This sword is holy"
+    commands:
+      - "give %player% dirt 5"
+      - "effect give %player% blindness 10"
+  2:
+    item:
+      id: "diamond_sword"
+      lore:
+        - "&7Test d sword lore"
+    commands:
+      - "give %player% grass 2"
+
+fishing-rewards:
   boot:
     display-name: "Old Boot"
     item:
@@ -6,106 +23,100 @@ rewards:
       lore:
         - "&7 Who knows where this came from but it sure does smell!"
     chance: 2
-    price: .5
   fry:
     display-name: "Fry"
-    max-length: 1
-    min-length: 3
+    chance: 10
+    length:
+      max: 1
+      min: 3
     item:
       id: "minecraft:cod"
-    chance: 10
-    price: 1
   bass:
     display-name: "Bass"
-    max-length: 3
-    min-length: 5
+    chance: 15
+    length:
+      max: 3
+      min: 5
     item:
       id: "minecraft:cod"
-    chance: 15
-    price: 1
   guppy:
     display-name: "Guppy"
-    max-length: 5
-    min-length: 10
+    length:
+      max: 5
+      min: 10
     item:
       id: "minecraft:cod"
     chance: 20
-    price: 1
   goldfish:
     display-name: "Goldfish"
-    max-length: 2
-    min-length: 8
+    length:
+      max: 2
+      min: 8
     item:
       id: "minecraft:cod"
     chance: 25
-    price: 1
   catfish:
     display-name: "Catfish"
-    max-length: 24
-    min-length: 15
+    length:
+      max: 24
+      min: 15
     item:
       id: "minecraft:cod"
     chance: 25
-    price: 3
   bluegill:
     display-name: "Bluegill"
-    max-length: 10
-    min-length: 6
+    length:
+      max: 10
+      min: 6
     item:
       id: "minecraft:cod"
     chance: 25
-    price: 5
   sunfish:
     display-name: "Sunfish"
-    max-length: 11
-    min-length: 8
+    length:
+      max: 11
+      min: 8
     item:
       id: "minecraft:cod"
     chance: 10
-    price: 7
-  trout:
-    display-name: "Trout"
-    max-length: 31
-    min-length: 7
-    item:
-      id: "minecraft:cod"
-    chance: 5
-    price: 10
-  carp:
-    display-name: "Carp"
-    max-length: 34
-    min-length: 16
-    item:
-      id: "minecraft:cod"
-    chance: 5
-    price: 10
-  Muskie:
-    display-name: "Muskie"
-    max-length: 59
-    min-length: 23
-    item:
-      id: "minecraft:cod"
-    chance: 5
-    price: 25
 
 modifiers:
   default:
     display-name: ""
-    price-increase: 0
     chance: 100
+    fish:
+      - 'boot'
+      - 'bass'
+      - 'guppy'
+      - 'goldfish'
   common:
     display-name: "&bCommon"
-    price-increase: 0
     chance: 25
+    fish:
+      - 'bass'
+      - 'guppy'
+      - 'sunfish'
+      - 'bluegill'
+      - 'catfish'
   rare:
     display-name: "&bRare"
-    price-increase: 1
     chance: 5
+    fish:
+      - 'goldfish'
+      - 'catfish'
+      - 'bass'
+      - 'guppy'
   epic:
     display-name: "&6Epic"
-    price-increase: 2
     chance: 2.5
+    fish:
+      - 'bluegill'
+      - 'sunfish'
+      - 'bass'
+      - 'guppy'
   legendary:
     display-name: "&9Legendary"
-    price-increase: 3
     chance: 1.25
+    fish:
+      - 'bass'
+      - 'guppy'

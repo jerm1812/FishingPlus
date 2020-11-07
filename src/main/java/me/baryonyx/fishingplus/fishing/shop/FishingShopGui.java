@@ -1,6 +1,7 @@
-package me.baryonyx.fishingplus.shop;
+package me.baryonyx.fishingplus.fishing.shop;
 
 import me.baryonyx.fishingplus.FishingPlus;
+import me.baryonyx.fishingplus.configuration.Config;
 import me.baryonyx.fishingplus.handlers.ItemHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -19,20 +20,22 @@ public class FishingShopGui implements Listener {
     private FishingShop fishingShop;
     private ItemHandler itemHandler;
     private final FishingPlus plugin;
+    private Config config;
     private final ItemStack rowIcon = createInventoryItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE, " ", " ");
     private ItemStack sellIcon = createInventoryItem(Material.EMERALD, "Sell All FishingPlus Rewards", "Total: 0");
     public Map<Player, Inventory> inventories = new HashMap<>();
 
-    public FishingShopGui(FishingShop fishingShop, ItemHandler itemHandler, FishingPlus plugin) {
+    public FishingShopGui(FishingShop fishingShop, ItemHandler itemHandler, FishingPlus plugin, Config config) {
         this.fishingShop = fishingShop;
         this.itemHandler = itemHandler;
         this.plugin = plugin;
+        this.config = config;
     }
 
     // Creates a FishingPlus shop inventory
     @NotNull
     public Inventory setupInventory(Player player) {
-        Inventory inventory = Bukkit.createInventory(player, 36, "FishingPlus Shop");
+        Inventory inventory = Bukkit.createInventory(player, 36, config.getShopName());
         inventory.setItem(35, rowIcon);
         inventory.setItem(34, rowIcon);
         inventory.setItem(33, rowIcon);

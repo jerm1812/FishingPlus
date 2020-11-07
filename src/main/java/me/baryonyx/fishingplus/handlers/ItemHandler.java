@@ -3,9 +3,8 @@ package me.baryonyx.fishingplus.handlers;
 import me.baryonyx.fishingplus.FishingPlus;
 import me.baryonyx.fishingplus.configuration.Config;
 import me.baryonyx.fishingplus.exceptions.ItemNotFoundException;
-import org.apache.commons.lang.ObjectUtils;
+import me.baryonyx.fishingplus.fishing.Competition.Announcements;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -65,13 +64,14 @@ public class ItemHandler {
 
     // Creates a FishingPlus reward item with persistent data
     @Nullable
-    ItemStack createRewardItem(String itemName, String playerName) {
+    public ItemStack createRewardItem(String itemName, String playerName, boolean catchEvent) {
         ItemStack item = getItemFromMap(itemName);
 
         if (item == null) return null;
 
-        if (config.getDisplayWhoCaught())
+        if (config.getDisplayWhoCaught() && catchEvent) {
             addLoreToItemReward(item, "&7" + playerName + " caught this!");
+        }
 
         addRewardPersistentData(item, itemName);
 
@@ -81,7 +81,7 @@ public class ItemHandler {
     // Creates a FishingPlus fish item with persistent data
     @Nullable
     ItemStack createFishItem(String name, String playerName, double length) {
-        ItemStack item = createRewardItem(name, playerName);
+        ItemStack item = createRewardItem(name, playerName, true);
 
         if (item == null) return null;
 
@@ -134,7 +134,7 @@ public class ItemHandler {
     void addModifierToItem(@NotNull ItemStack item, String modifierName) {
         try {
             ItemMeta meta = Objects.requireNonNull(item.getItemMeta());
-            String name = ChatHandler.coloredMessage(modifierName + meta.getDisplayName());
+            String name = Announcements.coloredMessage(modifierName + meta.getDisplayName());
             meta.setDisplayName(name);
             meta.getPersistentDataContainer().set(modifierKey, PersistentDataType.STRING, modifierName);
             item.setItemMeta(meta);
@@ -151,11 +151,11 @@ public class ItemHandler {
             // If the item has lore add to it else just set it
             if (meta.hasLore()) {
                 List<String> lore = Objects.requireNonNull(meta.getLore());
-                lore.add(ChatHandler.coloredMessage(string));
+                lore.add(Announcements.coloredMessage(string));
                 meta.setLore(lore);
             }
             else
-                meta.setLore(Collections.singletonList(ChatHandler.coloredMessage(string)));
+                meta.setLore(Collections.singletonList(Announcements.coloredMessage(string)));
 
             item.setItemMeta(meta);
         } catch (NullPointerException e) {
@@ -166,7 +166,7 @@ public class ItemHandler {
     // Converts a list of strings to minecraft color strings
     @NotNull
     public List<String> convertLoreListToColor(@NotNull List<String> lore) {
-        return lore.stream().map(ChatHandler::coloredMessage).collect(Collectors.toList());
+        return lore.stream().map(Announcements::coloredMessage).collect(Collectors.toList());
     }
 
     // Returns if the item is a FishingPlus reward
