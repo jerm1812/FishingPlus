@@ -1,6 +1,7 @@
 package me.baryonyx.fishingplus.fishing.Competition;
 
 import me.baryonyx.fishingplus.FishingPlus;
+import me.baryonyx.fishingplus.configuration.Config;
 import me.baryonyx.fishingplus.listener.CompetitionTimerListener;
 import org.bukkit.NamespacedKey;
 import org.bukkit.boss.BarColor;
@@ -12,6 +13,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 public class TimerBar {
     private FishingPlus plugin;
+    private Config config;
     private NamespacedKey key;
     public BossBar bar = null;
     private BukkitTask updater;
@@ -19,8 +21,10 @@ public class TimerBar {
     private Long timeLeft;
     private Long totalTime;
 
-    public TimerBar(FishingPlus plugin) {
+    public TimerBar(FishingPlus plugin, Config config) {
         this.plugin = plugin;
+        this.config = config;
+
         key = new NamespacedKey(plugin, "fishingplus-competition-timer");
     }
 
@@ -56,7 +60,7 @@ public class TimerBar {
             return;
         }
 
-        bar.setTitle(Announcements.coloredMessage("&b&lFishing Contest &r[" + getTime() + "left]"));
+        bar.setTitle(Announcements.coloredMessage(config.getTimebarTitle().replace("%time%", getTime())));
         bar.setProgress(timeLeft.doubleValue() / totalTime);
     }
 
@@ -70,7 +74,7 @@ public class TimerBar {
             time = minutes + "m ";
         }
 
-        time += seconds + "s ";
+        time += seconds + "s";
 
         return time;
     }

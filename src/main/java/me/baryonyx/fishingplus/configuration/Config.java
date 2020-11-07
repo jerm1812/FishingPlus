@@ -77,4 +77,8 @@ public class Config {
     public String getShopName() {
         return config.getString("shop-name");
     }
+
+    public String getTimebarTitle() {
+        return config.getString("timebar-title");
+    }
 }
