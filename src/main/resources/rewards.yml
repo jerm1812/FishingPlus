@@ -7,6 +7,13 @@ competition-rewards:
     commands:
       - "give %player% dirt 5"
       - "effect give %player% blindness 10"
+  2:
+    item:
+      id: "diamond_sword"
+      lore:
+        - "&7Test d sword lore"
+    commands:
+      - "give %player% grass 2"
 
 fishing-rewards:
   boot:

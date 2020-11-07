@@ -33,6 +33,9 @@ competition-run-times:
 # How long the auto run competitions will last in minutes
 competition-duration: 15
 
+# The boss bar title for a fishing competition - (%time% will be replaced with the actual time left in seconds and minutes)
+timebar-title: "&b&lFishing Contest &r[%time% left]"
+
 
 #### REWARDS ####
 
