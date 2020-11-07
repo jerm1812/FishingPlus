@@ -18,8 +18,11 @@ public class RewardConfiguration {
         config = YamlConfiguration.loadConfiguration(file);
     }
 
-    public ConfigurationSection getRewards() {
-        return config.getConfigurationSection("rewards");
+    public ConfigurationSection getFishingRewards() {
+        return config.getConfigurationSection("fishing-rewards");
+    }
+    public ConfigurationSection getCompetitionRewards() {
+        return config.getConfigurationSection("competition-rewards");
     }
     public ConfigurationSection getModifiers() {
         return config.getConfigurationSection("modifiers");

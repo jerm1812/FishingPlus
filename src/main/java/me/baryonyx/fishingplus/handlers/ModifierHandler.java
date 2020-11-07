@@ -1,11 +1,12 @@
 package me.baryonyx.fishingplus.handlers;
 
 import me.baryonyx.fishingplus.fishing.Modifier;
+import me.baryonyx.fishingplus.fishing.Reward;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.NavigableMap;
-import java.util.Random;
-import java.util.TreeMap;
+import java.util.*;
 
 public class ModifierHandler {
     private final Random random = new Random();
@@ -18,11 +19,29 @@ public class ModifierHandler {
         modifierMap.put(totalWeight, modifier);
     }
 
-    // Gets a random modifier from the map
-    Modifier getRandomModifier() {
-        double value = random.nextDouble() * totalWeight;
-        return modifierMap.higherEntry(value).getValue();
-    }
+    // Gets a weighted random modifier from the modifiers a fish has
+    @Nullable
+     Modifier getRandomPossibleModifier(Reward reward) {
+         TreeMap<Double, Modifier> map = new TreeMap<>();
+         double possibleWeight = 0;
+
+         for (String name : reward.modifiers) {
+             Modifier modifier = getModifier(name);
+
+             if (modifier != null) {
+                 possibleWeight += modifier.chance;
+                 map.put(possibleWeight, modifier);
+             }
+         }
+
+         double value = random.nextDouble() * possibleWeight;
+
+         if (possibleWeight == 0) {
+             return null;
+         }
+
+         return map.higherEntry(value).getValue();
+     }
 
     // Gets a specific modifier from the map
     public Modifier getModifier(String name) {
