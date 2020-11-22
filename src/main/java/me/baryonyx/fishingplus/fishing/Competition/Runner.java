@@ -103,7 +103,9 @@ public class Runner {
         for (int i = 0; i < size; i++) {
             Entry entry = entries.get(i);
             announcements.broadcastCompetitionResults(entry.player.getName(), ordinal(i + 1), entry.fish.name, entry.fish.actualLength);
-            giveCompetitionReward(entry.player, i + 1);
+            if (i < rewardHandler.getCompetitionRewardLength()) {
+                giveCompetitionReward(entry.player, i + 1);
+            }
         }
     }
 
