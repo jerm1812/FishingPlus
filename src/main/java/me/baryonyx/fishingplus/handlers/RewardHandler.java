@@ -59,6 +59,10 @@ public class RewardHandler {
         return competitionRewardMap.get(String.valueOf(i));
     }
 
+    public Integer getCompetitionRewardLength() {
+        return competitionRewardMap.size();
+    }
+
     // Generates a fish length for a fish
     double generateWeightedLength(@NotNull Fish fish) {
         return Math.round((fish.minLength + (fish.maxLength + 1 - fish.minLength) *

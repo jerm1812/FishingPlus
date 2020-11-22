@@ -31,6 +31,7 @@ fishing-rewards:
       min: 3
     item:
       id: "minecraft:cod"
+      custom-model-data: 10
   bass:
     display-name: "Bass"
     chance: 15
@@ -39,6 +40,7 @@ fishing-rewards:
       min: 5
     item:
       id: "minecraft:cod"
+      custom-model-data: 11
   guppy:
     display-name: "Guppy"
     length:
@@ -46,6 +48,7 @@ fishing-rewards:
       min: 10
     item:
       id: "minecraft:cod"
+      custom-model-data: 12
     chance: 20
   goldfish:
     display-name: "Goldfish"

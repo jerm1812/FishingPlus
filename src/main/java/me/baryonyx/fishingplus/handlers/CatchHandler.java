@@ -91,6 +91,7 @@ public class CatchHandler {
             Reward reward;
             String displayName = getRewardDisplayName(section, key);
             int amount = section.getInt(key + ".item.amount", 1);
+            int customModelData = section.getInt(key + ".item.custom-model-data", 0);
             List<String> lore = section.getStringList(key + ".item.lore");
             List<String> commands = section.getStringList(key + ".commands");
             Material material = getRewardMaterial(section, key);
@@ -99,11 +100,10 @@ public class CatchHandler {
             double minLength = getMinFishLength(section, key);
 
             if (maxLength == 0) {
-                reward = new Reward(key, chance, commands);
-
+                reward = new Reward(key, chance, customModelData, commands);
             }
             else {
-                reward = new Fish(key, chance, commands, minLength, maxLength);
+                reward = new Fish(key, chance, customModelData, commands, minLength, maxLength);
             }
 
             // Adds the reward to the correct map
@@ -115,7 +115,7 @@ public class CatchHandler {
             }
 
             // Adds the item to the item map
-            itemHandler.addItemToMap(key, displayName, material, amount, lore);
+            itemHandler.addItemToMap(key, displayName, material, amount, lore, customModelData);
         } catch (ItemNotFoundException e) {
             Bukkit.getLogger().warning("Could not load the reward " + e.getRewardName()
                     + " because " + e.getItemName() + " is an invalid material");

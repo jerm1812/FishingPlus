@@ -34,18 +34,21 @@ public class ItemHandler {
 
     // Creates an item to be mapped
     @NotNull
-    private ItemStack createMappableItemFromReward(String displayName, Material material, int amount, List<String> lore) {
+    private ItemStack createMappableItemFromReward(String displayName, Material material, int amount, List<String> lore, int customModelData) {
         ItemStack item = new ItemStack(material, amount);
-        setItemMeta(displayName, lore, item);
+        setItemMeta(displayName, lore, item, customModelData);
         return item;
     }
 
     // Sets the items display name and lore
-    private void setItemMeta(String displayName, List<String> lore, @NotNull ItemStack item) {
+    private void setItemMeta(String displayName, List<String> lore, @NotNull ItemStack item, int customModelData) {
         try {
             ItemMeta meta = Objects.requireNonNull(item.getItemMeta());
             meta.setDisplayName(displayName);
             meta.setLore(convertLoreListToColor(lore));
+            if (customModelData != 0) {
+                meta.setCustomModelData(customModelData);
+            }
             item.setItemMeta(meta);
         } catch (NullPointerException e) {
             Bukkit.getLogger().warning("Item's meta was null while it was being set");
@@ -53,9 +56,9 @@ public class ItemHandler {
     }
 
     // Adds an item to the item map
-    void addItemToMap(String itemName, String displayName, Material material, int amount, List<String> lore) {
+    void addItemToMap(String itemName, String displayName, Material material, int amount, List<String> lore, int customModelData) {
         try {
-            ItemStack item = createMappableItemFromReward(displayName, material, amount, lore);
+            ItemStack item = createMappableItemFromReward(displayName, material, amount, lore, customModelData);
             itemMap.put(itemName, item);
         } catch (DuplicateKeyException e) {
             Bukkit.getLogger().warning("There are duplicate reward names! Please remove one or change the name of one.");

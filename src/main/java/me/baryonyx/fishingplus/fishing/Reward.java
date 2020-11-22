@@ -6,6 +6,7 @@ import java.util.List;
 public class Reward {
     public String name;
     public double chance;
+    public int customModelData;
     public List<String> modifiers = new ArrayList<>();
     public List<String> commands;
 
@@ -16,9 +17,10 @@ public class Reward {
 
     }
 
-    public Reward(String name, double chance, List<String> commands) {
+    public Reward(String name, double chance, int customModelData, List<String> commands) {
         this.name = name;
         this.chance = chance;
+        this.customModelData = customModelData;
         this.commands = commands;
     }
 
