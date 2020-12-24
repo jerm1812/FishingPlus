@@ -18,7 +18,7 @@ public class RewardHandler {
     private NavigableMap<Double, Reward> fishingRewardMap = new TreeMap<>();
     private Map<String, Reward> competitionRewardMap = new TreeMap<>();
     private final Random random = new Random();
-    private double totalFishingWeight = 0;
+    private double totalWeight = 0;
     private double fishLengthWeight;
 
     public RewardHandler(@NotNull Config config) {
@@ -26,19 +26,20 @@ public class RewardHandler {
     }
 
     // Adds a FishingPlus reward to the fishing map
-    void addFishingRewardToMap(@NotNull Reward reward) {
-        totalFishingWeight += reward.chance;
-        fishingRewardMap.put(totalFishingWeight, reward);
+    public void addFishingRewardToMap(@NotNull Reward reward) {
+        totalWeight += reward.chance;
+        fishingRewardMap.put(totalWeight, reward);
     }
 
     // Adds a FishingPlus reward to the competition map
-    void addCompetitionRewardToMap(@NotNull Reward reward, String key) {
-        competitionRewardMap.put(key, reward);
+    public void addCompetitionRewardToMap(@NotNull Reward reward) {
+        competitionRewardMap.put(reward.name, reward);
     }
 
     // Gets a random reward from the fishing map
-    Reward getRandomFishingReward() {
-        double value = random.nextDouble() * totalFishingWeight;
+    public Reward getRandomFishingReward() {
+        double rng = random.nextDouble();
+        double value = rng * totalWeight;
         return fishingRewardMap.higherEntry(value).getValue();
     }
 
@@ -64,7 +65,7 @@ public class RewardHandler {
     }
 
     // Generates a fish length for a fish
-    double generateWeightedLength(@NotNull Fish fish) {
+    public double generateWeightedLength(@NotNull Fish fish) {
         return Math.round((fish.minLength + (fish.maxLength + 1 - fish.minLength) *
                 Math.pow(Math.random(), fishLengthWeight)) * 100d) / 100d;
     }
@@ -78,5 +79,11 @@ public class RewardHandler {
                 Bukkit.dispatchCommand(console, command);
             }
         }
+    }
+
+    public void clear() {
+        totalWeight = 0;
+        fishingRewardMap.clear();
+        competitionRewardMap.clear();
     }
 }

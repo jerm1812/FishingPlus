@@ -14,14 +14,14 @@ public class ModifierHandler {
     private double totalWeight = 0;
 
     // Adds a modifier to the map
-    void addToMap(@NotNull Modifier modifier) {
+    public void addToMap(@NotNull Modifier modifier) {
         totalWeight += modifier.chance;
         modifierMap.put(totalWeight, modifier);
     }
 
     // Gets a weighted random modifier from the modifiers a fish has
     @Nullable
-     Modifier getRandomPossibleModifier(Reward reward) {
+    public Modifier getRandomPossibleModifier(Reward reward) {
          TreeMap<Double, Modifier> map = new TreeMap<>();
          double possibleWeight = 0;
 
@@ -41,15 +41,20 @@ public class ModifierHandler {
          }
 
          return map.higherEntry(value).getValue();
-     }
+    }
 
     // Gets a specific modifier from the map
-    public Modifier getModifier(String name) {
+    private Modifier getModifier(String name) {
         for (Modifier modifier : modifierMap.values()) {
             if (modifier.name.equals(name))
                 return modifier;
         }
 
         return null;
+    }
+
+    public void clear() {
+        totalWeight = 0;
+        modifierMap.clear();
     }
 }

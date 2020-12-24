@@ -28,17 +28,19 @@ public class ShopListener implements Listener {
     public void InventoryListener(@NotNull InventoryClickEvent event) {
         Inventory inventory = event.getClickedInventory();
 
-        // If the FishingPlus inventory was clicked
+        if (inventory == null) {
+            return;
+        }
+
+        // If the fishing shop inventory was clicked (not the players inventory in the shop)
         if (fishingShopGui.inventories.containsValue(inventory)) {
+            // If the sell button was clicked
             if (event.getSlot() == 31) {
                 fishingShop.sellRewards(inventory, (Player)event.getWhoClicked());
             }
 
-            if (event.getSlot() >= 27) {
-                event.setCancelled(true);
-            }
-
-            if (isIllegalItemMove(event.getAction(), event.getCurrentItem(), event.getCursor())){
+            // If one of the shop decorations was clicked or an item was moved illegally
+            if (event.getSlot() >= 27 || isIllegalItemMove(event.getAction(), event.getCurrentItem(), event.getCursor())) {
                 event.setCancelled(true);
             }
 
@@ -58,6 +60,7 @@ public class ShopListener implements Listener {
         }
     }
 
+    // Cancels all drag events if items are being dragged in the fishing plus shop inventory
     @EventHandler
     public void shopDragEvent(@NotNull InventoryDragEvent event) {
         if (fishingShopGui.inventories.containsValue(event.getView().getTopInventory())) {
@@ -81,11 +84,13 @@ public class ShopListener implements Listener {
         }
     }
 
+    // Returns true if an illegal item move happens
     @Contract("null -> true")
     private boolean isIllegalItemMove(ItemStack item) {
         return item == null || !itemHandler.isReward(item);
     }
 
+    // Clears out the shop if the inventory is closed
     @EventHandler
     public void closeShop(@NotNull InventoryCloseEvent event) {
         Inventory inventory = event.getInventory();

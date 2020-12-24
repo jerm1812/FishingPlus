@@ -2,7 +2,8 @@ package me.baryonyx.fishingplus.fishing.Competition;
 
 import me.baryonyx.fishingplus.FishingPlus;
 import me.baryonyx.fishingplus.configuration.Config;
-import me.baryonyx.fishingplus.listener.CompetitionTimerListener;
+import me.baryonyx.fishingplus.listener.CompetitionListener;
+import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -17,36 +18,41 @@ public class TimerBar {
     private NamespacedKey key;
     public BossBar bar = null;
     private BukkitTask updater;
-    private CompetitionTimerListener competitionTimerListener = new CompetitionTimerListener(this);
     private Long timeLeft;
     private Long totalTime;
+
+    private CompetitionListener competitionListener = new CompetitionListener(this);
+
 
     public TimerBar(FishingPlus plugin, Config config) {
         this.plugin = plugin;
         this.config = config;
 
-        key = new NamespacedKey(plugin, "fishingplus-competition-timer");
+        key = new NamespacedKey(plugin, "competition-timer");
     }
 
     // Starts a boss bar timer
     void startTimer(Long time) {
+        // Creating the time bar
         bar = plugin.getServer().createBossBar(key, "", BarColor.BLUE, BarStyle.SEGMENTED_10);
         timeLeft = time * 60;
         totalTime = timeLeft;
 
+        // Adding all players to the bar
         for (Player player : plugin.getServer().getOnlinePlayers()) {
             bar.addPlayer(player);
         }
 
+        // Registering the bar and events
+        plugin.getServer().getPluginManager().registerEvents(competitionListener, plugin);
         updater = plugin.getServer().getScheduler().runTaskTimer(plugin, this::updateTimer, 0, 20L);
-        plugin.getServer().getPluginManager().registerEvents(competitionTimerListener, plugin);
     }
 
     // Stops the boss bar timer
     void removeTimer() {
         updater.cancel();
         bar.setProgress(0);
-        HandlerList.unregisterAll(competitionTimerListener);
+        HandlerList.unregisterAll(competitionListener);
         bar.removeAll();
         plugin.getServer().removeBossBar(key);
         bar = null;
@@ -60,7 +66,7 @@ public class TimerBar {
             return;
         }
 
-        bar.setTitle(Announcements.coloredMessage(config.getTimebarTitle().replace("%time%", getTime())));
+        bar.setTitle(ChatColor.translateAlternateColorCodes('&', config.getTimebarTitle().replace("%time%", getTime())));
         bar.setProgress(timeLeft.doubleValue() / totalTime);
     }
 

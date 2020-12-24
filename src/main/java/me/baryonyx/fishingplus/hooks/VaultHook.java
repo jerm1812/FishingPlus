@@ -11,15 +11,14 @@ public class VaultHook {
     public static boolean isHooked = false;
 
     // Hooks vault
-    public static boolean hook(@NotNull FishingPlus plugin) {
+    public static void hook(@NotNull FishingPlus plugin) {
         RegisteredServiceProvider<Economy> service = plugin.getServer().getServicesManager().getRegistration(Economy.class);
 
         if (service == null)
-            return false;
+            return;
 
         economy = service.getProvider();
         isHooked = true;
-        return true;
     }
 
     // Returns the instance of the Vault economy

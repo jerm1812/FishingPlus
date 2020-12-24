@@ -10,4 +10,65 @@ commands:
     description: command for fishing plus
     aliases: [fp, fishplus]
     permission: fishingplus.use
-    usage: /fishingplus [help|comp]
+    usage: /fishingplus [help|comp|shop|reload]
+
+permissions:
+  fishingplus.*:
+    description: Gives access to all fishing plus commands
+    children:
+      fishingplus.shop: true
+      fishingplus.competition: true
+      fishingplus.reload: true
+      fishingplus.test: true
+
+  fishingplus.shop.sellall:
+    description: Permission to sell all fishing plus fish in your inventory
+    children:
+      fishingplus.shop: true
+
+  fishingplus.shop:
+    description: Permission to use the fishing plus shop
+
+  fishingplus.competition.start.untimed:
+    description: Permission to start a untimed fishing plus competition
+    children:
+      fishingplus.competition.start: true
+
+  fishingplus.competition.start:
+    description: Permission to start a fishing plus competition
+    children:
+      fishingplus.competition: true
+
+  fishingplus.competition.end:
+    description: Permission to end a fishing plus competition
+    children:
+      fishingplus.competition: true
+
+  fishingplus.competition.top:
+    description: Permission to use the top command
+    children:
+      fishingplus.competition: true
+
+  fishingplus.competition:
+    description: Permissions to control the fishing plus competitions
+
+  fishingplus.reload.config:
+    description: Permission to reload the fishing plus config
+    children:
+      fishingplus.reload: true
+
+  fishingplus.reload.messages:
+    description: Permission to reload the fishing plus messages
+    children:
+      fishingplus.reload: true
+
+  fishingplus.reload.rewards:
+    description: Permission to reload the fishing plus rewards
+    children:
+      fishingplus.reload: true
+
+  fishingplus.reload:
+    description: Permission to reload the fishing plus plugin
+
+  fishingplus.test:
+    description: Permission to test the fish map

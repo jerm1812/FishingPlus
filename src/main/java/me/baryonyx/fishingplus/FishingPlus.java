@@ -1,18 +1,20 @@
 package me.baryonyx.fishingplus;
 
-import me.baryonyx.fishingplus.commands.MainCommand;
+import me.baryonyx.fishingplus.commands.*;
 import me.baryonyx.fishingplus.configuration.Config;
 import me.baryonyx.fishingplus.configuration.RewardConfiguration;
-import me.baryonyx.fishingplus.fishing.Competition.Announcements;
+import me.baryonyx.fishingplus.fishing.CatchEvent;
 import me.baryonyx.fishingplus.fishing.Competition.Competition;
 import me.baryonyx.fishingplus.fishing.Competition.Runner;
 import me.baryonyx.fishingplus.fishing.Competition.TimerBar;
+import me.baryonyx.fishingplus.fishing.RewardLoader;
 import me.baryonyx.fishingplus.listener.FishingListener;
 import me.baryonyx.fishingplus.handlers.*;
 import me.baryonyx.fishingplus.hooks.VaultHook;
 import me.baryonyx.fishingplus.listener.ShopListener;
 import me.baryonyx.fishingplus.fishing.shop.FishingShop;
 import me.baryonyx.fishingplus.fishing.shop.FishingShopGui;
+import me.baryonyx.fishingplus.messaging.Messages;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -21,10 +23,18 @@ import java.io.File;
 public final class FishingPlus extends JavaPlugin {
     private Config config;
     private ItemHandler itemHandler;
-    private CatchHandler catchHandler;
+    private RewardLoader rewardLoader;
     private Runner runner;
+    private CatchEvent catchEvent;
+    private Messages messages;
     private FishingShop fishingShop;
     private FishingShopGui fishingShopGui;
+    private RewardConfiguration rewardConfiguration;
+    private CompetitionCommand competitionCommand;
+    private ReloadCommand reloadCommand;
+    private ShopCommand shopCommand;
+    private TestCommand testCommand;
+    private HelpCommand helpCommand;
 
     @Override
     public void onEnable() {
@@ -35,15 +45,23 @@ public final class FishingPlus extends JavaPlugin {
         TimerBar timerBar = new TimerBar(this, config);
         Competition competition = new Competition();
         ModifierHandler modifierHandler = new ModifierHandler();
-        Announcements announcements = new Announcements(config);
-        RewardConfiguration rewardConfiguration = new RewardConfiguration(this);
+        messages = new Messages(this, config);
+        rewardConfiguration = new RewardConfiguration(this);
         itemHandler = new ItemHandler(config, this);
         RewardHandler rewardHandler = new RewardHandler(config);
-        catchHandler = new CatchHandler(this, rewardConfiguration, config, rewardHandler, itemHandler, modifierHandler);
-        runner = new Runner(this, config, competition, itemHandler, rewardHandler, announcements, timerBar);
+        rewardLoader = new RewardLoader(this, config, rewardConfiguration, rewardHandler, modifierHandler, itemHandler);
+        runner = new Runner(this, config, competition, itemHandler, rewardHandler, messages, timerBar);
+        competitionCommand = new CompetitionCommand(runner, messages);
+        catchEvent = new CatchEvent(rewardHandler, modifierHandler, itemHandler);
+        reloadCommand = new ReloadCommand(config, messages, rewardLoader);
+        testCommand = new TestCommand(catchEvent);
+        helpCommand = new HelpCommand();
 
         setupHooks();
         setupShop();
+
+        shopCommand = new ShopCommand(messages, fishingShop, fishingShopGui);
+
         registerEvents();
         registerCommands();
     }
@@ -72,18 +90,21 @@ public final class FishingPlus extends JavaPlugin {
         }
     }
 
+    // Registers the events for the plugin
     private void registerEvents() {
-        getServer().getPluginManager().registerEvents(new FishingListener(config, catchHandler, runner), this);
+        getServer().getPluginManager().registerEvents(new FishingListener(config, runner, catchEvent), this);
     }
 
+    // Registers the base command for the plugin
     private void registerCommands() {
-        getCommand("fishingplus").setExecutor(new MainCommand(this, catchHandler, fishingShop, fishingShopGui, runner));
+        getCommand("fishingplus").setExecutor(new BaseCommand(this, competitionCommand, reloadCommand, shopCommand, testCommand, helpCommand));
+        getCommand("fishingplus").setTabCompleter(new CommandCompleter());
     }
 
     // Sets the shop up and inventory listener if vault is hooked
     private void setupShop() {
         if (VaultHook.isHooked) {
-            fishingShop = new FishingShop(itemHandler, config);
+            fishingShop = new FishingShop(itemHandler, config, messages);
             fishingShopGui = new FishingShopGui(fishingShop, itemHandler, this, config);
             getServer().getPluginManager().registerEvents(new ShopListener(fishingShopGui, fishingShop, itemHandler), this);
         }

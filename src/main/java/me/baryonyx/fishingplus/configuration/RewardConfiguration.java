@@ -7,9 +7,11 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 
 public class RewardConfiguration {
+    private FishingPlus plugin;
     private YamlConfiguration config;
 
     public RewardConfiguration(FishingPlus plugin) {
+        this.plugin = plugin;
         loadRewardFile(plugin.getDataFolder());
     }
 
@@ -26,5 +28,12 @@ public class RewardConfiguration {
     }
     public ConfigurationSection getModifiers() {
         return config.getConfigurationSection("modifiers");
+    }
+
+    public void reload() {
+        File file = new File(plugin.getDataFolder(), "rewards.yml");
+        if (file.exists()) {
+            config = YamlConfiguration.loadConfiguration(file);
+        }
     }
 }

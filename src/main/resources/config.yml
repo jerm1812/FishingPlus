@@ -1,9 +1,3 @@
-#### Messages ####
-
-# The message prefix to all messages
-message-prefix: "&8[&r&bFishingPlus&8] &6-&r "
-
-
 #### Competition ####
 
 # Broadcast the competition start and end
@@ -45,8 +39,8 @@ competition-only: true
 # Display who caught a reward
 display-who-caught: true
 
-# Reward name's prefix and suffix - (%reward-name% will be replaced with the actual reward's name
-reward-names: "%reward-name%"
+# Reward name's prefix and suffix - (%display-name% will be replaced with the actual reward's name
+reward-names: "%display-name%"
 
 
 #### FISH ####
@@ -65,17 +59,13 @@ display-fish-lengh: true
 # Allow reward modifiers
 enable-modifiers: true
 
-# Modifier's prefix and suffix - (%modifier-name% will be replaced with the actual modifier's name)
-modifier-names: "&8[&r%modifier-name%&8] &6-&r "
+# Modifier's prefix and suffix - (%display-name% will be replaced with the actual modifier's name)
+modifier-names: "&8[&r%display-name%&8] &6-&r "
 
 
 #### SHOP ####
 
 shop-name: "FishingPlus Shop"
 
+# This price multiplier is multiplied by the length of the fish to get the price
 price-multiplier: .5
-
-# The message when a player sells their rewards - (%price% will be replaced with the actual total
-sell-message: "You sold your fish for %total%."
-
-

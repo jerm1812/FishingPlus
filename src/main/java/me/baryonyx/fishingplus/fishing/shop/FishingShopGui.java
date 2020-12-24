@@ -93,6 +93,7 @@ public class FishingShopGui implements Listener {
 
     // Calculates the total price for fish rewards at a 1 tick delay
     public void calculateGuiTotal(Inventory inventory) {
+        // Uses one tick delay so it will calculate the price after an item is moved instead of during
         new BukkitRunnable() {
             @Override
             public void run() {

@@ -1,0 +1,41 @@
+# The message prefix to all messages
+message-prefix: "&8[&r&bFishingPlus&8] &6-&r "
+
+# The message when a player sells their rewards - (%price% will be replaced with the actual total
+sell-message: "You sold your fish for %total%."
+
+# Message for a competition starting
+untimed-competition-start: "&7A fishing competition has started!"
+
+# Message for a timed portion of a competition - (%time% will be replaced with the minutes the competition will run)
+timed-competition-start: "&7A fishing competition has started! The competition will last for %time% minutes."
+
+# Not enough participants message when a competition ends
+not-enough-participants: "&7Not enough players joined the competition!"
+
+# Competition end message
+competition-end: "&7The fishing competition has ended!"
+
+# Competition results line (%ordinal% replaced with rank, %player% replaced with player's name, %fish% replaced with fish name, and %length% replaced with the fish's length)
+competition-results: "%ordinal% : %player%, %fish% - %length%\"."
+
+# Rank message if a player did not receive a top position (%ordinal% replaced with players rank)
+competition-rank: "&7You placed %ordinal% in the competition."
+
+# First message when a player gets the competition standings with /fp comp top
+competition-standings: "&7The current top players of the competition are:"
+
+# Message for when someone tries to get competition standings when there is no competition running
+no-competition: "&7There is no competition running!"
+
+# Ending results message if a player did not participate in the competition
+did-not-participate: "&7You did not participate in the fishing competition!"
+
+# Message to display the fish that the player caught (%fish% will be replaced with the fish's name, %modifier% will be replaced with the modifier's name %length% replaced with the fish's length)
+fish-caught: "&7You caught a %fish% that is %length% inches."
+
+# No permission message
+no-permission: "&7You do not have permission to use that command!"
+
+# Shop disabled message
+shop-disabled: "&7The shop is currently disabled!"

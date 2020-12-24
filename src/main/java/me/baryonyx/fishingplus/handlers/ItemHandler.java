@@ -3,14 +3,17 @@ package me.baryonyx.fishingplus.handlers;
 import me.baryonyx.fishingplus.FishingPlus;
 import me.baryonyx.fishingplus.configuration.Config;
 import me.baryonyx.fishingplus.exceptions.ItemNotFoundException;
-import me.baryonyx.fishingplus.fishing.Competition.Announcements;
+import me.baryonyx.fishingplus.messaging.Messages;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.potion.PotionEffect;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.yaml.snakeyaml.constructor.DuplicateKeyException;
@@ -34,20 +37,48 @@ public class ItemHandler {
 
     // Creates an item to be mapped
     @NotNull
-    private ItemStack createMappableItemFromReward(String displayName, Material material, int amount, List<String> lore, int customModelData) {
+    private ItemStack createMappableItemFromReward(String displayName, Material material, int amount, List<String> lore, int modelData, List<PotionEffect> effects, int potionColor) {
         ItemStack item = new ItemStack(material, amount);
-        setItemMeta(displayName, lore, item, customModelData);
+        if (material != Material.POTION || effects.isEmpty()) {
+            setItemMeta(displayName, lore, item, modelData);
+        }
+        else {
+            setItemMeta(displayName, lore, item, modelData, effects, potionColor);
+        }
+
         return item;
     }
 
     // Sets the items display name and lore
-    private void setItemMeta(String displayName, List<String> lore, @NotNull ItemStack item, int customModelData) {
+    private void setItemMeta(String displayName, List<String> lore, @NotNull ItemStack item, int modelData) {
         try {
             ItemMeta meta = Objects.requireNonNull(item.getItemMeta());
             meta.setDisplayName(displayName);
             meta.setLore(convertLoreListToColor(lore));
-            if (customModelData != 0) {
-                meta.setCustomModelData(customModelData);
+            if (modelData != 0) {
+                meta.setCustomModelData(modelData);
+            }
+            item.setItemMeta(meta);
+        } catch (NullPointerException e) {
+            Bukkit.getLogger().warning("Item's meta was null while it was being set");
+        }
+    }
+
+    // Sets the items display name, lore, and adds potion effects
+    private void setItemMeta(String displayName, List<String> lore, @NotNull ItemStack item, int modelData, List<PotionEffect> effects, int potionColor) {
+        try {
+            PotionMeta meta = (PotionMeta) Objects.requireNonNull(item.getItemMeta());
+            meta.setDisplayName(displayName);
+            meta.setLore(convertLoreListToColor(lore));
+            for (PotionEffect effect : effects) {
+                meta.addCustomEffect(effect, true);
+            }
+            if (modelData != 0) {
+                meta.setCustomModelData(modelData);
+            }
+
+            if (potionColor != 0) {
+                meta.setColor(Color.fromBGR(potionColor));
             }
             item.setItemMeta(meta);
         } catch (NullPointerException e) {
@@ -56,9 +87,13 @@ public class ItemHandler {
     }
 
     // Adds an item to the item map
-    void addItemToMap(String itemName, String displayName, Material material, int amount, List<String> lore, int customModelData) {
+    public void addItemToMap(String itemName, String displayName, Material material, int amount, List<String> lore, int modelData, List<PotionEffect> effects, int potionColor) {
         try {
-            ItemStack item = createMappableItemFromReward(displayName, material, amount, lore, customModelData);
+            if (material == null) {
+                return;
+            }
+
+            ItemStack item = createMappableItemFromReward(displayName, material, amount, lore, modelData, effects, potionColor);
             itemMap.put(itemName, item);
         } catch (DuplicateKeyException e) {
             Bukkit.getLogger().warning("There are duplicate reward names! Please remove one or change the name of one.");
@@ -83,7 +118,7 @@ public class ItemHandler {
 
     // Creates a FishingPlus fish item with persistent data
     @Nullable
-    ItemStack createFishItem(String name, String playerName, double length) {
+    public ItemStack createFishItem(String name, String playerName, double length) {
         ItemStack item = createRewardItem(name, playerName, true);
 
         if (item == null) return null;
@@ -119,25 +154,15 @@ public class ItemHandler {
     // Returns a cloned item from the item map
     @Nullable
     private ItemStack getItemFromMap(String name) {
-        try {
-            ItemStack item = itemMap.get(name);
-
-            if (item == null)
-                throw new ItemNotFoundException(name);
-
-            return item.clone();
-        } catch (ItemNotFoundException e) {
-            Bukkit.getLogger().severe("Could not get the get the item with the reward name: " + e.getRewardName());
-        }
-
-        return null;
+        ItemStack item = itemMap.get(name);
+        return item == null ? null : item.clone();
     }
 
     // Adds a FishingPlus modifier to an item
-    void addModifierToItem(@NotNull ItemStack item, String modifierName) {
+    public void addModifierToItem(@NotNull ItemStack item, String modifierName) {
         try {
             ItemMeta meta = Objects.requireNonNull(item.getItemMeta());
-            String name = Announcements.coloredMessage(modifierName + meta.getDisplayName());
+            String name = Messages.coloredMessage(modifierName + meta.getDisplayName());
             meta.setDisplayName(name);
             meta.getPersistentDataContainer().set(modifierKey, PersistentDataType.STRING, modifierName);
             item.setItemMeta(meta);
@@ -154,11 +179,11 @@ public class ItemHandler {
             // If the item has lore add to it else just set it
             if (meta.hasLore()) {
                 List<String> lore = Objects.requireNonNull(meta.getLore());
-                lore.add(Announcements.coloredMessage(string));
+                lore.add(Messages.coloredMessage(string));
                 meta.setLore(lore);
             }
             else
-                meta.setLore(Collections.singletonList(Announcements.coloredMessage(string)));
+                meta.setLore(Collections.singletonList(Messages.coloredMessage(string)));
 
             item.setItemMeta(meta);
         } catch (NullPointerException e) {
@@ -169,7 +194,7 @@ public class ItemHandler {
     // Converts a list of strings to minecraft color strings
     @NotNull
     public List<String> convertLoreListToColor(@NotNull List<String> lore) {
-        return lore.stream().map(Announcements::coloredMessage).collect(Collectors.toList());
+        return lore.stream().map(Messages::coloredMessage).collect(Collectors.toList());
     }
 
     // Returns if the item is a FishingPlus reward
@@ -241,5 +266,9 @@ public class ItemHandler {
         }
 
         return null;
+    }
+
+    public void clear() {
+        itemMap.clear();
     }
 }

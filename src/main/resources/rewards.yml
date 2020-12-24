@@ -1,92 +1,472 @@
 competition-rewards:
   1:
-    item:
-      id: "minecraft:netherite_sword"
-      lore:
-        - "&7This sword is holy"
     commands:
-      - "give %player% dirt 5"
-      - "effect give %player% blindness 10"
-  2:
-    item:
-      id: "diamond_sword"
-      lore:
-        - "&7Test d sword lore"
-    commands:
-      - "give %player% grass 2"
+      - "broadcast %player% won the fishing contest!"
+      - "cr give to %player% kit 1"
+      - "eco give %player% 1000"
+    2:
+      commands:
+        - "cr give to %player% supply 1"
+        - "eco give %player% 750"
+    3:
+      commands:
+        - "cr give to %player% vote 1"
+        - "eco give %player% 500"
+    4:
+      commands:
+        - "eco give %player% 400"
+    5:
+      commands:
+        - "eco give %player% 300"
+    6:
+      commands:
+        - "eco give %player% 200"
+    7:
+      commands:
+        - "eco give %player% 150"
+    8:
+      commands:
+        - "eco give %player% 100"
 
 fishing-rewards:
-  boot:
-    display-name: "Old Boot"
+  # boot:
+  # display-name: "Old Boot"
+  # item:
+  # id: "minecraft:leather_boots"
+  # lore:
+  # - "&7 Who knows where this came from but it sure does smell!"
+  # chance: 2
+  # fry:
+  # display-name: "Fry"
+  # chance: 10
+  # length:
+  # max: 1
+  # min: 3
+  # item:
+  # id: "minecraft:cod"
+  # custom-model-data: 10
+  # bass:
+  # display-name: "Bass"
+  # chance: 15
+  # length:
+  # max: 3
+  # min: 5
+  # item:
+  # id: "minecraft:cod"
+  # custom-model-data: 11
+  # guppy:
+  # display-name: "Guppy"
+  # length:
+  # max: 5
+  # min: 10
+  # item:
+  # id: "minecraft:cod"
+  # custom-model-data: 12
+  # chance: 20
+  # goldfish:
+  # display-name: "Goldfish"
+  # length:
+  # max: 2
+  # min: 8
+  # item:
+  # id: "minecraft:cod"
+  # chance: 25
+  # catfish:
+  # display-name: "Catfish"
+  # length:
+  # max: 24
+  # min: 15
+  # item:
+  # id: "minecraft:cod"
+  # chance: 25
+  # bluegill:
+  # display-name: "Bluegill"
+  # length:
+  # max: 10
+  # min: 6
+  # item:
+  # id: "minecraft:cod"
+  # chance: 25
+  # sunfish:
+  # display-name: "Sunfish"
+  # length:
+  # max: 11
+  # min: 8
+  # item:
+  # id: "minecraft:cod"
+  # chance: 10
+  # Beginning of Holiday fish, if using notepad++ highlight block and Ctrl+Q to activate / deactivate.
+  #Christmas Fish
+  angelfish:
+    display-name: "Angelfish"
+    chance: 50
+    length:
+      max: 32
+      min: 26
     item:
-      id: "minecraft:leather_boots"
+      id: "minecraft:cod"
       lore:
-        - "&7 Who knows where this came from but it sure does smell!"
-    chance: 2
-  fry:
-    display-name: "Fry"
-    chance: 10
+        - "Looks kinda glowy..."
+      custom-model-data: 1201
+  baublebarble:
+    display-name: "&cBauble &7Barble"
+    chance: 50
     length:
-      max: 1
-      min: 3
-    item:
-      id: "minecraft:cod"
-      custom-model-data: 10
-  bass:
-    display-name: "Bass"
-    chance: 15
-    length:
-      max: 3
-      min: 5
-    item:
-      id: "minecraft:cod"
-      custom-model-data: 11
-  guppy:
-    display-name: "Guppy"
-    length:
-      max: 5
+      max: 16
       min: 10
     item:
-      id: "minecraft:cod"
-      custom-model-data: 12
-    chance: 20
-  goldfish:
-    display-name: "Goldfish"
-    length:
-      max: 2
-      min: 8
-    item:
-      id: "minecraft:cod"
+      id: "minecraft:pufferfish"
+      lore:
+        - "This fish is unbelievably round"
+      custom-model-data: 1201
+  candycaneclownfish:
+    display-name: "Candycane Clownfish"
     chance: 25
-  catfish:
-    display-name: "Catfish"
+    length:
+      max: 64
+      min: 58
+    item:
+      id: "minecraft:tropical_fish"
+      lore:
+        - "You almost want to like it... almost"
+      custom-model-data: 1201
+  carollingcarp:
+    display-name: "Carolling Carp"
+    chance: 50
+    length:
+      max: 30
+      min: 24
+    item:
+      id: "minecraft:salmon"
+      lore:
+        - "Out of tune, off key, and won't shut up"
+      custom-model-data: 1201
+  cidersquid:
+    display-name: "Cider Squid"
+    chance: 50
     length:
       max: 24
+      min: 18
+    item:
+      id: "minecraft:ink_sac"
+      lore:
+        - "The spicier cousin of the Juice Squid"
+      commands:
+        - "effect give %player% blindness 10"
+      custom-model-data: 1201
+  evergreeneel:
+    display-name: "Evergreen Eel"
+    chance: 50
+    length:
+      max: 26
+      min: 20
+    item:
+      id: "minecraft:cod"
+      lore:
+        - "Smells like one of those little dangly trees"
+      custom-model-data: 1202
+  frostyflounder:
+    display-name: "Frosty Flounder"
+    chance: 25
+    length:
+      max: 160
+      min: 100
+    item:
+      id: "minecraft:cod"
+      lore:
+        - "Feels much colder than you'd think"
+      custom-model-data: 1203
+  gingerbreadguarami:
+    display-name: "Gingerbread Guarami"
+    chance: 25
+    length:
+      max: 130
+      min: 90
+    item:
+      id: "minecraft:cod"
+      lore:
+        - "So much for not being able to be caught"
+      custom-model-data: 1204
+  hotchocolateherring:
+    display-name: "Hot Chocolate Herring"
+    chance: 10
+    length:
+      max: 320
+      min: 240
+    item:
+      id: "minecraft:salmon"
+      lore:
+        - "It is quite hot and smells a bit like chocolate"
+      custom-model-data: 1202
+  icyicefish:
+    display-name: "Icy Icefish"
+    chance: 50
+    length:
+      max:30
+      min:24
+    item:
+      id: "minecraft:salmon"
+      lore:
+        - "It's blood is as clear as pure ice"
+      custom-model-data: 1203
+  jollyjellyfish:
+    display-name: "Jolly Jellyfish"
+    chance: 50
+    length:
+      max: 18
+      min: 12
+    item:
+      id: "minecraft:cod"
+      lore:
+        - "This thing is so jolly it's toxic"
+      commands:
+        - "effect give %player% poison 3"
+      custom-model-data: 1205
+  kriskringlekoi:
+    display-name: "Kris Kringle Koi"
+    chance: 1
+    length:
+      max: 750
+      min: 600
+    item:
+      id: "minecraft:cod"
+      lore:
+        - "This is literally fish Santa"
+      custom-model-data: 1206
+  merrymackerel:
+    display-name: "Merry Mackerel"
+    chance: 25
+    length:
+      max: 130
+      min: 90
+    item:
+      id: "minecraft:salmon"
+      lore:
+        - "This fish is WAYYY too happy"
+      custom-model-data: 1204
+  naughtynurseshark:
+    display-name: "Naughty Nurseshark"
+    chance: 10
+    length:
+      max: 300
+      min: 200
+    item:
+      id: "minecraft:cod"
+      lore:
+        - "This shark is drawn so poorly, the artist was put on the naughty list"
+      custom-model-data: 1207
+  nicenoodlefish:
+    display-name: "Nice Noodlefish"
+    chance: 50
+    length:
+      max: 40
+      min: 32
+    item:
+      id: "minecraft:cod"
+      lore:
+        - "Ssssslluuuurp"
+      custom-model-data: 1208
+  ornamentopaleye:
+    display-name: "Ornament Opaleye"
+    chance: 50
+    length:
+      max: 30
+      min: 20
+    item:
+      id: "minecraft:pufferfish"
+      lore:
+        - "It was raised in a bauble factory"
+      custom-model-data: 1202
+  pineconesnail:
+    display-name: "Pine Conesnail"
+    chance: 50
+    length:
+      max: 25
       min: 15
     item:
-      id: "minecraft:cod"
+      id: "minecraft:nautilus_shell"
+      lore:
+        - "This snail looks like it fell out of a tree"
+      custom-model-data: 1201
+  pumpkinpiepuffer:
+    display-name: "Pumpkin Pie Puffer"
     chance: 25
-  bluegill:
-    display-name: "Bluegill"
     length:
-      max: 10
-      min: 6
+      max: 150
+      min: 85
+    item:
+      id: "minecraft:pufferfish"
+      lore:
+        - "You never seem to get a slice of these things before they're gone"
+      custom-model-data: 1203
+  rudytherednoseredfish:
+    display-name: "Rudy the Rednose Redfish"
+    chance: 25
+    length:
+      max: 140
+      min: 100
+    item:
+      id: "minecraft:salmon"
+      lore:
+        - "all the other redfish wouldn't let it play in their redfish games"
+      custom-model-data: 1205
+  reindeerray:
+    display-name: "Reindeer Ray"
+    chance: 50
+    length:
+      max: 60
+      min: 30
     item:
       id: "minecraft:cod"
-    chance: 25
-  sunfish:
-    display-name: "Sunfish"
+      lore:
+        - "These bad boys pull Aquamans sleigh"
+      custom-model-data: 1209
+  snowysalmon:
+    display-name: "Snowy Salmon"
+    chance: 50
     length:
-      max: 11
+      max: 70
+      min: 40
+    item:
+      id: "minecraft:salmon"
+      lore:
+        - "Smells like a cool winter day"
+      custom-model-data: 1206
+  sugarplumsnapper:
+    display-name: "Sugarplum Snapper"
+    chance: 50
+    length:
+      max: 50
+      min: 30
+    item:
+      id: "minecraft:salmon"
+      lore:
+        - "This Snapper is unusually purple"
+      custom-model-data: 1207
+  turkeytuna:
+    display-name: "Turkey Tuna"
+    chance:  25
+    length:
+      max: 120
+      min: 90
+    item:
+      id:
+      lore:
+        - "This fish IS the wishbone"
+      custom-model-data: 1210
+  thegrinch:
+    display-name: "Grinch"
+    chance: 1
+    length:
+      max: 750
+      min: 500
+    item:
+      id: "minecraft:nautilus_shell"
+      lore:
+        - "Hates every who in whoville"
+      custom-model-data: 1203
+  jackfrost:
+    display-name: "Jack"
+    chance: 1
+    length:
+      max: 750
+      min: 500
+    item:
+      id: "minecraft:nautilus_shell"
+      lore:
+        - "This is the guy that's been nipping at your nose"
+      custom-model-data: 1202
+  frostythesnowman:
+    display-name: "A Snowman"
+    chance: 1
+    length:
+      max: 750
+      min: 500
+    item:
+      id: "minecraft:nautilus_shell"
+      lore:
+        - "If only we had a magical hat!"
+      custom-model-data: 1204
+  polarbear:
+    display-name: "Polarbear"
+    chance: 5
+    length:
+      max: 8
       min: 8
     item:
-      id: "minecraft:cod"
-    chance: 10
+      id: "minecraft:polar_bear_spawn_egg"
+      lore:
+        - "It looks like it's been swimming for a while"
+  greengift:
+    display-name: "Green Giftbox"
+    chance: 5
+    length:
+      max: 16
+      min: 16
+    item:
+      id: "minecraft:dried_kelp_block"
+      lore:
+        - "A gift that nobody wanted"
+  redgift:
+    display-name: "Red Giftbox"
+    chance: 5
+    length:
+      max: 16
+      min: 16
+    item:
+      id: "minecraft:tnt"
+      lore:
+        - "this gift looks like it'll be a real blast!"
+  eggnog:
+    display-name: "\"Eggnog\""
+    chance: 5
+    length:
+      max: 4
+      min: 4
+    item:
+      id: "minecraft:potion"
+      lore:
+        - "It looks like Eggnog... but smells kinda funky"
+      custom-potion-color: 16770221
+      custom-potion-effects:
+        1:
+           id: speed
+           amplifier: 2
+           duration: 1200
+        2:
+          id: fast_digging
+          amplifier: 1
+          duration: 1200
+        3:
+          id: increase_damage
+          amplifier: 2
+          duration: 2250
+        4:
+          id: regeneration
+          duration: 250
+        5:
+          id: glowing
+          duration: 2250
+        6:
+          id: confusion
+          duration: 250
 
+  yulelog:
+    display-name:  "Yule Log"
+    chance: 5
+    length:
+      max: 12
+      min: 12
+    item:
+      id: "minecraft:spruce_log"
+      lore:
+        - "Apparently these logs are special"
+#End of Christmas Fish
+#End of Holiday Fish
 modifiers:
   default:
     display-name: ""
-    chance: 100
+    chance: 0
     fish:
       - 'boot'
       - 'bass'
@@ -96,30 +476,54 @@ modifiers:
     display-name: "&bCommon"
     chance: 25
     fish:
-      - 'bass'
-      - 'guppy'
-      - 'sunfish'
-      - 'bluegill'
-      - 'catfish'
+      - 'angelfish'
+      - 'baublebarble'
+      - 'carollingcarp'
+      - 'cidersquid'
+      - 'evergreeneel'
+      - 'icyicefish'
+      - 'jollyjellyfish'
+      - 'nicenoodlefish'
+      - 'ornamentopaleye'
+      - 'pineconesnail'
+      - 'pumpkinpiepuffer'
+      - 'reindeerray'
+      - 'snowysalmon'
+      - 'sugarplumsnapper'
   rare:
-    display-name: "&bRare"
+    display-name: "&eRare"
     chance: 5
     fish:
-      - 'goldfish'
-      - 'catfish'
-      - 'bass'
-      - 'guppy'
-  epic:
-    display-name: "&6Epic"
+      - 'carollingcarp'
+      - 'cidersquid'
+      - 'icyicefish'
+      - 'jollyjellyfish'
+      - 'pumpkinpiepuffer'
+      - 'snowysalmon'
+      - 'sugarplumsnapper'
+      - 'candycaneclownfish'
+      - 'frostyflounder'
+      - 'gingerbreadguarami'
+      - 'merrymackerel'
+      - 'rudytherednoseredfish'
+      - 'turkeytuna'
+  legendary:
+    display-name: "&6Legendary"
     chance: 2.5
     fish:
-      - 'bluegill'
-      - 'sunfish'
-      - 'bass'
-      - 'guppy'
-  legendary:
-    display-name: "&9Legendary"
+      - 'cidersquid'
+      - 'pumpkinpiepuffer'
+      - 'frostyflounder'
+      - 'merrymackerel'
+      - 'turkeytuna'
+      - 'hotchocolateherring'
+      - 'naughtynurseshark'
+  mythic:
+    display-name: "&9Mythic"
     chance: 1.25
     fish:
-      - 'bass'
-      - 'guppy'
+      - 'hotchocolateherring'
+      - 'thegrinch'
+      - 'jackfrost'
+      - 'frostythesnowman'
+      - 'kriskringlekoi'

@@ -6,10 +6,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class CompetitionTimerListener implements Listener {
+public class CompetitionListener implements Listener {
     private TimerBar timerBar;
 
-    public CompetitionTimerListener(TimerBar timerBar) {
+    public CompetitionListener(TimerBar timerBar) {
         this.timerBar = timerBar;
     }
 
