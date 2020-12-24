@@ -5,7 +5,7 @@ import java.util.List;
 public class Fish extends Reward {
     public double minLength;
     public double maxLength;
-    public double actualLength;
+    public double length;
 
     // A reward that is a fish
     public Fish(String name, double chance, int customModelData, List<String> commands, double minLength, double maxLength) {
@@ -14,8 +14,14 @@ public class Fish extends Reward {
         this.maxLength = maxLength;
     }
 
-    public Fish(String name, double actualLength) {
+    public Fish(String name, String displayName, double chance, List<String> commands, double minLength, double maxLength) {
+        super(name, displayName, chance, commands);
+        this.minLength = minLength;
+        this.maxLength = maxLength;
+    }
+
+    public Fish(String name, double length) {
         super(name);
-        this.actualLength = actualLength;
+        this.length = length;
     }
 }

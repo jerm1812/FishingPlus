@@ -4,15 +4,14 @@ import me.baryonyx.fishingplus.exceptions.InvalidCompetitionStateException;
 import me.baryonyx.fishingplus.fishing.Fish;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Competition {
     private static boolean running = false;
-    private Map<Player, Entry> map = new HashMap<>();
+    private Map<UUID, Entry> map = new HashMap<>();
 
     // Starts a competition and throws if one is already started
-    public void startCompetition() throws InvalidCompetitionStateException {
+    void startCompetition() throws InvalidCompetitionStateException {
         if (running)
             throw new InvalidCompetitionStateException();
 
@@ -20,7 +19,7 @@ public class Competition {
     }
 
     // Stops a competition and throws if one is not running
-    public void stopCompetition() throws InvalidCompetitionStateException {
+    void stopCompetition() throws InvalidCompetitionStateException {
         if (!running)
             throw new InvalidCompetitionStateException();
 
@@ -29,19 +28,25 @@ public class Competition {
     }
 
     // Adds the biggest fish a player catches in a given competition
-    public void logFish(Player player, Fish fish) {
+    void logFish(Player player, Fish fish) {
         if (running) {
-            if (!map.containsKey(player))
-                map.put(player, new Entry(player, fish));
+            if (!map.containsKey(player.getUniqueId()))
+                map.put(player.getUniqueId(), new Entry(player, fish));
 
-            else if (map.get(player).fish.actualLength < fish.actualLength)
-                map.replace(player, new Entry(player, fish));
+            else if (map.get(player.getUniqueId()).fish.length < fish.length)
+                map.replace(player.getUniqueId(), new Entry(player, fish));
         }
     }
 
-    // Returns the competition stats
-    public Map<Player, Entry> getCompetitionStats() {
-        return map;
+    // Returns a sorted competition results
+    List<Entry> sortCompetitionResults() throws InvalidCompetitionStateException {
+        if (!running) {
+            throw new InvalidCompetitionStateException();
+        }
+
+        List<Entry> entries = new ArrayList<>(map.values());
+        Collections.sort(entries);
+        return entries;
     }
 
     // Returns if the competition is running or not

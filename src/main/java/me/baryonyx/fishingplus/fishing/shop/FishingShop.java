@@ -3,6 +3,7 @@ package me.baryonyx.fishingplus.fishing.shop;
 import me.baryonyx.fishingplus.configuration.Config;
 import me.baryonyx.fishingplus.handlers.ItemHandler;
 import me.baryonyx.fishingplus.hooks.VaultHook;
+import me.baryonyx.fishingplus.messaging.Messages;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -15,26 +16,31 @@ import java.util.Map;
 public class FishingShop {
     private ItemHandler itemHandler;
     private Config config;
+    private Messages messages;
     private Economy economy;
 
-    public FishingShop(ItemHandler itemHandler, Config config) {
+    public FishingShop(ItemHandler itemHandler, Config config, Messages messages) {
         this.itemHandler = itemHandler;
         this.config = config;
+        this.messages = messages;
         this.economy = VaultHook.getEconomy();
     }
 
     // Sells all FishingPlus rewards
     public void sellRewards(@NotNull Inventory inventory, @NotNull Player player) {
+        // Gets all rewards
         Map<ItemStack, Double> rewards = getRewardsInInventory(inventory);
         double total = calculateTotalValue(rewards);
 
+        // Removes items
         for (ItemStack item : rewards.keySet()) {
             inventory.remove(item);
         }
 
+        // Gives player money
         if (total > 0) {
             economy.depositPlayer(player, total);
-            player.sendMessage(config.getBroadcastPrefix() + config.getShopSellMessage().replace("%total%", String.valueOf(total)));
+            messages.sellRewards(player, total);
         }
     }
 
@@ -57,10 +63,12 @@ public class FishingShop {
     double calculateTotalValue(@NotNull Map<ItemStack, Double> map) {
         double price  = 0;
 
+        // Adds each items value
         for (Map.Entry<ItemStack, Double> entry: map.entrySet()) {
             price += entry.getValue() * entry.getKey().getAmount();
         }
 
-        return price;
+        // Rounds to two decimal places
+        return Math.round(price * 100d) / 100d;
     }
 }

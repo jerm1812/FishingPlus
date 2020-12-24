@@ -7,13 +7,13 @@ import me.baryonyx.fishingplus.fishing.Fish;
 import me.baryonyx.fishingplus.fishing.Reward;
 import me.baryonyx.fishingplus.handlers.ItemHandler;
 import me.baryonyx.fishingplus.handlers.RewardHandler;
+import me.baryonyx.fishingplus.messaging.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.time.LocalTime;
-import java.time.format.DateTimeParseException;
 import java.util.*;
 
 public class Runner {
@@ -22,30 +22,32 @@ public class Runner {
     private Competition competition;
     private ItemHandler itemHandler;
     private RewardHandler rewardHandler;
-    private Announcements announcements;
+    private Messages messages;
     private TimerBar timerBar;
-    private List<LocalTime> runTimes = new ArrayList<>();
+
+    private TimedStarter timedStarter;
 
 
-    public Runner(FishingPlus plugin, Config config, Competition competition, ItemHandler itemHandler, RewardHandler rewardHandler, Announcements announcements, TimerBar timerBar) {
+    public Runner(FishingPlus plugin, Config config, Competition competition, ItemHandler itemHandler, RewardHandler rewardHandler, Messages messages, TimerBar timerBar) {
         this.plugin = plugin;
         this.config = config;
         this.competition = competition;
         this.itemHandler = itemHandler;
         this.rewardHandler = rewardHandler;
-        this.announcements = announcements;
+        this.messages = messages;
         this.timerBar = timerBar;
 
-        autoRunner();
+        timedStarter = new TimedStarter(this, config, plugin);
+        timedStarter.autoRunner();
     }
 
     // Starts a competition with a defined ending if one is not already started
     public void startTimedCompetition(Long time) {
         try {
             competition.startCompetition();
-            plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, this::stopCompetition, time * 20 * 60);
+            plugin.getServer().getScheduler().runTaskLater(plugin, this::stopCompetition, time * 20 * 60);
             timerBar.startTimer(time);
-            announcements.broadcastCompetitionStart(time);
+            messages.competitionStart(time);
         } catch (InvalidCompetitionStateException e) {
             Bukkit.getLogger().info("Could not start a fishing competition because there is already one running!");
         }
@@ -55,7 +57,7 @@ public class Runner {
     public void startUndefinedCompetition() {
         try {
             competition.startCompetition();
-            announcements.broadcastCompetitionStart(0);
+            messages.competitionStart(0L);
         } catch (InvalidCompetitionStateException e) {
             Bukkit.getLogger().info("Could not start a fishing competition because there is already one running!");
         }
@@ -64,68 +66,102 @@ public class Runner {
     // Stops a competition if one is running
     public void stopCompetition() {
         try {
-            List<Entry> entries = sortCompetitionMap(competition.getCompetitionStats());
+            List<Entry> entries = competition.sortCompetitionResults();
             competition.stopCompetition();
 
             if (timerBar.bar != null) {
                 timerBar.removeTimer();
             }
 
-            announcements.broadcastCompetitionEnd();
             handleResults(entries);
         } catch (InvalidCompetitionStateException e) {
             Bukkit.getLogger().info("Could not stop the fishing competition because there no competition running!");
         }
     }
 
-    // Sorts the competition map
-    private List<Entry> sortCompetitionMap(Map<Player, Entry> map) {
-        List<Entry> entries = new ArrayList<>(map.values());
-        Collections.sort(entries);
-        return entries;
-    }
-
-    // Sends winners to chat handler and gives rewards
-    private void handleResults(List<Entry> entries) {
-        if (entries == null || entries.size() < config.getMinimumParticipants()) {
-            announcements.broadcastNotEnoughParticipants();
-            return;
+    public String getCompetitionStandings(@Nullable List<Entry> entries) {
+        if (entries == null) {
+            try {
+                entries = competition.sortCompetitionResults();
+            } catch (InvalidCompetitionStateException e) {
+                return null;
+            }
         }
 
         int size = config.getAmountOfWinnersDisplayed();
+        StringBuilder standings = new StringBuilder();
 
-        // Caps size to competition players
         if (entries.size() < size) {
             size = entries.size();
         }
 
-        // Sends winners to be displayed
         for (int i = 0; i < size; i++) {
             Entry entry = entries.get(i);
-            announcements.broadcastCompetitionResults(entry.player.getName(), ordinal(i + 1), entry.fish.name, entry.fish.actualLength);
-            if (i < rewardHandler.getCompetitionRewardLength()) {
-                giveCompetitionReward(entry.player, i + 1);
+            Player player = plugin.getServer().getPlayer(entry.player);
+            String playerName;
+
+            if (player == null) {
+                playerName = "unknown";
+            } else {
+                playerName = player.getName();
             }
+
+            String message = config.getMessageString("competition-results")
+                    .replace("%ordinal%", Messages.ordinal(i + 1))
+                    .replace("%player%", playerName)
+                    .replace("%fish%", entry.fish.name)
+                    .replace("%length%", String.valueOf(entry.fish.length));
+
+            standings.append(message);
         }
+
+        return standings.toString();
     }
 
-    // Returns the ordinal of a number
-    private String ordinal(int i)  {
-        String[] suffixes = new String[] { "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th" };
-        switch (i % 100) {
-            case 11:
-            case 12:
-            case 13:
-                return i + "th";
-            default:
-                return i + suffixes[i % 10];
+    // Gives the player a prize and gets their top
+    private int givePlayerReward(@NotNull List<Entry> entries, Player player) {
+        int rank = 0;
+        int prizes = rewardHandler.getCompetitionRewardLength();
 
+        for (int i = 0; i < entries.size(); i++) {
+            if (entries.get(i).player == player.getUniqueId()) {
+                rank = i + 1;
+
+                if (i <= prizes) {
+                    giveCompetitionReward(player, i + 1);
+                }
+
+                break;
+            }
+        }
+
+        return rank;
+    }
+
+    // Sends winners to chat handler and gives rewards
+    private void handleResults(List<Entry> entries) {
+        if (entries.size() < config.getMinimumParticipants()) {
+            messages.notEnoughParticipants();
+            return;
+        }
+
+        String standings = getCompetitionStandings(entries);
+
+        for (Player player : plugin.getServer().getOnlinePlayers()) {
+            int rank = givePlayerReward(entries, player);
+            messages.competitionResult(standings, rank, player);
         }
     }
 
     // Gives a player a competition reward
     private void giveCompetitionReward(@NotNull Player player, int i) {
         Reward reward = rewardHandler.getCompetitionReward(i);
+
+        if (reward == null) {
+            plugin.getLogger().warning("There was an error giving out the " + i + " reward for a competition");
+            return;
+        }
+
         ItemStack item = itemHandler.createRewardItem(reward.name, player.getName(), false);
         rewardHandler.runCommands(reward, player);
 
@@ -146,33 +182,13 @@ public class Runner {
             return;
         }
 
+
+
         String name = itemHandler.getRewardName(item);
+        String modifier = itemHandler.getModifierName(item);
         double length = itemHandler.getFishLength(item);
 
-        announcements.messagePlayerCaughtFish(player, name, length);
+        messages.caughtFish(player, name, modifier, length);
         competition.logFish(player, new Fish(name, length));
-    }
-
-    // Sets up the competition run times
-    private void autoRunner() {
-        for (String string : config.getCompetitionRunTimes()) {
-            try {
-                LocalTime time = LocalTime.parse(string);
-                runTimes.add(time);
-            } catch (DateTimeParseException e) {
-                Bukkit.getLogger().warning("Could not add the time: " + e.getParsedString() + " to the Fishing Competition auto runner");
-            }
-        }
-
-        // Checks time to run every 45 seconds
-        plugin.getServer().getScheduler().runTaskTimer(plugin, this::run, 0, 900);
-    }
-
-    // Runs a fishing competition at the defined times of day
-    private void run() {
-        if (runTimes.contains(LocalTime.now().withSecond(0).withNano(0))) {
-            long duration = config.getCompetitionDuration();
-            startTimedCompetition(duration);
-        }
     }
 }
