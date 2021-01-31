@@ -22,7 +22,7 @@ public class RewardHandler {
     private double fishLengthWeight;
 
     public RewardHandler(@NotNull Config config) {
-        fishLengthWeight = config.getFishLengthWeight();
+        fishLengthWeight = config.getConfigDouble("fish-length-weight");
     }
 
     // Adds a FishingPlus reward to the fishing map

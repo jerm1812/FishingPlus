@@ -3,6 +3,7 @@ package me.baryonyx.fishingplus.fishing.shop;
 import me.baryonyx.fishingplus.FishingPlus;
 import me.baryonyx.fishingplus.configuration.Config;
 import me.baryonyx.fishingplus.handlers.ItemHandler;
+import me.baryonyx.fishingplus.messaging.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -35,7 +36,7 @@ public class FishingShopGui implements Listener {
     // Creates a FishingPlus shop inventory
     @NotNull
     public Inventory setupInventory(Player player) {
-        Inventory inventory = Bukkit.createInventory(player, 36, config.getShopName());
+        Inventory inventory = Bukkit.createInventory(player, 36, Messages.coloredMessage(config.getConfigString("shop-name")));
         inventory.setItem(35, rowIcon);
         inventory.setItem(34, rowIcon);
         inventory.setItem(33, rowIcon);

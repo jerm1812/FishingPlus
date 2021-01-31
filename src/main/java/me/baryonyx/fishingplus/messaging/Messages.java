@@ -16,7 +16,7 @@ public class Messages {
         this.plugin = plugin;
         this.config = config;
 
-        prefix = config.getBroadcastPrefix();
+        prefix = config.getMessageString("message-prefix");
     }
 
     // Sends a colored message with the prefix to a player
@@ -38,7 +38,7 @@ public class Messages {
 
     // Creates and sends out the competition start message
     public void competitionStart(Long time) {
-        if (config.isBroadcastStartEnabled()) {
+        if (config.getConfigBool("broadcast-competition-start")) {
             String message;
 
             // If the competition is timed
@@ -63,7 +63,7 @@ public class Messages {
         if (rank == 0) {
             message.append(config.getMessageString("did-not-participate"));
         }
-        else if (rank > config.getAmountOfWinnersDisplayed()) {
+        else if (rank > config.getConfigInt("players-displayed")) {
             message.append(config.getMessageString("competition-rank"));
         }
 
@@ -82,7 +82,7 @@ public class Messages {
 
     // Displays the total price of rewards sold to player
     public void sellRewards(Player player, double total) {
-        String message = config.getShopSellMessage().replace("%total%", String.valueOf(total));
+        String message = config.getConfigString("sell-message").replace("%total%", String.valueOf(total));
         playerMessage(player, message);
     }
 

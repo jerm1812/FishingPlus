@@ -40,7 +40,7 @@ public class TimedStarter {
     // Runs a fishing competition at the defined times of day
     private void run() {
         if (runTimes.contains(LocalTime.now().withSecond(0).withNano(0))) {
-            long duration = config.getCompetitionDuration();
+            long duration = config.getConfigInt("competition-duration");
             runner.startTimedCompetition(duration);
         }
     }

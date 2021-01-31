@@ -51,7 +51,7 @@ public class FishingShop {
         for (ItemStack item : inventory.getContents()) {
             if (item != null && itemHandler.isReward(item)) {
                 double length = itemHandler.getFishLength(item);
-                double price = config.getPriceMultiplier() * length * item.getAmount();
+                double price = config.getConfigDouble("price-multiplier") * length * item.getAmount();
                 map.put(item, price);
             }
         }

@@ -27,7 +27,7 @@ public class FishingListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void playerFishEvent(@NotNull PlayerFishEvent event) {
         // If using a FishingPlus reward is appropriate
-        if (Competition.isRunning() || !config.rewardsOnlyDuringCompetition()) {
+        if (Competition.isRunning() || !config.getConfigBool("competition-only")) {
             // If a player caught a fish
             if (event.getState() == PlayerFishEvent.State.CAUGHT_FISH && event.getCaught() instanceof Item) {
                 Item caught = (Item) event.getCaught();

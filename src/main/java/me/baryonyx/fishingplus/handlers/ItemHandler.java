@@ -107,7 +107,7 @@ public class ItemHandler {
 
         if (item == null) return null;
 
-        if (config.getDisplayWhoCaught() && catchEvent) {
+        if (config.getConfigBool("display-who-caught") && catchEvent) {
             addLoreToItemReward(item, "&7" + playerName + " caught this!");
         }
 
