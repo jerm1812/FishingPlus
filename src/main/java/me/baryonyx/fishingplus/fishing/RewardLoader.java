@@ -55,7 +55,7 @@ public class RewardLoader {
             return;
         }
 
-        String displayName = config.getRewardNames();
+        String displayName = config.getConfigString("reward-names");
 
         // Sends each reward section to be loaded
         for (String key : section.getKeys(false)) {
@@ -78,7 +78,7 @@ public class RewardLoader {
             return;
         }
 
-        String displayName = config.getRewardNames();
+        String displayName = config.getConfigString("reward-names");
 
         for (String key : section.getKeys(false)) {
             Reward reward = getRewardFromFile(section, key, displayName);
@@ -95,11 +95,11 @@ public class RewardLoader {
     private void loadModifiers() {
         ConfigurationSection section = rewardConfiguration.getModifiers();
 
-        if (!config.getAllowModifiers() || section == null) {
+        if (!config.getConfigBool("enable-modifiers") || section == null) {
             return;
         }
 
-        String displayName = config.getModifierNames();
+        String displayName = config.getConfigString("modifier-names");
 
         for (String key : section.getKeys(false)) {
             Modifier modifier = getModifierFromFile(section, key, displayName);

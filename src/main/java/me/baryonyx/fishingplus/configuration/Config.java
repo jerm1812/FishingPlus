@@ -60,7 +60,7 @@ public class Config {
         loadMessages();
     }
 
-    public String getString(String key) {
+    public String getConfigString(String key) {
         return config.getString(key);
     }
 
@@ -68,73 +68,19 @@ public class Config {
         return messages.getString(key);
     }
 
-    public double getFishLengthWeight() {
-        return config.getDouble("fish-length-weight");
+    public double getConfigDouble(String key) {
+        return config.getDouble(key);
     }
 
-    public boolean getDisplayWhoCaught() {
-        return config.getBoolean("display-who-caught");
+    public boolean getConfigBool(String key) {
+        return config.getBoolean(key);
     }
 
-    public String getRewardNames() {
-        return config.getString("reward-names");
-    }
-
-    public boolean getAllowModifiers() {
-        return config.getBoolean("enable-modifiers");
-    }
-
-    public String getModifierNames() {
-        return config.getString("modifier-names");
-    }
-
-    public boolean rewardsOnlyDuringCompetition() {
-        return config.getBoolean("competition-only");
-    }
-
-    public boolean isBroadcastStartEnabled() {
-        return config.getBoolean("broadcast-competition-start");
-    }
-
-    public boolean isBroadcastEndEnabled() {
-        return config.getBoolean("broadcast-competition-end");
-    }
-
-    public String getBroadcastPrefix() {
-        return config.getString("message-prefix");
-    }
-
-    public int getAmountOfWinnersDisplayed() {
-        return config.getInt("players-displayed");
-    }
-
-    public int getMinimumParticipants() {
-        return config.getInt("minimum-fishers");
-    }
-
-    public int getCompetitionDuration() {
-        return config.getInt("competition-duration");
+    public int getConfigInt(String key) {
+        return config.getInt(key);
     }
 
     public List<String> getCompetitionRunTimes() {
         return config.getStringList("competition-run-times");
     }
-
-    public double getPriceMultiplier() {
-        return config.getDouble("price-multiplier");
-    }
-
-    public String getShopSellMessage() {
-        return config.getString("sell-message");
-    }
-
-    public String getShopName() {
-        return config.getString("shop-name");
-    }
-
-    public String getTimebarTitle() {
-        return config.getString("timebar-title");
-    }
-
-
 }

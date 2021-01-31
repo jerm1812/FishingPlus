@@ -88,7 +88,7 @@ public class Runner {
             }
         }
 
-        int size = config.getAmountOfWinnersDisplayed();
+        int size = config.getConfigInt("players-displayed");
         StringBuilder standings = new StringBuilder();
 
         if (entries.size() < size) {
@@ -140,7 +140,7 @@ public class Runner {
 
     // Sends winners to chat handler and gives rewards
     private void handleResults(List<Entry> entries) {
-        if (entries.size() < config.getMinimumParticipants()) {
+        if (entries.size() < config.getConfigInt("minimum-fishers")) {
             messages.notEnoughParticipants();
             return;
         }

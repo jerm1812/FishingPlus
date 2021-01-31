@@ -66,7 +66,7 @@ public class TimerBar {
             return;
         }
 
-        bar.setTitle(ChatColor.translateAlternateColorCodes('&', config.getTimebarTitle().replace("%time%", getTime())));
+        bar.setTitle(ChatColor.translateAlternateColorCodes('&', config.getConfigString("timebar-title").replace("%time%", getTime())));
         bar.setProgress(timeLeft.doubleValue() / totalTime);
     }
 
