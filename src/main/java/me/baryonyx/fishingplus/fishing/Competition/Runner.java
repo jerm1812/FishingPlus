@@ -182,8 +182,6 @@ public class Runner {
             return;
         }
 
-
-
         String name = itemHandler.getRewardName(item);
         String modifier = itemHandler.getModifierName(item);
         double length = itemHandler.getFishLength(item);
