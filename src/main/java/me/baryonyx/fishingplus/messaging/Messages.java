@@ -5,6 +5,7 @@ import me.baryonyx.fishingplus.configuration.Config;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class Messages {
     private FishingPlus plugin;
@@ -71,18 +72,18 @@ public class Messages {
     }
 
     // Displays caught fish to player
-    public void caughtFish(Player player, String fish, String modifier, double length) {
+    public void caughtFish(Player player, String fish, @Nullable String modifier, double length) {
         String message = config.getMessageString("fish-caught")
-                .replace("%fish%", fish)
-                .replace("%modifier%", modifier)
-                .replace("%length%", String.valueOf(length));
+                .replace("%fish%", fish == null ? "" : fish)
+                .replace("%length%", String.valueOf(length))
+                .replace("%modifier%", modifier == null ? "" : modifier);
 
         playerMessage(player, message);
     }
 
     // Displays the total price of rewards sold to player
     public void sellRewards(Player player, double total) {
-        String message = config.getConfigString("sell-message").replace("%total%", String.valueOf(total));
+        String message = config.getMessageString("sell-message").replace("%total%", String.valueOf(total));
         playerMessage(player, message);
     }
 
