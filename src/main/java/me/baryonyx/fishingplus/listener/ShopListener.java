@@ -80,7 +80,7 @@ public class ShopListener implements Listener {
             return true;
         }
         else {
-            return action == InventoryAction.SWAP_WITH_CURSOR && cursor != null && !itemHandler.isReward(cursor);
+            return action == InventoryAction.SWAP_WITH_CURSOR && cursor != null && !itemHandler.isFish(cursor);
         }
     }
 

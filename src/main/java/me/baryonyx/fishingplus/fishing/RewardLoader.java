@@ -34,14 +34,18 @@ public class RewardLoader {
         this.modifierHandler = modifierHandler;
         this.itemHandler = itemHandler;
 
-        reload();
+        load();
     }
 
     public void reload() {
         rewardHandler.clear();
         modifierHandler.clear();
         itemHandler.clear();
+        rewardConfiguration.reload();
+        load();
+    }
 
+    private void load() {
         loadFishingRewards();
         loadCompetitionRewards();
         loadModifiers();

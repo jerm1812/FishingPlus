@@ -28,7 +28,7 @@ public class TestCommand {
             }
 
             // Adding fish to players inventory
-            Map<Integer, ItemStack> map = player.getInventory().addItem((ItemStack[])fish.toArray());
+            Map<Integer, ItemStack> map = player.getInventory().addItem(fish.toArray(new ItemStack[36]));
 
             // Dropping items that couldn't be placed in inventory
             for (ItemStack item : map.values()) {

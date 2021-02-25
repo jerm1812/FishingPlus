@@ -49,7 +49,7 @@ public class FishingShop {
         Map<ItemStack, Double> map = new HashMap<>();
 
         for (ItemStack item : inventory.getContents()) {
-            if (item != null && itemHandler.isReward(item)) {
+            if (item != null && itemHandler.isFish(item)) {
                 double length = itemHandler.getFishLength(item);
                 double price = config.getConfigDouble("price-multiplier") * length * item.getAmount();
                 map.put(item, price);
