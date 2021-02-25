@@ -89,6 +89,7 @@ public class Runner {
         }
 
         int size = config.getConfigInt("players-displayed");
+        int offlinePlayers = 0;
         StringBuilder standings = new StringBuilder();
 
         if (entries.size() < size) {
@@ -98,17 +99,15 @@ public class Runner {
         for (int i = 0; i < size; i++) {
             Entry entry = entries.get(i);
             Player player = plugin.getServer().getPlayer(entry.player);
-            String playerName;
 
             if (player == null) {
-                playerName = "unknown";
-            } else {
-                playerName = player.getName();
+                offlinePlayers++;
+                continue;
             }
 
             String message = config.getMessageString("competition-results")
-                    .replace("%ordinal%", Messages.ordinal(i + 1))
-                    .replace("%player%", playerName)
+                    .replace("%ordinal%", Messages.ordinal(i + 1 - offlinePlayers))
+                    .replace("%player%", player.getName())
                     .replace("%fish%", entry.fish.name)
                     .replace("%length%", String.valueOf(entry.fish.length));
 
