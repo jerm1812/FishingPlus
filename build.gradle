@@ -29,6 +29,7 @@ dependencies {
     compile 'org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'
     compile 'org.jetbrains:annotations:13.0'
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
+    shade "com.tchristofferson:ConfigUpdater:1.1-SNAPSHOT"
 }
 
 import org.apache.tools.ant.filters.ReplaceTokens

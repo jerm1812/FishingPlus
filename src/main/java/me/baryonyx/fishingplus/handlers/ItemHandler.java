@@ -2,7 +2,6 @@ package me.baryonyx.fishingplus.handlers;
 
 import me.baryonyx.fishingplus.FishingPlus;
 import me.baryonyx.fishingplus.configuration.Config;
-import me.baryonyx.fishingplus.exceptions.ItemNotFoundException;
 import me.baryonyx.fishingplus.messaging.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;

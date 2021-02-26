@@ -5,21 +5,33 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ConfigUpdater {
     private FishingPlus plugin;
-    private Config config;
-    private String latestVersion = "1.0.0";
+    private int currentVersion;
+    private final int latestVersion = 1;
     
-    public ConfigUpdater(FishingPlus plugin, Config config) {
+    public ConfigUpdater(FishingPlus plugin) {
         this.plugin = plugin;
-        this.config = config;
+        File file = new File(plugin.getDataFolder(), "config.yml");
+
+        if (!file.exists()) {
+            plugin.saveDefaultConfig();
+        }
+
+        FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+        currentVersion = config.getInt("config-version", 0);
     }
 
     public void checkConfigVersion() {
-        String currentVersion = config.getConfigString("config-version");
-        
-        if (!latestVersion.equals(currentVersion)) {
+        if (currentVersion < latestVersion) {
             updateConfig();
         }
     }
@@ -30,19 +42,16 @@ public class ConfigUpdater {
             return;
         }
 
-        FileConfiguration oldConfig = plugin.getConfig();
-        plugin.saveResource("config.yml", true);
         File file = new File(plugin.getDataFolder(), "config.yml");
-        FileConfiguration newConfig = YamlConfiguration.loadConfiguration(file);
+        List<String> list = getIgnoreList();
 
-        for (String key : newConfig.getKeys(false)) {
-            if (oldConfig.isSet(key) && !key.equals("config-version")) {
-                newConfig.set(key, oldConfig.get(key));
-            }
+        try {
+            com.tchristofferson.configupdater.ConfigUpdater.update(plugin, "config.yml", file, list);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        newConfig.set("config-version", latestVersion);
-        config.reloadConfig();
+        plugin.reloadConfig();
     }
 
     private String getBackupNumber() {
@@ -52,26 +61,50 @@ public class ConfigUpdater {
             return "";
         }
 
-        int lastBackup = 1;
-
-        for (File file : files) {
-            try {
-                int number = Integer.getInteger(file.getName().substring(8, file.getName().lastIndexOf(".")));
-
-                if (number > lastBackup) {
-                    lastBackup = number;
-                }
-            } catch (Exception ignored) {
-            }
-        }
-
-        return String.valueOf(lastBackup);
+        return String.valueOf(files.length);
     }
 
     private boolean backupConfig() {
-        File file = new File(plugin.getDataFolder(), "config.yml");
-        File newFile = new File(plugin.getDataFolder(), "configbackups" + File.separator + "oldconfig" + getBackupNumber() + ".yml");
+        checkBackupDir();
+        Path source = Paths.get(plugin.getDataFolder().getPath(), "config.yml");
+        Path destination = Paths.get(plugin.getDataFolder().getPath(), "configbackups" + File.separator + "oldconfig" + getBackupNumber() + ".yml");
 
-        return file.renameTo(newFile);
+        try {
+            Files.move(source, destination);
+            return true;
+        } catch (IOException e) {
+            plugin.getLogger().severe(e.getMessage());
+            return false;
+        }
+    }
+
+    private void checkBackupDir() {
+        Path folder = Paths.get(plugin.getDataFolder().getPath(), "configbackups");
+
+        if (Files.notExists(folder)) {
+            try {
+                Files.createDirectories(folder);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private List<String> getIgnoreList() {
+        List<String> list = new ArrayList<>();
+
+        if (currentVersion >= 1) {
+            list.add("enabled-reward-configs");
+        }
+
+        if (currentVersion >= 0) {
+            list.addAll(Arrays.asList("broadcast-competition-start", "broadcast-competition-end", "broadcast-competition-end",
+                    "broadcast-competition-winner", "players-displayed", "minimum-fishers", "competition-run-times",
+                    "competition-duration", "timebar-title", "competition-only", "display-who-caught", "reward-names",
+                    "fish-length-weight", "display-fish-lengh", "enable-modifiers", "modifier-names", "shop-name",
+                    "price-multiplier"));
+        }
+
+        return list;
     }
 }

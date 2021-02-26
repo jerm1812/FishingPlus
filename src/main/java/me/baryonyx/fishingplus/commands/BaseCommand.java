@@ -52,7 +52,7 @@ public class BaseCommand implements CommandExecutor {
             }
 
             // Reload command
-            if (args[0].equalsIgnoreCase("reloadConfig")) {
+            if (args[0].equalsIgnoreCase("reload")) {
                 return reloadCommand.run(player, args);
             }
 
