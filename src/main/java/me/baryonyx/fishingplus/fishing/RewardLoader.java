@@ -2,7 +2,6 @@ package me.baryonyx.fishingplus.fishing;
 
 import me.baryonyx.fishingplus.FishingPlus;
 import me.baryonyx.fishingplus.configuration.Config;
-import me.baryonyx.fishingplus.configuration.RewardConfiguration;
 import me.baryonyx.fishingplus.exceptions.InvalidFishLengthException;
 import me.baryonyx.fishingplus.exceptions.ItemNotFoundException;
 import me.baryonyx.fishingplus.handlers.ItemHandler;
@@ -21,15 +20,13 @@ import java.util.List;
 public class RewardLoader {
     private FishingPlus plugin;
     private Config config;
-    private RewardConfiguration rewardConfiguration;
     private RewardHandler rewardHandler;
     private ModifierHandler modifierHandler;
     private ItemHandler itemHandler;
 
-    public RewardLoader(FishingPlus plugin, Config config, RewardConfiguration rewardConfiguration, RewardHandler rewardHandler, ModifierHandler modifierHandler, ItemHandler itemHandler) {
+    public RewardLoader(FishingPlus plugin, Config config, RewardHandler rewardHandler, ModifierHandler modifierHandler, ItemHandler itemHandler) {
         this.plugin = plugin;
         this.config = config;
-        this.rewardConfiguration = rewardConfiguration;
         this.rewardHandler = rewardHandler;
         this.modifierHandler = modifierHandler;
         this.itemHandler = itemHandler;
@@ -41,7 +38,7 @@ public class RewardLoader {
         rewardHandler.clear();
         modifierHandler.clear();
         itemHandler.clear();
-        rewardConfiguration.reload();
+        config.reloadRewards();
         load();
     }
 
@@ -52,33 +49,35 @@ public class RewardLoader {
     }
 
     private void loadFishingRewards() {
-        ConfigurationSection section = rewardConfiguration.getFishingRewards();
+        List<ConfigurationSection> sections = config.getRewardSections("fishing-rewards");
 
-        if (section == null) {
-            Bukkit.getLogger().info("The reward config is empty or has an error. Please fix this and then reload with /fp reload rewards");
+        if (sections == null || sections.size() == 0) {
+            Bukkit.getLogger().info("The reward configs are empty or has an error. Please fix this and then reloadConfig with /fp reload rewards");
             return;
         }
 
         String displayName = config.getConfigString("reward-names");
 
-        // Sends each reward section to be loaded
-        for (String key : section.getKeys(false)) {
-            Reward reward = getRewardFromFile(section, key, displayName);
+        for (ConfigurationSection section : sections) {
+            // Sends each reward section to be loaded
+            for (String key : section.getKeys(false)) {
+                Reward reward = getRewardFromFile(section, key, displayName);
 
-            if (reward == null) {
-                continue;
+                if (reward == null) {
+                    continue;
+                }
+
+                rewardHandler.addFishingRewardToMap(reward);
+                addItems(section, key, reward.displayName);
             }
-
-            rewardHandler.addFishingRewardToMap(reward);
-            addItems(section, key, reward.displayName);
         }
     }
 
     private void loadCompetitionRewards() {
-        ConfigurationSection section = rewardConfiguration.getCompetitionRewards();
+        ConfigurationSection section = config.getCompetitionRewardSection("competition-rewards");
 
         if (section == null) {
-            Bukkit.getLogger().info("The competition rewards are empty or has an error. Please fix this and then reload with /fp reload rewards");
+            Bukkit.getLogger().info("The competition rewards are empty or has an error. Please fix this and then reloadConfig with /fp reloadConfig rewards");
             return;
         }
 
@@ -97,18 +96,20 @@ public class RewardLoader {
     }
 
     private void loadModifiers() {
-        ConfigurationSection section = rewardConfiguration.getModifiers();
+        List<ConfigurationSection> sections = config.getRewardSections("modifiers");
 
-        if (!config.getConfigBool("enable-modifiers") || section == null) {
+        if (!config.getConfigBool("enable-modifiers") || sections == null || sections.size() == 0) {
             return;
         }
 
         String displayName = config.getConfigString("modifier-names");
 
-        for (String key : section.getKeys(false)) {
-            Modifier modifier = getModifierFromFile(section, key, displayName);
-            addModifierToFish(modifier.name, modifier.fish);
-            modifierHandler.addToMap(modifier);
+        for (ConfigurationSection section : sections) {
+            for (String key : section.getKeys(false)) {
+                Modifier modifier = getModifierFromFile(section, key, displayName);
+                addModifierToFish(modifier.name, modifier.fish);
+                modifierHandler.addToMap(modifier);
+            }
         }
     }
 

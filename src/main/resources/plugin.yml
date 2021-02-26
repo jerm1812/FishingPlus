@@ -10,7 +10,7 @@ commands:
     description: command for fishing plus
     aliases: [fp, fishplus]
     permission: fishingplus.use
-    usage: /fishingplus [help|comp|shop|reload]
+    usage: /fishingplus [help|comp|shop|reloadConfig]
 
 permissions:
   fishingplus.*:
@@ -53,22 +53,22 @@ permissions:
     description: Permissions to control the fishing plus competitions
 
   fishingplus.reload.config:
-    description: Permission to reload the fishing plus config
+    description: Permission to reloadConfig the fishing plus config
     children:
       fishingplus.reload: true
 
   fishingplus.reload.messages:
-    description: Permission to reload the fishing plus messages
+    description: Permission to reloadConfig the fishing plus messages
     children:
       fishingplus.reload: true
 
   fishingplus.reload.rewards:
-    description: Permission to reload the fishing plus rewards
+    description: Permission to reloadConfig the fishing plus rewards
     children:
       fishingplus.reload: true
 
   fishingplus.reload:
-    description: Permission to reload the fishing plus plugin
+    description: Permission to reloadConfig the fishing plus plugin
 
   fishingplus.test:
     description: Permission to test the fish map

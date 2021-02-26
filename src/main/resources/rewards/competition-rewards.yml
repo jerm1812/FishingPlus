@@ -1,0 +1,29 @@
+competition-rewards:
+  1:
+    commands:
+      - "broadcast %player% won the fishing contest!"
+      - "cr give to %player% kit 1"
+      - "eco give %player% 1000"
+    2:
+      commands:
+        - "cr give to %player% supply 1"
+        - "eco give %player% 750"
+    3:
+      commands:
+        - "cr give to %player% vote 1"
+        - "eco give %player% 500"
+    4:
+      commands:
+        - "eco give %player% 400"
+    5:
+      commands:
+        - "eco give %player% 300"
+    6:
+      commands:
+        - "eco give %player% 200"
+    7:
+      commands:
+        - "eco give %player% 150"
+    8:
+      commands:
+        - "eco give %player% 100"

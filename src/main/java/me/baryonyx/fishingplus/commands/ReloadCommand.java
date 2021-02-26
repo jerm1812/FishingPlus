@@ -24,7 +24,7 @@ public class ReloadCommand {
             if (args.length == 2) {
                 // Player reloads the config
                 if (args[1].equalsIgnoreCase("config")) {
-                    config.reload();
+                    config.reloadConfig();
                     messages.playerMessage(player, "&7Config has reloaded!");
                     return true;
                 }
@@ -35,7 +35,7 @@ public class ReloadCommand {
                     return true;
                 }
 
-                // Player reload the rewards
+                // Player reloadConfig the rewards
                 else if (args[1].equalsIgnoreCase("rewards")) {
                     rewardLoader.reload();
                     messages.playerMessage(player, "&7Rewards have reloaded!");
@@ -43,7 +43,7 @@ public class ReloadCommand {
                 }
             }
 
-            messages.playerMessage(player, "&7Please enter either config, messages, or rewards to reload!");
+            messages.playerMessage(player, "&7Please enter either config, messages, or rewards to reloadConfig!");
         }
 
         // Failed permission check

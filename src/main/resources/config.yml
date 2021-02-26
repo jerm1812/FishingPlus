@@ -33,6 +33,10 @@ timebar-title: "&b&lFishing Contest &r[%time% left]"
 
 #### REWARDS ####
 
+# If there is a yaml file in the rewards folder matching a name on this list it will be loaded - (Leave off the extension)
+enabled-reward-configs:
+  - "fish"
+
 # Set whether or not to get custom fish outside of competitions
 competition-only: true
 
@@ -69,3 +73,6 @@ shop-name: "FishingPlus Shop"
 
 # This price multiplier is multiplied by the length of the fish to get the price
 price-multiplier: .5
+
+# Config version - DO NOT CHANGE #
+config-version: "1.0.0"
