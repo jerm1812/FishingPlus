@@ -2,7 +2,7 @@ package me.baryonyx.fishingplus;
 
 import me.baryonyx.fishingplus.commands.*;
 import me.baryonyx.fishingplus.configuration.Config;
-import me.baryonyx.fishingplus.configuration.RewardConfiguration;
+import me.baryonyx.fishingplus.configuration.ConfigUpdater;
 import me.baryonyx.fishingplus.fishing.CatchEvent;
 import me.baryonyx.fishingplus.fishing.Competition.Competition;
 import me.baryonyx.fishingplus.fishing.Competition.Runner;
@@ -18,8 +18,6 @@ import me.baryonyx.fishingplus.messaging.Messages;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-
 public final class FishingPlus extends JavaPlugin {
     private Config config;
     private ItemHandler itemHandler;
@@ -29,7 +27,6 @@ public final class FishingPlus extends JavaPlugin {
     private Messages messages;
     private FishingShop fishingShop;
     private FishingShopGui fishingShopGui;
-    private RewardConfiguration rewardConfiguration;
     private CompetitionCommand competitionCommand;
     private ReloadCommand reloadCommand;
     private ShopCommand shopCommand;
@@ -39,17 +36,17 @@ public final class FishingPlus extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-        checkFiles();
-
         config = new Config(this);
+
+        configCheck();
+
         TimerBar timerBar = new TimerBar(this, config);
         Competition competition = new Competition();
         ModifierHandler modifierHandler = new ModifierHandler();
         messages = new Messages(this, config);
-        rewardConfiguration = new RewardConfiguration(this);
         itemHandler = new ItemHandler(config, this);
         RewardHandler rewardHandler = new RewardHandler(config);
-        rewardLoader = new RewardLoader(this, config, rewardConfiguration, rewardHandler, modifierHandler, itemHandler);
+        rewardLoader = new RewardLoader(this, config, rewardHandler, modifierHandler, itemHandler);
         runner = new Runner(this, config, competition, itemHandler, rewardHandler, messages, timerBar);
         competitionCommand = new CompetitionCommand(runner, messages);
         catchEvent = new CatchEvent(rewardHandler, modifierHandler, itemHandler);
@@ -79,17 +76,6 @@ public final class FishingPlus extends JavaPlugin {
         }
     }
 
-    // Saves default config and rewards config if they do not exist
-    private void checkFiles() {
-        File file = new File(this.getDataFolder(), "config.yml");
-        if (!file.exists())
-            saveDefaultConfig();
-        file = new File(this.getDataFolder(), "rewards.yml");
-        if (!file.exists()) {
-            saveResource("rewards.yml", false);
-        }
-    }
-
     // Registers the events for the plugin
     private void registerEvents() {
         getServer().getPluginManager().registerEvents(new FishingListener(config, runner, catchEvent), this);
@@ -113,6 +99,11 @@ public final class FishingPlus extends JavaPlugin {
     // Registers hooks
     private void setupHooks() {
         VaultHook.hook(this);
+    }
+
+    private void configCheck() {
+        ConfigUpdater configUpdater = new ConfigUpdater(this, config);
+        configUpdater.checkConfigVersion();
     }
 
     //TODO add a biome check and fish based on their biome

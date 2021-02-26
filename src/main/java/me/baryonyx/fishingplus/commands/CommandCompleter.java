@@ -33,7 +33,7 @@ public class CommandCompleter implements TabCompleter {
                 commands.add("test");
             }
             if (sender.hasPermission(Permissions.reload)) {
-                commands.add("reload");
+                commands.add("reloadConfig");
             }
             if (sender.hasPermission(Permissions.sellAll)) {
                 commands.add("sellall");
@@ -54,7 +54,7 @@ public class CommandCompleter implements TabCompleter {
 
             StringUtil.copyPartialMatches(args[1], commands, completion);
         }
-        else if (args.length == 2 && args[0].equalsIgnoreCase("reload")) {
+        else if (args.length == 2 && args[0].equalsIgnoreCase("reloadConfig")) {
             if (sender.hasPermission(Permissions.reloadConfig)) {
                 commands.add("config");
             }

@@ -24,7 +24,7 @@ public class TimedStarter {
 
     // Sets up the competition run times
     void autoRunner() {
-        for (String string : config.getCompetitionRunTimes()) {
+        for (String string : config.getConfigStringList("competition-run-times")) {
             try {
                 LocalTime time = LocalTime.parse(string);
                 runTimes.add(time);
