@@ -43,7 +43,7 @@ public class ReloadCommand {
                 }
             }
 
-            messages.playerMessage(player, "&7Please enter either config, messages, or rewards to reloadConfig!");
+            messages.playerMessage(player, "&7Please enter either config, messages, or rewards to reload!");
         }
 
         // Failed permission check

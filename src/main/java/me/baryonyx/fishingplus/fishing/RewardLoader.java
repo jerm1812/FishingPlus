@@ -59,7 +59,10 @@ public class RewardLoader {
         String displayName = config.getConfigString("reward-names");
 
         for (ConfigurationSection section : sections) {
-            // Sends each reward section to be loaded
+            if (section == null) {
+                continue;
+            }
+
             for (String key : section.getKeys(false)) {
                 Reward reward = getRewardFromFile(section, key, displayName);
 
@@ -105,6 +108,10 @@ public class RewardLoader {
         String displayName = config.getConfigString("modifier-names");
 
         for (ConfigurationSection section : sections) {
+            if (section == null) {
+                continue;
+            }
+
             for (String key : section.getKeys(false)) {
                 Modifier modifier = getModifierFromFile(section, key, displayName);
                 addModifierToFish(modifier.name, modifier.fish);

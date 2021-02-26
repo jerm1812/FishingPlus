@@ -15,14 +15,14 @@ minimum-fishers: 1
 
 # Run a fishing competition at the server's local times
 competition-run-times:
-  - '00:00'
-  - '03:00'
-  - '06:00'
-  - '09:00'
-  - '12:00'
-  - '15:00'
-  - '18:00'
-  - '21:00'
+  - "00:00"
+  - "03:00"
+  - "06:00"
+  - "09:00"
+  - "12:00"
+  - "15:00"
+  - "18:00"
+  - "21:00"
 
 # How long the auto run competitions will last in minutes
 competition-duration: 15
@@ -75,4 +75,4 @@ shop-name: "FishingPlus Shop"
 price-multiplier: .5
 
 # Config version - DO NOT CHANGE #
-config-version: "1.0.0"
+config-version: 1

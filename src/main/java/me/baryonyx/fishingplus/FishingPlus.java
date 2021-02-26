@@ -36,10 +36,9 @@ public final class FishingPlus extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-        config = new Config(this);
-
         configCheck();
 
+        config = new Config(this);
         TimerBar timerBar = new TimerBar(this, config);
         Competition competition = new Competition();
         ModifierHandler modifierHandler = new ModifierHandler();
@@ -102,7 +101,7 @@ public final class FishingPlus extends JavaPlugin {
     }
 
     private void configCheck() {
-        ConfigUpdater configUpdater = new ConfigUpdater(this, config);
+        ConfigUpdater configUpdater = new ConfigUpdater(this);
         configUpdater.checkConfigVersion();
     }
 

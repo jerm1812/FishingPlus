@@ -5,6 +5,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -71,7 +72,7 @@ public class Config {
         File file = new File(plugin.getDataFolder(), "rewards" + File.separator + "competition-rewards.yml");
 
         if (!file.exists()) {
-            plugin.saveResource("resources/competition-rewards.yml", false);
+            plugin.saveResource("rewards/competition-rewards.yml", false);
         }
 
         competitionRewards = YamlConfiguration.loadConfiguration(file);
@@ -94,6 +95,7 @@ public class Config {
         loadCompetitionRewards();
     }
 
+    @Nullable
     public String getConfigString(String key) {
         return config.getString(key);
     }
