@@ -53,4 +53,8 @@ public class Competition {
     public static boolean isRunning() {
         return running;
     }
+
+    public void unload() {
+        map.clear();
+    }
 }

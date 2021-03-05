@@ -1,5 +1,7 @@
 package me.baryonyx.fishingplus.fishing;
 
+import org.bukkit.block.Biome;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +10,7 @@ public class Reward {
     public String displayName;
     public double chance;
     public int customModelData;
+    public List<Biome> biomes = new ArrayList<>();
     public List<String> modifiers = new ArrayList<>();
     public List<String> commands;
 

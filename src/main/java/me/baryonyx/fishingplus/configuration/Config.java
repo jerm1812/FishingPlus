@@ -78,6 +78,13 @@ public class Config {
         competitionRewards = YamlConfiguration.loadConfiguration(file);
     }
 
+    public void unload() {
+        config = null;
+        messages = null;
+        rewardFiles.clear();
+        competitionRewards = null;
+    }
+
     public void reloadConfig() {
         config = null;
         loadConfig();

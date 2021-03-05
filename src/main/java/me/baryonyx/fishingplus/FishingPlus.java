@@ -16,11 +16,14 @@ import me.baryonyx.fishingplus.fishing.shop.FishingShop;
 import me.baryonyx.fishingplus.fishing.shop.FishingShopGui;
 import me.baryonyx.fishingplus.messaging.Messages;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class FishingPlus extends JavaPlugin {
     private Config config;
     private ItemHandler itemHandler;
+    private RewardHandler rewardHandler;
+    private ModifierHandler modifierHandler;
     private RewardLoader rewardLoader;
     private Runner runner;
     private CatchEvent catchEvent;
@@ -41,10 +44,10 @@ public final class FishingPlus extends JavaPlugin {
         config = new Config(this);
         TimerBar timerBar = new TimerBar(this, config);
         Competition competition = new Competition();
-        ModifierHandler modifierHandler = new ModifierHandler();
+        modifierHandler = new ModifierHandler();
         messages = new Messages(this, config);
         itemHandler = new ItemHandler(config, this);
-        RewardHandler rewardHandler = new RewardHandler(config);
+        rewardHandler = new RewardHandler(config);
         rewardLoader = new RewardLoader(this, config, rewardHandler, modifierHandler, itemHandler);
         runner = new Runner(this, config, competition, itemHandler, rewardHandler, messages, timerBar);
         competitionCommand = new CompetitionCommand(runner, messages);
@@ -65,14 +68,20 @@ public final class FishingPlus extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        if (fishingShopGui != null && fishingShopGui.inventories.size() > 0)
+        if (fishingShopGui != null && fishingShopGui.inventories.size() > 0) {
             for (Player player : fishingShopGui.inventories.keySet()) {
                 fishingShopGui.closeInventory(fishingShopGui.inventories.get(player), player);
             }
+        }
 
         if (Competition.isRunning()) {
-            runner.stopCompetition();
+            runner.cancelCompetition();
         }
+
+        HandlerList.unregisterAll(this);
+        itemHandler.clear();
+        rewardHandler.clear();
+        modifierHandler.clear();
     }
 
     // Registers the events for the plugin

@@ -9,6 +9,7 @@ import me.baryonyx.fishingplus.handlers.ModifierHandler;
 import me.baryonyx.fishingplus.handlers.RewardHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.Biome;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
