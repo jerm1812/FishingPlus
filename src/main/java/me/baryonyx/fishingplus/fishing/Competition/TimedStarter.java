@@ -3,6 +3,7 @@ package me.baryonyx.fishingplus.fishing.Competition;
 import me.baryonyx.fishingplus.FishingPlus;
 import me.baryonyx.fishingplus.configuration.Config;
 import org.bukkit.Bukkit;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
@@ -13,6 +14,7 @@ public class TimedStarter {
     private Runner runner;
     private Config config;
     private FishingPlus plugin;
+    private BukkitTask task;
 
     private List<LocalTime> runTimes = new ArrayList<>();
 
@@ -34,7 +36,7 @@ public class TimedStarter {
         }
 
         // Checks time to run every 45 seconds
-        plugin.getServer().getScheduler().runTaskTimer(plugin, this::run, 0, 900);
+        task = plugin.getServer().getScheduler().runTaskTimer(plugin, this::run, 0, 900);
     }
 
     // Runs a fishing competition at the defined times of day
@@ -43,5 +45,9 @@ public class TimedStarter {
             long duration = config.getConfigInt("competition-duration");
             runner.startTimedCompetition(duration);
         }
+    }
+
+    public void unload() {
+        task.cancel();
     }
 }

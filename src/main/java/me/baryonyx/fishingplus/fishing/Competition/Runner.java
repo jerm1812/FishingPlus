@@ -63,6 +63,13 @@ public class Runner {
         }
     }
 
+    public void cancelCompetition() {
+        try {
+            competition.stopCompetition();
+        } catch (InvalidCompetitionStateException ignored) {
+        }
+    }
+
     // Stops a competition if one is running
     public void stopCompetition() {
         try {
