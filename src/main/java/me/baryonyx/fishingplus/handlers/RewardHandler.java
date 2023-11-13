@@ -2,6 +2,8 @@ package me.baryonyx.fishingplus.handlers;
 
 import me.baryonyx.fishingplus.configuration.Config;
 import org.bukkit.Bukkit;
+import org.bukkit.WeatherType;
+import org.bukkit.block.Biome;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -41,6 +43,20 @@ public class RewardHandler {
         double rng = random.nextDouble();
         double value = rng * totalWeight;
         return fishingRewardMap.higherEntry(value).getValue();
+    }
+
+    private NavigableMap<Double, Reward> generateCustomMap(Biome biome, WeatherType weather) {
+        NavigableMap<Double, Reward> map = new TreeMap<>();
+        double weight = 0;
+
+        for (Reward reward: fishingRewardMap.values()) {
+            if (reward.biomes.contains(biome) && reward.weather == weather) {
+                weight += reward.chance;
+                map.put(weight, reward);
+            }
+        }
+
+        return map;
     }
 
     // Gets a specific reward from the fishing map

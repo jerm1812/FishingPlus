@@ -1,5 +1,6 @@
 package me.baryonyx.fishingplus.fishing;
 
+import org.bukkit.WeatherType;
 import org.bukkit.block.Biome;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ public class Reward {
     public double chance;
     public int customModelData;
     public List<Biome> biomes = new ArrayList<>();
+    public WeatherType weather;
     public List<String> modifiers = new ArrayList<>();
     public List<String> commands;
 
@@ -26,6 +28,14 @@ public class Reward {
         this.displayName = displayName;
         this.chance = chance;
         this.commands = commands;
+    }
+
+    public Reward(String name, double chance, int customModelData, List<String> commands, WeatherType weather) {
+        this.name = name;
+        this.chance = chance;
+        this.customModelData = customModelData;
+        this.commands = commands;
+        this.weather = weather;
     }
 
     public Reward(String name) {
